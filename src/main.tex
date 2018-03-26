@@ -1,0 +1,18 @@
+\documentclass{article}
+\makeatletter
+\def\insp#1{\texttt{\string#1:\meaning#1}}
+\def\inspw#1{\@latex@warning{\texttt{\string#1:\meaning#1}}}
+\@latex@warning{COMPILING EXBANK MAIN}
+\@latex@warning{COMPILING EXBANK MAIN}
+\@latex@warning{COMPILING EXBANK MAIN}
+\@latex@warning{COMPILING EXBANK MAIN}
+\usepackage[english]{babel}
+\gdef\exercisesDir{../exercises}
+\input{preamble}
+
+\makeset{1}{firstexercise}
+\makeset{2}{\exclude{secondexercise}{1,2}, firstexercise, thirdexercise}
+\begin{document}
+
+\buildset{2}
+\end{document}

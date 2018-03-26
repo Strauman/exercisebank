@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{handin}
+\usepackage{pgffor}
+\makeatletter
+\def\insp#1{\texttt{\string#1:\meaning#1}}
+\AtEndDocument{~\vfill EOF}
+\newcounter{problemcounter}
+\newcounter{partproblemcounter}[problemcounter]
+%%% plan is to auto switch "environments" so that for the toy example
+%% \probsep
+%% \solsep
+%% would be equiv to
+%% \begin{probsep}
+%% \end{probsep}
+%% \begin{solsep}
+%% \end{solstep}
+%% Same behaviour if two continuous \probsep
+
+%%% Define exercise environments
+\let\ea = \expandafter
+% \newexenv{envName}{start}{end}
+\def\exenv@endcurrent#1{
+  \@ifundefined{exenv@current}{
+    \edef\tmp{\csname exenv@end#1\endcsname}
+\tmp
+  }{}
+}
+\def\exenv@begin#1{
+  \gdef\exenv@current{#1}
+}
+\def\exenv@separator#1{
+  % \exenv@endcurrent
+  \edef\tmp{\csname exenv@begin#1\endcsname}
+\tmp
+}
+
+\def\newexenv#1#2#3{
+  % \ea\gdef\csname exenv@#1\endcsname{#1}
+  \ea\gdef\csname exenv@begin#1\endcsname{#2}
+  \ea\gdef\csname exenv@end#1\endcsname{#3}
+  \ea\gdef\csname #1sep\endcsname{\exenv@separator{#1}}
+}
+\gdef\endexenv{\exenv@endcurrent}
+
+\newexenv{prob}{P}{EP}
+\newenvironment{solution}{}{}
+\newexenv{sol}{\begin{solution}}{\end{solution}}
+
+
+\def\inputExercise#1{
+  \input{exercises/#1}
+}
+
+% \title{Assignment 1}
+% \author{The name}
+% \coursename{TST-101}
+% \coursetitle{Test course}
+% \institute{Institute of Physics and Technology}
+% % \logo{img/universityTromso}
+% %Values below are optional and defaults as given:
+% \pagetext{Page \thepage~of \pageref{LastPage}}
+% \containspages{Contains \pageref{LastPage} pages, front page included}
+
+\begin{document}
+    % \inputExercise{firstexercise}
+    INFO
+    \probsep
+    \solsep
+
+    % \bpa
+    % \bppa
+    % Info
+    % \probsep
+    % PROBLEM
+    % \solsep
+    % SOLUTION
+
+\end{document}
+
+% ------------------
+\begin{document}
+  \maketitle
+  \problem{1}
+  \pproblem{a}
+  Gauss law tells us that
+  \[ \oiint\limits_{S}\vec E\cdot \mathrm{d}\vec{S}=\frac{Q_{\text{enc}}}{\varepsilon_0} \]
+\end{document}

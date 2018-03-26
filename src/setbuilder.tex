@@ -1,0 +1,82 @@
+%!TEX root = main.tex
+
+\let\ea = \expandafter
+\newcounter{metacounter}
+\def\emptyList{-1}
+%% Deciding whether problem (and accompanied solution) should be shown
+\At\DecideProblemDisplay{
+  \if\excludeList\emptyList
+    \gdef\DisplayProblem{1}
+  \else
+    \isin{\excludeList}{\themetacounter}{
+      \gdef\DisplayProblem{\isFalse}
+    }{
+      \gdef\DisplayProblem{1}
+    }
+    \stepcounter{metacounter}
+  \fi
+}
+%% Generates sets that can be iterated over
+\gdef\makeset#1#2{
+  \ea\gdef\csname setlist@#1\endcsname{#2}
+}
+%% Sets the variables \excludeList and \exerciseFile based on the current set
+\newcommand{\redef}[2][{-1}]{
+  \gdef\excludeList{#1}
+  \gdef\exerciseFile{#2}
+}
+%% Converts {A}{1,2,3} into [{1,2,3}]{A} such that it can be sent
+%% as optional arguments to redef
+\newcommand{\exclude}[2]{[{#2}]{#1}}
+
+%% Build one exercise
+\gdef\buildex#1{
+  \makeset{#1}{#1}
+  \buildset{#1}
+}
+%%Logic for building a set
+\gdef\buildset#1{
+  %% Setting the global setName
+  \xdef\setName{#1}
+  %% Warnins if the set doesn't exist
+  \@ifundefined{setlist@#1}{
+    \@latex@error{Couldn't find set #1. Did you remember to do \string\makeset{#1}{}? }
+    \stop
+  }{}
+  %% Sets the current setlist from the variable
+  %% generated in makeset
+  \edef\setlist{\csname setlist@#1\endcsname}
+  \Trigger\StartBuildset
+  %% Loop through list
+  \foreach \exerciseFileInfo in \setlist{
+    %% excludeList is -1 if it's not a list
+    \gdef\excludeList{-1}
+    %% Counter used for iterating over partproblems
+    %% (Cant' use partproblemcounter since some of them might be excluded)
+    \setcounter{metacounter}{1}
+    %% Checking whether we have optional args
+    %% I.e. one of the arguments are sent via \exclude
+    %% And then send it to \redef
+    \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
+    \if[\firstchar
+      \ea\redef\exerciseFileInfo
+    \else
+      \redef{\exerciseFileInfo}
+    \fi
+    %% TRIGGER EVERTYHING
+    \Trigger\InputExercise
+    \Trigger\BeginProblem
+    %% The two above are meant to be aliases
+    %% The one below \VeryBeginProblem is only for stuff that
+    %% is intended to be a part of the problem
+    %% e.g. problem header is using this.
+    \Trigger\VeryBeginProblem
+    %% \incl = \input because otherwise latexpanded would try.
+    %% to input the file
+    \incl{\exercisesDir/\exerciseFile}
+    %% More triggers
+    \Trigger\EndProblem
+    \Trigger\EndInputExercise
+  }
+  \Trigger\EndBuildset
+}

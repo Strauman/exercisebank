@@ -1,0 +1,51 @@
+%!TEX root = main.tex
+\usepackage{comment}
+% \gdef\DisplayProblem{1}
+\newif\ifDisplayProblem
+\DisplayProblemtrue
+\gdef\isFalse{0}
+
+\global\let\do@ProcessCutFile = \ProcessCutFile
+%% Problems
+\generalcomment{problem}{
+  %% BeginPartproblemHard is before regardless whether
+  %% the problem is included or not.
+  \Trigger\DecideProblemDisplay
+  \begingroup
+    \if\DisplayProblem\isFalse
+      \def\ProcessCutFile{}
+    \else
+      \Trigger\BeginPartproblem
+    \fi
+    }{
+    \if\DisplayProblem\isFalse\else
+      \Trigger\EndPartproblem
+    \fi
+  \endgroup
+}
+%% Solutions
+\generalcomment{solution}
+{
+\Trigger\AtBeginSolutionHard
+\begingroup
+  \let\DisplaySolution\DisplayProblem
+  \if\DisplaySolution\isFalse
+    \def\ProcessCutFile{}
+  \else
+    \Trigger\BeginSolution
+  % \begingroup
+  % \edef\tmp{\def\noexpand\CommentCutFile{answer.tex}}
+  % \tmp
+    % \def\ProcessCutFile{\do@ProcessCutFile}
+  \fi
+}{
+% \input{\CommentCutFile}
+\if\DisplaySolution\isFalse\else
+\Trigger\EndSolution
+\fi
+
+\Trigger\EndSolutionHard
+\endgroup
+}
+%% Problem introductions
+\newenvironment{intro}{}{}

@@ -1,0 +1,6 @@
+bin/
+*/bin/
+*.sty-E
+tmpOut
+tst.tex
+tst.pdf

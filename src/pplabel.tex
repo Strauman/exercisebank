@@ -1,0 +1,20 @@
+%!TEX root = ../main.tex
+%% Reference problems
+\newcommand\refcounter[1]{
+\edef\@currentlabel{#1}%
+}
+\DeclareRobustCommand{\pplabel}[1]{
+	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
+	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
+}
+\let\pptag = \pplabel
+
+\newcommand\pppref[1]{%
+(\ref{pp:\exerciseFile:#1})\relax%
+}
+\newcommand\ppref[1]{%
+\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
+}
+\newcommand\pref[1]{%
+\ref{pr:\exerciseFile:#1}\relax%
+}

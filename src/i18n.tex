@@ -1,0 +1,21 @@
+%!TEX root = main.tex
+\makeatletter
+\pgfkeys{
+ /exbanki18n/.is family, /exbanki18n,
+  default/.style = {Problem = Problem, Solution = Solution},
+  Problem/.estore in = \@tr@Problem,
+  Solution/.estore in = \@tr@Solution
+}
+% %%Inside some command
+\newcommand{\translateExBank}[1]{
+  \pgfkeys{/exbanki18n, default, #1}%
+}
+\translateExBank{}
+
+%
+\gdef\@tr#1{
+\@ifundefined{@tr@#1}{#1}{
+  \csname @tr@#1\endcsname
+}
+}
+\makeatother
