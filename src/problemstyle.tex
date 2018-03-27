@@ -1,11 +1,11 @@
 %!TEX root = main.tex
 \makeatletter
-\def\ppLeading{0em}
+\def\ppLeading{4em}
 \def\pMarginBelow{1em}
 \def\pMarginAbove{1em}
 \def\pMarginLeft{-1.5em}
-\def\ppMargin{0em}
-\def\solMargin{\dimexpr \ppMargin\relax}
+\def\ppMargin{1em}
+\def\solMargin{\dimexpr \ppMargin+\ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
 
@@ -23,9 +23,11 @@
   \vspace*{\pMarginBelow}
 }
 \At\BeginPartproblem{
-	\vspace{\ppMargin}
-	   \begin{addmargin}{\ppMargin}
-		\hspace{-\ppLeading}\large{\textbf{(\theproblemcounter\alph{partproblemcounter})}}\normalsize
+
+	\vspace{\ppMargin}%
+	 \begin{addmargin}{\ppMargin}%
+\large\hspace*{-\ppMargin}\textbf{(\theproblemcounter\alph{partproblemcounter})}\normalsize
+\makeatletter
   \stepcounter{partproblemcounter}
 }
 \At\EndPartproblem{\hfill
@@ -33,8 +35,8 @@
 }
 \At\BeginSolution{
   \vspace*{1em}
-  \begin{addmargin}{\solMargin}
-  \hspace{-\ppLeading}\large{\textbf{\@tr{Solution}:}}\normalsize
+  \begin{addmargin}{\solMargin}%
+\hspace*{-\solMargin}\large{\textbf{\@tr{Solution}:}}\normalsize
 }
 \At\EndSolution{
   \end{addmargin}\vspace*{1em}

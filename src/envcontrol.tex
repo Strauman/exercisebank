@@ -1,13 +1,27 @@
 %!TEX root = main.tex
-\usepackage{comment}
-% \gdef\DisplayProblem{1}
-\newif\ifDisplayProblem
-\DisplayProblemtrue
-\gdef\isFalse{0}
 
+
+\makeatletter
+
+\global\let\DisplaySolution\DisplaySolutiontrue
+
+\gdef\isFalse{0}
+\gdef\isTrue{1}
+\gdef\DisplayProblem{\isTrue}
+
+%%%% NB: Difference between \DisplaySolution and \DisplaySolutions
+\gdef\@DisplaySolutions{\isFalse}
+\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\AtBeginDocument{
+\if\@DisplaySolutions\isFalse
+\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
+\fi
+}
 \global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems
 \generalcomment{problem}{
+  %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
+  \edef\DisplaySolution{\@DisplaySolutions}
   %% BeginPartproblemHard is before regardless whether
   %% the problem is included or not.
   \Trigger\DecideProblemDisplay
@@ -28,11 +42,16 @@
 {
 \Trigger\AtBeginSolutionHard
 \begingroup
-  \let\DisplaySolution\DisplayProblem
-  \if\DisplaySolution\isFalse
-    \def\ProcessCutFile{}
-  \else
+  \if\@DisplaySolutions\isTrue
+    \if\DisplayProblem\isFalse
+      \xdef\DisplaySolution{\isFalse}
+    \fi
+  \fi
+  % \inspw{\DisplaySolution}
+  \if\DisplaySolution\isTrue
     \Trigger\BeginSolution
+  \else
+    \def\ProcessCutFile{}
   % \begingroup
   % \edef\tmp{\def\noexpand\CommentCutFile{answer.tex}}
   % \tmp
@@ -40,7 +59,7 @@
   \fi
 }{
 % \input{\CommentCutFile}
-\if\DisplaySolution\isFalse\else
+\if\DisplaySolution\isTrue
 \Trigger\EndSolution
 \fi
 
