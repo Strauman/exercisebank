@@ -13,9 +13,9 @@
 \gdef\@DisplaySolutions{\isFalse}
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \AtBeginDocument{
-\if\@DisplaySolutions\isFalse
-\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
-\fi
+  \if\@DisplaySolutions\isFalse
+    \@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
+  \fi
 }
 \global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems

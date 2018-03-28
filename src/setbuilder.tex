@@ -1,33 +1,58 @@
 %!TEX root = main.tex
-
 \let\ea = \expandafter
 \newcounter{metacounter}
 \def\emptyList{-1}
+
+\begingroup\lccode`\|=`\\
+\lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
+\newcommand{\macroname}[1]{\expandafter\removebs\string#1}
+
+\gdef\ifppMode#1{
+  \def\mname{\macroname{#1}}
+  \if\mname\ppMode
+}
+\gdef\isppMode#1#2{
+  \edef\mname{\macroname{#1}}
+  \if{\macroname{#1}}\ppMode#2\fi
+}
+\gdef\@noneOfOne#1{}
+\gdef\@noneOfTwo#1#2{}
+\gdef\@ifppMode#1#2{%
+% \edef\mname{\macroname{#1}}
+\if{\macroname{#1}}\ppMode%
+\expandafter\@secondoftwo%
+\else%
+\expandafter\@noneOfTwo%
+\fi%
+}%
 %% Deciding whether problem (and accompanied solution) should be shown
 \At\DecideProblemDisplay{
-  \if\excludeList\emptyList
-    \gdef\DisplayProblem{1}
+  \if\ppList\emptyList
+    \xdef\DisplayProblem{\@ifppMode\exclude\isTrue\@ifppMode\select\isFalse}
   \else
-    \isin{\excludeList}{\themetacounter}{
-      \gdef\DisplayProblem{\isFalse}
+    \isin{\ppList}{\themetacounter}{
+      \xdef\DisplayProblem{\@ifppMode\exclude\isFalse\@ifppMode\select\isTrue}
     }{
-      \gdef\DisplayProblem{1}
+      \xdef\DisplayProblem{\@ifppMode\exclude\isTrue\@ifppMode\select\isFalse}
     }
     \stepcounter{metacounter}
   \fi
+  % \inspw\DisplayProblem
 }
 %% Generates sets that can be iterated over
 \gdef\makeset#1#2{
   \ea\gdef\csname setlist@#1\endcsname{#2}
 }
-%% Sets the variables \excludeList and \exerciseFile based on the current set
-\newcommand{\redef}[2][{-1}]{
-  \gdef\excludeList{#1}
+%% Sets the variables \ppList and \exerciseFile based on the current set
+\newcommand{\redef}[3][{-1}]{
+  \gdef\ppList{#1}
   \gdef\exerciseFile{#2}
+  \gdef\ppMode{#3}
 }
-%% Converts {A}{1,2,3} into [{1,2,3}]{A} such that it can be sent
-%% as optional arguments to redef
-\newcommand{\exclude}[2]{[{#2}]{#1}}
+%% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
+%% as optional arguments to redef. The last is set as ppMode (exclude/select/mix)
+\newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
+\newcommand{\select}[2]{[{#2}]{#1}{select}}
 
 %% Build one exercise
 \gdef\buildex#1{
@@ -49,8 +74,9 @@
   \Trigger\StartBuildset
   %% Loop through list
   \foreach \exerciseFileInfo in \setlist{
-    %% excludeList is -1 if it's not a list
-    \gdef\excludeList{-1}
+    \inspw\exerciseFileInfo
+    %% ppList is -1 if it's not a list
+    \gdef\ppList{-1}
     %% Counter used for iterating over partproblems
     %% (Cant' use partproblemcounter since some of them might be excluded)
     \setcounter{metacounter}{1}
@@ -59,9 +85,9 @@
     %% And then send it to \redef
     \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
     \if[\firstchar
-      \ea\redef\exerciseFileInfo
+      \ea\redef\exerciseFileInfo\relax
     \else
-      \redef{\exerciseFileInfo}
+      \redef{\exerciseFileInfo}{norm}
     \fi
     %% TRIGGER EVERTYHING
     \Trigger\InputExercise
