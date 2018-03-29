@@ -51,20 +51,20 @@
 }
 %% Intro
 \newenvironment{intro}{}{}
-% \generalcomment{intro}{
-%   %% Decide wether to treat intro as problem in
-%   %% include/exclude (except from \Trigger\BeginProblem ofc)
-%   \if\@countIntros\isTrue
-%     \Trigger\DecideProblemDisplay
-%     \begingroup
-%     \showhideproblem{\Trigger\BeginIntro}
-%   \fi
-% }{
-%   \if\@countIntros\isTrue
-%     \Trigger\BeginIntro
-%     \endgroup
-%   \fi
-% }
+\generalcomment{intro}{
+  %% Decide wether to treat intro as problem in
+  %% include/exclude (except from \Trigger\BeginProblem ofc)
+  \if\@countIntros\isTrue
+    \Trigger\DecideProblemDisplay
+    \begingroup
+    \showhideproblem{\Trigger\BeginIntro}
+  \fi
+}{
+  \if\@countIntros\isTrue
+    \Trigger\BeginIntro
+    \endgroup
+  \fi
+}
 %% Solutions
 \generalcomment{solution}
 {

@@ -140,18 +140,18 @@ Solution/.estore in = \@tr@Solution
 }
 %% Intro
 \newenvironment{intro}{}{}
-% \generalcomment{intro}{%   %% Decide wether to treat intro as problem in
-%   %% include/exclude (except from \Trigger\BeginProblem ofc)
-%   \if\@countIntros\isTrue
-%     \Trigger\DecideProblemDisplay
-%     \begingroup
-%     \showhideproblem{\Trigger\BeginIntro}
-%   \fi
-%}{%   \if\@countIntros\isTrue
-%     \Trigger\BeginIntro
-%     \endgroup
-%   \fi
-%}
+\generalcomment{intro}{%% Decide wether to treat intro as problem in
+%% include/exclude (except from \Trigger\BeginProblem ofc)
+\if\@countIntros\isTrue
+\Trigger\DecideProblemDisplay
+\begingroup
+\showhideproblem{\Trigger\BeginIntro}
+\fi
+}{\if\@countIntros\isTrue
+\Trigger\BeginIntro
+\endgroup
+\fi
+}
 %% Solutions
 \generalcomment{solution}
 {\Trigger\AtBeginSolutionHard
@@ -240,11 +240,16 @@ Solution/.estore in = \@tr@Solution
 }{\xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F\ipm\normal\T}
 }
 \fi
-\inspw\DisplayProblem
+% \inspw\DisplayProblem
 \stepcounter{metacounter}
 }
 %% Generates sets that can be iterated over
-\gdef\makeset#1#2{\ea\gdef\csname setlist@#1\endcsname{#2}
+\newcommand\makeset[3][]{\edef\oarg{#1}
+\edef\introarg{intro}
+\ifx\oarg\introarg
+\ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
+\fi
+\ea\gdef\csname setlist@#2\endcsname{#3}
 }
 %% Sets the variables \ppList and \exerciseFile based on the current set
 \newcommand{\redef}[3][{-1}]{\gdef\ppList{#1}
@@ -261,12 +266,9 @@ Solution/.estore in = \@tr@Solution
 }
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
-\newcommand\buildset[2][]{\def\moarg{#1}
-\def\argToShowIntro{intro}
-\ifx\moarg\argToShowIntro%
-\gdef\@countIntros{\isTrue}
-\@latex@warning{Counting intros!}
-\fi
+\newcommand\buildset[2][]{\def\oarg{#1}
+% \def\argToShowIntro{intro}
+\@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
 %% Setting the global setName
 \xdef\setName{#2}
 %% Warnins if the set doesn't exist
