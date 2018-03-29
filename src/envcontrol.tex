@@ -8,6 +8,9 @@
 \gdef\isFalse{0}
 \gdef\isTrue{1}
 \gdef\DisplayProblem{\isTrue}
+\gdef\@displayMetaCounter{\isFalse}
+
+\gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
 
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
 \gdef\@DisplaySolutions{\isFalse}
@@ -19,6 +22,19 @@
 }
 \global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems
+\gdef\showhideproblem#1{%
+  \if\@displayMetaCounter\isTrue%
+    {P:\Large\themetacounter}
+    \Trigger\BeginPartproblem
+    \gdef\DisplayProblem{\isTrue}
+  \else
+    \if\DisplayProblem\isFalse
+      \def\ProcessCutFile{}
+    \else
+      #1
+    \fi
+  \fi
+}
 \generalcomment{problem}{
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
   \edef\DisplaySolution{\@DisplaySolutions}
@@ -26,17 +42,29 @@
   %% the problem is included or not.
   \Trigger\DecideProblemDisplay
   \begingroup
-    \if\DisplayProblem\isFalse
-      \def\ProcessCutFile{}
-    \else
-      \Trigger\BeginPartproblem
-    \fi
-    }{
+     \showhideproblem{\Trigger\BeginPartproblem}
+  }{
     \if\DisplayProblem\isFalse\else
       \Trigger\EndPartproblem
     \fi
   \endgroup
 }
+%% Intro
+\newenvironment{intro}{}{}
+% \generalcomment{intro}{
+%   %% Decide wether to treat intro as problem in
+%   %% include/exclude (except from \Trigger\BeginProblem ofc)
+%   \if\@countIntros\isTrue
+%     \Trigger\DecideProblemDisplay
+%     \begingroup
+%     \showhideproblem{\Trigger\BeginIntro}
+%   \fi
+% }{
+%   \if\@countIntros\isTrue
+%     \Trigger\BeginIntro
+%     \endgroup
+%   \fi
+% }
 %% Solutions
 \generalcomment{solution}
 {
@@ -67,4 +95,3 @@
 \endgroup
 }
 %% Problem introductions
-\newenvironment{intro}{}{}

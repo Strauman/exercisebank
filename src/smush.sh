@@ -2,7 +2,8 @@
 infile="smush.tex"
 outfile="exbank.sty"
 cat packagehead.tex > $outfile
-latexpand $infile >> $outfile
+latexpand --keep-comments $infile >> $outfile
+
 
 # Remove all blank lines
 sed -i.bak -E '/./!d' $outfile
@@ -11,7 +12,7 @@ perl -i -pe 's/(\\makeatletter|\\makeatother)//g' $outfile
 # Remove all indentation
 sed -i -E 's/^[[:blank:]]*//' $outfile
 # Remove all newlines
-perl -0777 -i.bak -pe 's/\n/ /g' $outfile
+# perl -0777 -i.bak -pe 's/\n/ /g' $outfile
 # Remove all spaces before commands
 perl -i -pe 's/(\\[a-z]+|\})\s+(\\[a-z]+)/\1\2/g' $outfile
 # Remove all spaces at beginning of groups

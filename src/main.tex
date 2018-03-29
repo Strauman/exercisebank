@@ -2,16 +2,16 @@
 \makeatletter
 \def\insp#1{\texttt{\string#1:\meaning#1}}
 \def\inspw#1{\@latex@warning{\string#1:\meaning#1}}
-\@latex@warning{COMPILING EXBANK MAIN}
-\@latex@warning{COMPILING EXBANK MAIN}
-\@latex@warning{COMPILING EXBANK MAIN}
-\@latex@warning{COMPILING EXBANK MAIN}
+  % \@latex@warning{COMPILING EXBANK MAIN}
+  % \@latex@warning{COMPILING EXBANK MAIN}
+  % \@latex@warning{COMPILING EXBANK MAIN}
+  \@latex@warning{COMPILING EXBANK MAIN}
 \usepackage[english]{babel}
 \gdef\exercisesDir{../exercises}
 \input{preamble}
 
-\makeset{1}{firstexercise}
-\makeset{2}{\exclude{secondexercise}{1,2}, firstexercise, thirdexercise}
+% \makeset{2}{secondexercise, firstexercise}
+\makeset{2}{\exclude{secondexercise}{2,3}, firstexercise, \select{thirdexercise}{2,3}}
 \begin{document}
 
 \buildset{2}

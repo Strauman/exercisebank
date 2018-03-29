@@ -15,29 +15,37 @@
   \edef\mname{\macroname{#1}}
   \if{\macroname{#1}}\ppMode#2\fi
 }
-\gdef\@noneOfOne#1{}
+\gdef\@noneofone#1{}
 \gdef\@noneOfTwo#1#2{}
-\gdef\@ifppMode#1#2{%
+
+%%% NOT WORKING
+\gdef\@ifppMode#1{%
 % \edef\mname{\macroname{#1}}
-\if{\macroname{#1}}\ppMode%
-\expandafter\@secondoftwo%
+\ifnum\pdfstrcmp{\macroname{#1}}{\ppMode}=\z@%
+\expandafter\@firstofone%
 \else%
-\expandafter\@noneOfTwo%
+\expandafter\@noneofone%
 \fi%
 }%
+\def\pm@Exclude{exclude}
+\def\pm@Select{select}
+
 %% Deciding whether problem (and accompanied solution) should be shown
+\let\ipm\@ifppMode
+\let\T\isTrue
+\let\F\isFalse
 \At\DecideProblemDisplay{
   \if\ppList\emptyList
-    \xdef\DisplayProblem{\@ifppMode\exclude\isTrue\@ifppMode\select\isFalse}
+    \xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F}
   \else
     \isin{\ppList}{\themetacounter}{
-      \xdef\DisplayProblem{\@ifppMode\exclude\isFalse\@ifppMode\select\isTrue}
+      \xdef\DisplayProblem{\ipm\exclude\F\ipm\select\T\ipm\normal\T}
     }{
-      \xdef\DisplayProblem{\@ifppMode\exclude\isTrue\@ifppMode\select\isFalse}
+      \xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F\ipm\normal\T}
     }
-    \stepcounter{metacounter}
   \fi
-  % \inspw\DisplayProblem
+  \inspw\DisplayProblem
+  \stepcounter{metacounter}
 }
 %% Generates sets that can be iterated over
 \gdef\makeset#1#2{
@@ -60,21 +68,27 @@
   \buildset{#1}
 }
 %%Logic for building a set
-\gdef\buildset#1{
+\gdef\@countIntros{\isFalse}
+\newcommand\buildset[2][]{
+  \def\moarg{#1}
+  \def\argToShowIntro{intro}
+  \ifx\moarg\argToShowIntro%
+    \gdef\@countIntros{\isTrue}
+    \@latex@warning{Counting intros!}
+  \fi
   %% Setting the global setName
-  \xdef\setName{#1}
+  \xdef\setName{#2}
   %% Warnins if the set doesn't exist
-  \@ifundefined{setlist@#1}{
-    \@latex@error{Couldn't find set #1. Did you remember to do \string\makeset{#1}{}? }
+  \@ifundefined{setlist@#2}{
+    \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
     \stop
   }{}
   %% Sets the current setlist from the variable
   %% generated in makeset
-  \edef\setlist{\csname setlist@#1\endcsname}
+  \edef\setlist{\csname setlist@#2\endcsname}
   \Trigger\StartBuildset
   %% Loop through list
   \foreach \exerciseFileInfo in \setlist{
-    \inspw\exerciseFileInfo
     %% ppList is -1 if it's not a list
     \gdef\ppList{-1}
     %% Counter used for iterating over partproblems
@@ -87,7 +101,7 @@
     \if[\firstchar
       \ea\redef\exerciseFileInfo\relax
     \else
-      \redef{\exerciseFileInfo}{norm}
+      \redef{\exerciseFileInfo}{normal}
     \fi
     %% TRIGGER EVERTYHING
     \Trigger\InputExercise
