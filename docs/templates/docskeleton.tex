@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage[documentation,listingsutf8]{tcolorbox}
+% \tcbuselibrary{documentation,listingsutf8}
+% \tcbset{listing engine=minted}
+\let\dac\docAuxCommand
+\setlength{\parindent}{0pt}
+\title{Exercise bank - documentation}
+\author{Andreas Strauman}
+\begin{document}
+% \maketitle
+\section{Motivation}
+So I wanted a package that allowed me to mix-and-match exercises. I couldn't find it, so I made it.
+\section{Flow/Moderate start}
+I suspect that working with this package will break you current flow. So let's go throught it.
+
+This package assumes you put all of your exercises within the folder named \texttt{exercises}\footnote{I applogize, but I haven't gotten the formatting right here. So there will \emph{either} be no indentations or no colors in my examples. I'm so sorry. Truly.}
+\begin{dispListing*}{title=exercises/myexercise.tex}
+\begin{intro}
+  This introduces our problem
+\end{intro}
+\begin{problem}
+  This is a partproblem 1,
+  and will be hidden (just wait, you'll see)
+\end{problem}
+\begin{problem}
+  This is a partproblem 2.
+  This will not be hidden, but become part problem a!
+\end{problem}
+\end{dispListing*}
+Let's build all of them first. In the main file, (the one where you include this package):
+\begin{dispListing*}{title=main.tex}
+  \documentclass{article}
+  \usepackage{exbank}
+  \makeset{myExerciseSet}{myexercise}
+  \begin{document}
+    \buildset{myExerciseSet}
+  \end{document}
+\end{dispListing*}
+This builds the entire set, and adds Problem header and partproblem counters ( (1a) and (1b) ) by default.
+\clearpage
+\subsection{Select}
+Now, let's build only the second problem.
+\begin{dispListing*}{title=main.tex}
+  \documentclass{article}
+  \usepackage{exbank}
+  \makeset{myExerciseSet}{\select{myexercise}{2}}
+  \begin{document}
+    \buildset{myExerciseSet}
+  \end{document}
+\end{dispListing*}
+This should only build the intro and the one exercise you \refCom{select}ed!
+
+Now, say you want to hide the intro. Well all you have to do in this case is
+make the package treat the intro as a problem in regards to what is \refCom{select}ed.
+Just add the optional argument \oarg{intro} to \dac{make}. That is switch
+\begin{dispListing}
+\makeset{myExerciseSet}{\select{myexercise}{2}}
+\end{dispListing}
+with
+\begin{dispListing}
+\makeset[intro]{myExerciseSet}{\select{myexercise}{3}}
+\end{dispListing}
+Notice that there are 3 `partproblems' now since we have to count the intro!
+
+\subsection{Exclude}
+But what if you have an exercise with 12 partproblems, and you only want to exclude the 7th partproblem? Well, then \dac{Exclude} is here to rescue the day for you.
+\begin{dispListing}
+  \makeset{myExerciseSet}{\exclude{soManyExercises}{7}}
+\end{dispListing}
+Here it's important to note that the [intro] argument would not make the intros disappear. If we wanted to only exclude the intro from our previous example file \texttt{exercises/myexercise.tex} we would do
+\begin{dispListing}
+\makeset[intro]{myExerciseSet}{\exclude{myexercise}{1}}
+\end{dispListing}
+So we're excluding the partproblem 1. But that's the intro when we send the [intro] optional argument
+\clearpage
+\subsection{Multiple}
+In \dac{makeset} you can just separate exercises with commas! Here is an example:
+
+Let's say you have two files with exercises. One located in \texttt{exercises/circuits/RLC.tex} and one in \texttt{exercises/ohm/ohmsGeneralLaw.tex}, and you want to include partproblem 1 through 5 from \texttt{RLC.tex} and all of the exercises from \texttt{ohmsGeneralLaw.tex}.
+
+\begin{dispListing}
+\makeset{\select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
+\end{dispListing}
+This will divide it up with problem headers. So that what is in the \texttt{RLC.tex}-file will be Problem 1, and \texttt{ohmsGeneralLaw.tex} Problem 2.
+\subsection{Mixnmatch}
+What if you want to make both of them the same exercise? Well, then you pass the [nohead] argument to \dac{makeset}:
+\begin{dispListing}
+\makeset[nohead]{\phead, \select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
+\end{dispListing}
+The \dac{phead} command makes a problem header. You can pass them as much as you want:
+
+\begin{dispListing}
+\makeset[nohead]{\phead, \select{circuits/RLC}{1,...,5},
+              ohmsGeneralLaw, \phead, someOtherExercise, moreExercises}
+\end{dispListing}
+
+\subsection{Solutions}
+The last thing to cover then is solutions. In your exercise files you just use the solution environment
+\begin{dispListing}
+\begin{solution}
+Solution goes here
+\end{solution}
+\end{dispListing}
+They are hidden by default, so you would have to use \dac{DisplaySolutions} in
+your main file to display them.
+
+That covers the basics. Enjoy
+
+\clearpage
+\section{Reference}
+
+§content
+\end{document}

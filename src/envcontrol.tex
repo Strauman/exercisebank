@@ -3,8 +3,6 @@
 
 \makeatletter
 
-\global\let\DisplaySolution\DisplaySolutiontrue
-
 \gdef\isFalse{0}
 \gdef\isTrue{1}
 \gdef\DisplayProblem{\isTrue}
@@ -14,6 +12,7 @@
 
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
 \gdef\@DisplaySolutions{\isFalse}
+%%NB: DOC for \DisplaySolutions are moved down
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \AtBeginDocument{
   \if\@DisplaySolutions\isFalse
@@ -35,6 +34,11 @@
     \fi
   \fi
 }
+
+% \BDOC!
+% \\begin{problem}
+% Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
+% \EDOC
 \generalcomment{problem}{
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
   \edef\DisplaySolution{\@DisplaySolutions}
@@ -49,22 +53,14 @@
     \fi
   \endgroup
 }
-%% Intro
-% \newenvironment{intro}{}{}
-\generalcomment{intro}{
-  %% Decide wether to treat intro as problem in
-  %% include/exclude (except from \Trigger\BeginProblem ofc)
-  \if\@countIntros\isTrue
-    \Trigger\DecideProblemDisplay
-    \begingroup
-    \showhideproblem{\Trigger\BeginIntro}
-  \fi
-}{
-  \if\@countIntros\isTrue
-    \Trigger\EndIntro
-    \endgroup
-  \fi
-}
+% \BDOC!
+% \\begin{solution}
+% Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
+% \EDOC
+% \BDOC!
+% \DisplaySolutions
+% Turns on the solutions, so they are shown.
+% \EDOC
 %% Solutions
 \generalcomment{solution}
 {
@@ -95,3 +91,21 @@
 \endgroup
 }
 %% Problem introductions
+%\BDOC!
+%\\begin{intro}
+% Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
+% \EDOC
+\generalcomment{intro}{
+  %% Decide wether to treat intro as problem in
+  %% include/exclude (except from \Trigger\BeginProblem ofc)
+  \if\@countIntros\isTrue
+    \Trigger\DecideProblemDisplay
+    \begingroup
+    \showhideproblem{\Trigger\BeginIntro}
+  \fi
+}{
+  \if\@countIntros\isTrue
+    \Trigger\EndIntro
+    \endgroup
+  \fi
+}
