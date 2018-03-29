@@ -139,7 +139,7 @@ Solution/.estore in = \@tr@Solution
 \endgroup
 }
 %% Intro
-\newenvironment{intro}{}{}
+% \newenvironment{intro}{}{}
 \generalcomment{intro}{%% Decide wether to treat intro as problem in
 %% include/exclude (except from \Trigger\BeginProblem ofc)
 \if\@countIntros\isTrue
@@ -148,7 +148,7 @@ Solution/.estore in = \@tr@Solution
 \showhideproblem{\Trigger\BeginIntro}
 \fi
 }{\if\@countIntros\isTrue
-\Trigger\BeginIntro
+\Trigger\EndIntro
 \endgroup
 \fi
 }
@@ -243,11 +243,21 @@ Solution/.estore in = \@tr@Solution
 % \inspw\DisplayProblem
 \stepcounter{metacounter}
 }
+\pgfkeys{/makeset/.is family, /makeset,
+default/.style = {noheadarg=\isFalse, introarg=\isFalse},
+intro/.style = {introarg=\isTrue},
+nohead/.style = {noheadarg=\isTrue},
+introarg/.estore in = \introarg,
+noheadarg/.estore in = \noheadarg
+}
 %% Generates sets that can be iterated over
-\newcommand\makeset[3][]{\edef\oarg{#1}
-\edef\introarg{intro}
-\ifx\oarg\introarg
+\newcommand\makeset[3][]{\pgfkeys{/makeset, default, #1}%
+% Is intro sent?
+\if\introarg\isTrue%
 \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
+\fi
+\if\noheadarg\isTrue%
+\ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
 \fi
 \ea\gdef\csname setlist@#2\endcsname{#3}
 }
@@ -266,9 +276,11 @@ Solution/.estore in = \@tr@Solution
 }
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
+\gdef\phead{?\noexpand\Trigger\noexpand\VeryBeginProblem}
 \newcommand\buildset[2][]{\def\oarg{#1}
 % \def\argToShowIntro{intro}
 \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
+\@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
 %% Setting the global setName
 \xdef\setName{#2}
 %% Warnins if the set doesn't exist
@@ -280,7 +292,9 @@ Solution/.estore in = \@tr@Solution
 \edef\setlist{\csname setlist@#2\endcsname}
 \Trigger\StartBuildset
 %% Loop through list
-\foreach\exerciseFileInfo in \setlist{%% ppList is -1 if it's not a list
+\foreach\exerciseFileInfo in \setlist{\def\continueLoop{\isTrue}
+\inspw\exerciseFileInfo
+%% ppList is -1 if it's not a list
 \gdef\ppList{-1}
 %% Counter used for iterating over partproblems
 %% (Cant' use partproblemcounter since some of them might be excluded)
@@ -291,9 +305,15 @@ Solution/.estore in = \@tr@Solution
 \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
 \if[\firstchar
 \ea\redef\exerciseFileInfo\relax
+\def\continueLoop{\isTrue}
+\else\if?\firstchar
+\expandafter\@secondoftwo\exerciseFileInfo
+\def\continueLoop{\isFalse}
 \else
 \redef{\exerciseFileInfo}{normal}
-\fi
+\def\continueLoop{\isTrue}
+\fi\fi
+\if\continueLoop\isTrue
 %% TRIGGER EVERTYHING
 \Trigger\InputExercise
 \Trigger\BeginProblem
@@ -301,13 +321,15 @@ Solution/.estore in = \@tr@Solution
 %% The one below \VeryBeginProblem is only for stuff that
 %% is intended to be a part of the problem
 %% e.g. problem header is using this.
-\Trigger\VeryBeginProblem
+\if\nohead\isFalse\Trigger\VeryBeginProblem\fi
+\inspw\nohead
 %% \incl = \input because otherwise latexpanded would try.
 %% to input the file
 \incl{\exercisesDir/\exerciseFile}
 %% More triggers
 \Trigger\EndProblem
 \Trigger\EndInputExercise
+\fi
 }
 \Trigger\EndBuildset
 }
