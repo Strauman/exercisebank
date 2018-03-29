@@ -50,7 +50,7 @@
   \endgroup
 }
 %% Intro
-\newenvironment{intro}{}{}
+% \newenvironment{intro}{}{}
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)
@@ -61,7 +61,7 @@
   \fi
 }{
   \if\@countIntros\isTrue
-    \Trigger\BeginIntro
+    \Trigger\EndIntro
     \endgroup
   \fi
 }
