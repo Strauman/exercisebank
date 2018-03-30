@@ -14,20 +14,17 @@
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
 \ProvidesPackage{exbank}[2018/03/30 v0.01 Creates a setup that gives freedom in making sets and exercises.]
-
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \string\usepackage{exbank}}
 }{}
 \gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
 \@ifundefined{exercisesDir}{\gdef\exercisesDir{exercises}
 }{}
-
 \global\let\incl = \input
 \usepackage{xstring}
 \usepackage{pgffor}
 \usepackage{scrextend}
 \usepackage{comment}
 \usepackage{calc}
-
 \pgfkeys{ /exbanki18n/.is family, /exbanki18n,
   default/.style = {Problem = Problem, Solution = Solution},
   Problem/.estore in = \@tr@Problem,
@@ -39,8 +36,6 @@
 \gdef\@tr#1{\@ifundefined{@tr@#1}{#1}{  \csname @tr@#1\endcsname
 }
 }
-
-
 \let\ea = \expandafter
 \def\removebs#1{\if#1\@backslashchar\else#1\fi}
 \newcommand{\At}[2]{  \def\macname{\expandafter\removebs\detokenize{#1}}
@@ -55,9 +50,7 @@
   \let\mname = \macname
   \@ifundefined{At@\mname}{}{\csname At@\mname\endcsname}
 }
-
 \long\def\about#1{}
-
 \def\ppLeading{4em}
 \def\pMarginBelow{1em}
 \def\pMarginAbove{1em}
@@ -80,7 +73,6 @@
 \At\BeginPartproblem{	\vspace{\ppMargin}%
 	 \begin{addmargin}{\ppMargin}%
 \large\hspace*{-\ppMargin}\textbf{(\theproblemcounter\alph{partproblemcounter})}\normalsize
-
   \stepcounter{partproblemcounter}
 }
 \At\EndPartproblem{\hfill
@@ -92,7 +84,6 @@
 }
 \At\EndSolution{  \end{addmargin}\vspace*{1em}
 }
-
 \gdef\isFalse{0}
 \gdef\isTrue{1}
 \gdef\DisplayProblem{\isTrue}
@@ -285,4 +276,3 @@
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
 }
-  

@@ -396,7 +396,7 @@
 % \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
 %\EDOC
 %\BEX!
-% \makeset[nohead]\{\phead, \select{myexercise}\{1,2,3\}\}
+% \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
 %\EEX
 \newcommand\makeset[3][]{
   \pgfkeys{/makeset, default, #1}%
