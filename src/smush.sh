@@ -48,6 +48,9 @@ perl -i -pe 's/\s+\}/\}/g' $outfile
 ## Create quickstart
 rm quickstart.zip
 zip quickstart.zip example.tex $outfile -r ../exercises
+zip example.zip example.tex -r ../exercises
+zip exbankCTAN.zip ../manual.pdf README.txt $outfile -r ../exercises
+mv exbankCTAN.zip ../
 # perl -pe 's/^(?!\\usepackage).*//; s/^\\usepackage(?:\[[^\]]+\])?\{([^\{]+)\}/\1/;s/^\n//g' packages.tex > dependencies.txt
 # perl -i -pe 's/\n/,/g' dependencies.txt
 
