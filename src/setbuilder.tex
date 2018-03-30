@@ -133,7 +133,7 @@
   %% Loop through list
   \foreach \exerciseFileInfo in \setlist{
     \def\continueLoop{\isTrue}
-    \inspw\exerciseFileInfo
+    % \inspw\exerciseFileInfo
     %% ppList is -1 if it's not a list
     \gdef\ppList{-1}
     %% Counter used for iterating over partproblems
@@ -164,7 +164,7 @@
     %% is intended to be a part of the problem
     %% e.g. problem header is using this.
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
-    \inspw\nohead
+    % \inspw\nohead
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
     \incl{\exercisesDir/\exerciseFile}
