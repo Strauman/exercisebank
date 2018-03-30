@@ -20,14 +20,16 @@ cp bin/documentation.pdf ../manual.pdf
 cd $sourceDir
 
 cat packagehead.tex > $outfile
-latexpand --keep-comments $infile >> $outfile
+latexpand --empty-comments $infile >> $outfile
 
+# Remove comments that starts but has no content following it
+perl -i -pe 's/^\s*[%]+\s*$//g' $outfile
 # Remove all blank lines
 sed -i.bak -E '/./!d' $outfile
 # Remove all makeatletter and makeatothers (not needed for .sty)
 perl -i -pe 's/(\\makeatletter|\\makeatother)//g' $outfile
 # Remove all indentation
-sed -i -E 's/^[[:blank:]]*//' $outfile
+# sed -i -E 's/^[[:blank:]]*//' $outfile
 # Remove all newlines
 # perl -0777 -i.bak -pe 's/\n/ /g' $outfile
 # Remove all spaces before commands
@@ -38,7 +40,7 @@ perl -i -pe 's/\{\s+/\{/g' $outfile
 perl -i -pe 's/\s+\}/\}/g' $outfile
 # Add comment to top
 cp $outfile tmpOut
-echo "%% Source and documentation at https://github.com/Strauman/Handin-LaTeX" > $outfile
+# echo "%% Source and documentation at https://github.com/Strauman/Handin-LaTeX" > $outfile
 cat tmpOut >> $outfile
 ## Generate dependencylist from packages
 # perl -pe '/^\\usepackage\{([^\{]+)\}/\1/' packages.tex
