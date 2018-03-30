@@ -39,9 +39,9 @@ perl -i -pe 's/\{\s+/\{/g' $outfile
 # Remove all spaces at end of groups
 perl -i -pe 's/\s+\}/\}/g' $outfile
 # Add comment to top
-cp $outfile tmpOut
+# cp $outfile tmpOut
 # echo "%% Source and documentation at https://github.com/Strauman/Handin-LaTeX" > $outfile
-cat tmpOut >> $outfile
+# cat tmpOut >> $outfile
 ## Generate dependencylist from packages
 # perl -pe '/^\\usepackage\{([^\{]+)\}/\1/' packages.tex
 
