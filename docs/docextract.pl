@@ -196,8 +196,8 @@ sub extractExample
   }elsif(s/^%(.*)//){
     $_= $line;
     s/^\s*[%]+(.*)/$1/;
-    s/$bracketSearch/\\\{$1\\\}/g;
-    s/$dacSearch/\\dac{$1}/g;
+    # s/$bracketSearch/\\\{$1\\\}/g;
+    # s/$dacSearch/\\dac{$1}/g;
     # s/(?:\s|\})\K\{([^\}]+)\}/\\\{$1\\\}/g;
     $example.="$_\n";
   }

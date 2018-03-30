@@ -1,8 +1,12 @@
 \documentclass{article}
-\usepackage[documentation,listingsutf8]{tcolorbox}
+\usepackage[all]{tcolorbox}
+\input{styling}
+% \usepackage{tcolorbox.doc.s_main}
 % \tcbuselibrary{documentation,listingsutf8}
 % \tcbset{listing engine=minted}
 \let\dac\docAuxCommand
+\tcbset{documentation listing style=mydocumentation}
+
 \setlength{\parindent}{0pt}
 \title{Exercise bank - documentation}
 \author{Andreas Strauman}
@@ -13,7 +17,7 @@ So I wanted a package that allowed me to mix-and-match exercises. I couldn't fin
 \section{Flow/Moderate start}
 I suspect that working with this package will break you current flow. So let's go throught it.
 
-This package assumes you put all of your exercises within the folder named \texttt{exercises}\footnote{I applogize, but I haven't gotten the formatting right here. So there will \emph{either} be no indentations or no colors in my examples. I'm so sorry. Truly.}
+This package assumes you put all of your exercises within the folder named \texttt{exercises}
 \begin{dispListing*}{title=exercises/myexercise.tex}
 \begin{intro}
   This introduces our problem
@@ -48,10 +52,10 @@ Now, let's build only the second problem.
     \buildset{myExerciseSet}
   \end{document}
 \end{dispListing*}
-This should only build the intro and the one exercise you \refCom{select}ed!
+This should only build the intro and the one exercise you \refCom*{select}ed!
 
 Now, say you want to hide the intro. Well all you have to do in this case is
-make the package treat the intro as a problem in regards to what is \refCom{select}ed.
+make the package treat the intro as a problem in regards to what is \refCom*{select}ed.
 Just add the optional argument \oarg{intro} to \dac{make}. That is switch
 \begin{dispListing}
 \makeset{myExerciseSet}{\select{myexercise}{2}}
@@ -105,7 +109,11 @@ They are hidden by default, so you would have to use \dac{DisplaySolutions} in
 your main file to display them.
 
 That covers the basics. Enjoy
-
+\begin{marker}
+\dac{begin}\{problem\},\dac{end}\{problem\},\\
+\dac{begin}\{solution\},\dac{end}\{solution\},\\
+\dac{begin}\{intro\} and \dac{end}\{intro\} has to be on their own line without any spaces!
+\end{marker}
 \clearpage
 \section{Reference}
 
@@ -131,11 +139,23 @@ That covers the basics. Enjoy
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
 
 \end{docCommand}
-\begin{tcolorbox}[docexample]
- \dac{makeset}[nohead]\{\dac{phead}, \dac{select}\{myexercise\}\{1,2,3\}\}
+% \begin{tcolorbox}[docexample]
+\begin{dispListing}
+ \makeset[nohead]\{\phead, \select{myexercise}\{1,2,3\}\}
 
 
-\end{tcolorbox}
+\end{dispListing}
+% \end{tcolorbox}
+\begin{docCommand}[]{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}
+As you can see in the intro section of the documentation, this is for excluding partproblems
+To be used in \refCom{makeset}
+
+\end{docCommand}
+\begin{docCommand}[]{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
+As you can see in the intro section of the documentation, this is for cherry picking partproblems
+To be used in \refCom{makeset}
+
+\end{docCommand}
 
  This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 
@@ -143,15 +163,17 @@ That covers the basics. Enjoy
 Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
 
 \end{docCommand}
-\begin{tcolorbox}[docexample]
-\dac{At}\dac{BeginSomething}\{DoSomething\}
+% \begin{tcolorbox}[docexample]
+\begin{dispListing}
+\At\BeginSomething{DoSomething}
 
  Which is triggered with
 
- \dac{Trigger}\dac{BeginSomething}, this evaluates to DoSomething
+ \Trigger\BeginSomething, this evaluates to DoSomething
 
 
-\end{tcolorbox}
+\end{dispListing}
+% \end{tcolorbox}
 \begin{docCommand}[]{Trigger}{\marg{Any Macro}}
  See \refCom{At}
 Triggers available:\\

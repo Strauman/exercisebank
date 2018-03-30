@@ -361,7 +361,18 @@
 }
 %% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
 %% as optional arguments to redef. The last is set as ppMode (exclude/select/mix)
+% \BDOC!
+%\exclude{exerciseFileName}{Comma separated numbers}
+%As you can see in the intro section of the documentation, this is for excluding partproblems
+%To be used in \refCom{makeset}
+% \EDOC
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
+
+% \BDOC!
+%\select{exerciseFileName}{Comma separated numbers}
+%As you can see in the intro section of the documentation, this is for cherry picking partproblems
+%To be used in \refCom{makeset}
+% \EDOC
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
 
 %% Build one exercise

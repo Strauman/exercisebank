@@ -1,8 +1,12 @@
 \documentclass{article}
-\usepackage[documentation,listingsutf8]{tcolorbox}
+\usepackage[all]{tcolorbox}
+\input{styling}
+% \usepackage{tcolorbox.doc.s_main}
 % \tcbuselibrary{documentation,listingsutf8}
 % \tcbset{listing engine=minted}
 \let\dac\docAuxCommand
+\tcbset{documentation listing style=mydocumentation}
+
 \setlength{\parindent}{0pt}
 \title{Exercise bank - documentation}
 \author{Andreas Strauman}
@@ -13,7 +17,7 @@ So I wanted a package that allowed me to mix-and-match exercises. I couldn't fin
 \section{Flow/Moderate start}
 I suspect that working with this package will break you current flow. So let's go throught it.
 
-This package assumes you put all of your exercises within the folder named \texttt{exercises}\footnote{I applogize, but I haven't gotten the formatting right here. So there will \emph{either} be no indentations or no colors in my examples. I'm so sorry. Truly.}
+This package assumes you put all of your exercises within the folder named \texttt{exercises}
 \begin{dispListing*}{title=exercises/myexercise.tex}
 \begin{intro}
   This introduces our problem
@@ -48,10 +52,10 @@ Now, let's build only the second problem.
     \buildset{myExerciseSet}
   \end{document}
 \end{dispListing*}
-This should only build the intro and the one exercise you \refCom{select}ed!
+This should only build the intro and the one exercise you \refCom*{select}ed!
 
 Now, say you want to hide the intro. Well all you have to do in this case is
-make the package treat the intro as a problem in regards to what is \refCom{select}ed.
+make the package treat the intro as a problem in regards to what is \refCom*{select}ed.
 Just add the optional argument \oarg{intro} to \dac{make}. That is switch
 \begin{dispListing}
 \makeset{myExerciseSet}{\select{myexercise}{2}}
@@ -105,7 +109,11 @@ They are hidden by default, so you would have to use \dac{DisplaySolutions} in
 your main file to display them.
 
 That covers the basics. Enjoy
-
+\begin{marker}
+\dac{begin}\{problem\},\dac{end}\{problem\},\\
+\dac{begin}\{solution\},\dac{end}\{solution\},\\
+\dac{begin}\{intro\} and \dac{end}\{intro\} has to be on their own line without any spaces!
+\end{marker}
 \clearpage
 \section{Reference}
 
