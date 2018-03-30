@@ -331,9 +331,7 @@ while(my($sec, $cont) = each %prioritySections) {
   $docOutString.=$cont;
   $docOutString.=$sections{$sec};
 }
-# $docOutString = "$priorityOutString\n$docOutString";
+
 $docOutString =~ s/!!triggers/$triggers/;
 $docOutString = $skeleton =~ s/§content/$docOutString/r;
-talk "\n--- output ---\n";
-# talk "$docOutString\n";
 print $docOutString;

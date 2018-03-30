@@ -107,7 +107,11 @@ To be used in \refCom{makeset}
 \subsection{Triggers}
 \begin{docCommand}[]{Trigger}{\marg{Any Macro}}
  See \refCom{At}\\
-Triggers available:\\
+Available triggers:\\
+ \dac{At}\dac{InputExercise}\\ Triggers before a file is included\\
+\dac{At}\dac{BeginProblem}\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
+\dac{At}\dac{EndProblem}\\ Triggers right after problem is included if [nohead] \emph{not} given\\
+
 
 \end{docCommand}
 
