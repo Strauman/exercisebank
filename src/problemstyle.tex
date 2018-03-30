@@ -8,7 +8,11 @@
 \def\solMargin{\dimexpr \ppMargin+\ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
-
+%\BDOC
+%§count
+%\!docCounter{problemcounter}-counter holds the current problem number and
+%\!docCounter{partproblemcounter}-counter holds the current partproblem \!emph{number}.
+%\EDOC
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
@@ -23,7 +27,6 @@
   \vspace*{\pMarginBelow}
 }
 \At\BeginPartproblem{
-
 	\vspace{\ppMargin}%
 	 \begin{addmargin}{\ppMargin}%
 \large\hspace*{-\ppMargin}\textbf{(\theproblemcounter\alph{partproblemcounter})}\normalsize

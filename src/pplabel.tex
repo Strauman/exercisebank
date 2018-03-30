@@ -1,20 +1,35 @@
 %!TEX root = ../main.tex
 %% Reference problems
+%\BDOC
+%§makingSets
+%\EDOC
 \newcommand\refcounter[1]{
 \edef\@currentlabel{#1}%
 }
+%\BDOC
+%\pplabel{label}
+% Labels a partproblem. You can reference to it later using \ppref{\meta{label}}
+%\EDOC
 \DeclareRobustCommand{\pplabel}[1]{
 	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
 	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
 }
-\let\pptag = \pplabel
 
+\let\pptag = \pplabel
 \newcommand\pppref[1]{%
 (\ref{pp:\exerciseFile:#1})\relax%
 }
+%\BDOC
+%\ppref{label}
+% Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
+%\EDOC
 \newcommand\ppref[1]{%
 \ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
 }
+%\BDOC
+%\ppref{label}
+% Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1
+%\EDOC
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
 }

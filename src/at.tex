@@ -1,4 +1,7 @@
 %!TEX root = main.tex
+%\BDOC
+%§ref
+%\EDOC
 \makeatletter
 %% Adds macro to queue
 \let\ea = \expandafter
@@ -29,9 +32,10 @@
 %% Usage: \Trigger\BeginSomething (\BeginSomething) doesn't have to be defined
 % \BDOC
 %\Trigger{Any Macro}
-% See \refCom{At}
+% See \refCom{At}\\
 %Triggers available:\\
 %§triggers
+%!!triggers
 % \EDOC
 \newcommand{\Trigger}[1]{
   \def\macname{\expandafter\removebs\detokenize{#1}}

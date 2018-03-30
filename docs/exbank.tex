@@ -1,8 +1,21 @@
 
+%\BDOC
+% §env=Environments
+% §lang=Internationalization
+% §triggers=Triggers
+% §ref=General reference
+% §makingSets=Making sets
+% §count=Counters
+%\EDOC
 %!TEX root = main.tex
+%\BDOC
+%§ref
+%\ownLineNoSpacesGotIt
+% This is to annoy the user enough to get his attention about the requirements of the \!refEnv{problem}, \!refEnv{solution} and \!refEnv{intro} environments.\\
+% Compilation wont work unless \end{problem}, \end{solution} and \end{intro} are on their own lines and without any spaces. This warning can be removed by doing \def\ownLineNoSpacesGotIt{} before \usepackage{exbank}.
+%\EDOC
 \makeatletter
 \@ifundefined{ownLineNoSpacesGotIt}{
-% \edef\warn{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \string\usepackage{exbank}}
 \@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \string\usepackage{exbank}}
 }{}
 \@ifundefined{exercisesDir}{
@@ -26,7 +39,21 @@
   Problem/.estore in = \@tr@Problem,
   Solution/.estore in = \@tr@Solution
 }
-% %%Inside some command
+% \BDOC
+%§lang
+%\translateExBank{Translation key/vals}
+% This is to translate the text inside the package. As of now the available key/values are
+%\!begin{itemize}
+%\!item Problem
+%\!item Solution
+%\!end{itemize}
+% \EDOC
+%\BDOC
+% The Norwegian translation would then be done with
+%\EDOC
+% \BEX
+% \translateExBank{Problem=Oppgave, Solution=Løsning}
+% \EEX
 \newcommand{\translateExBank}[1]{
   \pgfkeys{/exbanki18n, default, #1}%
 }
@@ -40,6 +67,9 @@
 }
 \makeatother
  %!TEX root = main.tex
+%\BDOC
+%§ref
+%\EDOC
 \makeatletter
 %% Adds macro to queue
 \let\ea = \expandafter
@@ -70,9 +100,10 @@
 %% Usage: \Trigger\BeginSomething (\BeginSomething) doesn't have to be defined
 % \BDOC
 %\Trigger{Any Macro}
-% See \refCom{At}
+% See \refCom{At}\\
 %Triggers available:\\
 %§triggers
+%!!triggers
 % \EDOC
 \newcommand{\Trigger}[1]{
   \def\macname{\expandafter\removebs\detokenize{#1}}
@@ -98,7 +129,11 @@
 \def\solMargin{\dimexpr \ppMargin+\ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
-
+%\BDOC
+%§count
+%\!docCounter{problemcounter}-counter holds the current problem number and
+%\!docCounter{partproblemcounter}-counter holds the current partproblem \!emph{number}.
+%\EDOC
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
@@ -113,7 +148,6 @@
   \vspace*{\pMarginBelow}
 }
 \At\BeginPartproblem{
-
 	\vspace{\ppMargin}%
 	 \begin{addmargin}{\ppMargin}%
 \large\hspace*{-\ppMargin}\textbf{(\theproblemcounter\alph{partproblemcounter})}\normalsize
@@ -132,7 +166,6 @@
   \end{addmargin}\vspace*{1em}
 }
  %!TEX root = main.tex
-
 
 \makeatletter
 
@@ -169,8 +202,10 @@
 }
 
 % \BDOC!
+%§env
 % \\begin{problem}
 % Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
+%\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % \EDOC
 \generalcomment{problem}{
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
@@ -187,8 +222,11 @@
   \endgroup
 }
 % \BDOC!
+%§env
 % \\begin{solution}
 % Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
+%\!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
+\end{document}
 % \EDOC
 % \BDOC!
 % \DisplaySolutions
@@ -225,8 +263,10 @@
 }
 %% Problem introductions
 %\BDOC!
+%§env
 %\\begin{intro}
 % Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
+%\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
 % \EDOC
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in
@@ -242,7 +282,14 @@
     \endgroup
   \fi
 }
- % \isin:
+ %\BDOC
+%§ref
+%\isin{haystack}{needle}{True}{False}
+% \meta{haystack} is a comma separated list of integers\\
+% \meta{needle} is an integer\\
+% Executes \meta{True} if \meta{needle} is found in \meta{haystack}
+% else executes \meta{False}
+%\EDOC
 % #1: haystack
 % #2: needle
 % #3: action if found in list
@@ -271,6 +318,9 @@
   }
 }
  %!TEX root = main.tex
+%\BDOC
+%§makingSets
+%\EDOC
 \let\ea = \expandafter
 \newcounter{metacounter}
 \def\emptyList{-1}
@@ -446,21 +496,36 @@
 }
  %!TEX root = ../main.tex
 %% Reference problems
+%\BDOC
+%§makingSets
+%\EDOC
 \newcommand\refcounter[1]{
 \edef\@currentlabel{#1}%
 }
+%\BDOC
+%\pplabel{label}
+% Labels a partproblem. You can reference to it later using \ppref{\meta{label}}
+%\EDOC
 \DeclareRobustCommand{\pplabel}[1]{
 	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
 	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
 }
-\let\pptag = \pplabel
 
+\let\pptag = \pplabel
 \newcommand\pppref[1]{%
 (\ref{pp:\exerciseFile:#1})\relax%
 }
+%\BDOC
+%\ppref{label}
+% Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
+%\EDOC
 \newcommand\ppref[1]{%
 \ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
 }
+%\BDOC
+%\ppref{label}
+% Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1
+%\EDOC
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
 }

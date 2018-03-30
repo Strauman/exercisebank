@@ -1,6 +1,5 @@
 %!TEX root = main.tex
 
-
 \makeatletter
 
 \gdef\isFalse{0}
@@ -36,8 +35,10 @@
 }
 
 % \BDOC!
+%§env
 % \\begin{problem}
 % Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
+%\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % \EDOC
 \generalcomment{problem}{
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
@@ -54,8 +55,11 @@
   \endgroup
 }
 % \BDOC!
+%§env
 % \\begin{solution}
 % Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
+%\!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
+\end{document}
 % \EDOC
 % \BDOC!
 % \DisplaySolutions
@@ -92,8 +96,10 @@
 }
 %% Problem introductions
 %\BDOC!
+%§env
 %\\begin{intro}
 % Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
+%\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
 % \EDOC
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in

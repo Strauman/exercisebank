@@ -3,11 +3,13 @@ use strict;
 use warnings;
 # Examples:
 #%\BDOC
+#%§VariableForASection=My section name
 #%\macroname[oarg]{marg}{marg}
 #%Description goes
 #%here and then you do
 #%\EDOC
 #%\BDOC
+#%§VariableForASection
 #%\begin{env}[oarg1]{marg}
 #% This environment also does something
 #% that is amazing!
@@ -20,54 +22,39 @@ my $macroTemplateFile = "templates/macrodef.tex";
 my $skeletonTemplateFile = "templates/docskeleton.tex";
 my $envTemplateFile = "templates/envdef.tex";
 my $exampleTemplateFile = "templates/exampletemplate.tex";
+my $mainSection="Reference";
 my $toFile = 1;
+my $sectionHeader = "\\subsection{§section}\n";
+my @sectionOrder = ("§makingSets", "§env", "§lang", "§triggers", "§ref");
 # File loading
 sub talk
 {
   my ($words) = @_;
-	# print STDERR "$words";
+	print STDERR "$words";
 }
-
+# Main in/out
 if ($toFile==1){
   open (my $OUTPUT, '>', "$output") or die $!;
   STDOUT->fdopen(\*$OUTPUT, 'w') or die $!;
 }
-# Template files
-my $macroTemplate;
-my $envTemplate;
-my $exampleTemplate;
-my $skeleton;
-open(my $FILE, "<", $input) or die "could not open input file '$input'\n";
-# Load template code
 
+open(my $FILE, "<", $input) or die "could not open input file '$input'\n";
+
+# Template files
+sub loadTemplate
 {
+  my ($templateFile)=@_;
   local $/ = undef;
-  open FILE, $macroTemplateFile or die "Couldn't open file: $!";
+  open FILE, $templateFile or die "Couldn't open file: $!";
   binmode FILE;
-  $macroTemplate = <FILE>;
+  my $outTemplate = <FILE>;
   close FILE;
+  return $outTemplate
 }
-{
-  local $/ = undef;
-  open FILE, $envTemplateFile or die "Couldn't open file: $!";
-  binmode FILE;
-  $envTemplate = <FILE>;
-  close FILE;
-}
-{
-  local $/ = undef;
-  open FILE, $exampleTemplateFile or die "Couldn't open file: $!";
-  binmode FILE;
-  $exampleTemplate = <FILE>;
-  close FILE;
-}
-{
-  local $/ = undef;
-  open FILE, $skeletonTemplateFile or die "Couldn't open file: $!";
-  binmode FILE;
-  $skeleton = <FILE>;
-  close FILE;
-}
+my $macroTemplate = loadTemplate($macroTemplateFile);
+my $envTemplate=loadTemplate($envTemplateFile);
+my $exampleTemplate=loadTemplate($exampleTemplateFile);
+my $skeleton=loadTemplate($skeletonTemplateFile);
 
 # Strings for output
 my $docOutString="";
@@ -76,6 +63,11 @@ my $currentTemplate="";
 my $description="";
 my $example="";
 my $triggers="";
+# Saving (variables/sections)
+my %sections;
+my %prioritySections;
+my %variables;
+
 # States
 my $capturestate=0; # \BDOC \EDOC
 my $descriptionstate=0;
@@ -87,16 +79,57 @@ my $pOarg=qr/(?:\[(?<oarg>.*?)\])?/;
 my $pMargs=qr/(?=(?<margs>(?:{[^}]*})*))?/;
 my $pStyleArgs=qr/(?:\[(?<styleArgs>.*?)\])?/;
 # Macros
-my $pMacro=qr/\\(?<macroname>[a-zA-Z]+)/;
-my $macroPattern=qr/^[%]\s*+${pMacro}${pOarg}${pMargs}${pStyleArgs}/;
+my $pMacro=qr/\\(?!EDOC)(?<macroname>[a-zA-Z]+)/;
+my $macroPattern=qr/^[%]+\s*${pMacro}${pOarg}${pMargs}${pStyleArgs}/;
 # Environment
 my $pEnv=qr/\\\\begin\{(?<envname>[^\}]+)\}/;
 my $envPattern=qr/^[%]\s*+${$pEnv}${pOarg}${pMargs}${pStyleArgs}/;
 # Other globals
 my $line;
 # Replacing macros with \dac
-my $dacSearch=qr/\\((?!(?:dac|oarg|marg|meta|refCom|refEnv|brackets))[a-zA-Z]+)/;
-my $bracketSearch=qr/\\(?!(?:dac|oarg|marg|meta|refCom|refEnv|brackets))[a-zA-Z]+\K\{([^\}]+)\}/;
+my $dacSearch=qr/\\((?!(?:dac|oarg|marg|meta|refCom|brackets|refEnv))[a-zA-Z]+)/;
+# my $dacSearch=qr//;
+my $bracketSearch=qr/\\(?!(?:dac|oarg|marg|meta|refCom|brackets|refEnv))[a-zA-Z]+\K\{([^\}]+)\}/;
+
+my $currentSection=$mainSection;
+sub addToSection{
+  my ($content) = @_;
+  if(!exists $sections{$currentSection}){
+    $sections{$currentSection}="";
+    $prioritySections{$currentSection}="";
+  }
+  if($prioritystate==1){
+    $prioritySections{$currentSection}.="$content\n";
+  }else{
+    $sections{$currentSection}.="$content\n";
+  }
+}
+
+sub variableHandler
+{
+  # Variable definition §§asdf=asdf
+  if(/^\s*[%]+\s*§(?<varname>[^\s=]+)+(?:=(?<assigned>.*))?/){
+    if(!$+{assigned}){
+      if(exists $variables{$+{varname}}){
+        $currentSection=$variables{$+{varname}};
+        return 1;
+      }
+      else{
+        $currentSection="§$1";
+        return 1;
+      }
+    }
+    else{
+      talk("Setting $+{varname}=$+{assigned}\n");
+      $variables{$+{varname}}=$+{assigned};
+      $currentSection=$+{assigned};
+      return 1;
+    }
+  }
+  else{
+    return 0;
+  }
+}
 
 sub extractMacro
 {
@@ -162,11 +195,12 @@ sub extractDesc
     $capturestate=0;
     $descriptionstate=0;
     $currentTemplate =~ s/§description/$description/;
-    if($prioritystate==1){
-      $priorityOutString.=$currentTemplate;
-    }else{
-      $docOutString.=$currentTemplate;
-    }
+    addToSection($currentTemplate);
+    # if($prioritystate==1){
+    #   $priorityOutString.=$currentTemplate;
+    # }else{
+    #   $docOutString.=$currentTemplate;
+    # }
     $prioritystate=0;
     $currentTemplate="";
     $description="";
@@ -174,6 +208,9 @@ sub extractDesc
     $_= $line;
     s/$bracketSearch/\\\{$1\\\}/g;
     s/$dacSearch/\\dac{$1}/g;
+    # Remove backslash from \\asdf
+    # (Double backslash will be just transfered as macro)
+    s/\\!([a-zA-Z@]+)/\\$1/g;
     s/^\s*[%]+(.*)/$1/;
     $description.=$_;
   }
@@ -185,11 +222,12 @@ sub extractExample
     $currentTemplate = $exampleTemplate;
     $currentTemplate =~ s/§content/$example/;
     $currentTemplate =~ s/§style//;
-    if($prioritystate==1){
-      $priorityOutString.=$currentTemplate;
-    }else{
-      $docOutString.=$currentTemplate;
-    }
+    addToSection($currentTemplate);
+    # if($prioritystate==1){
+    #   $priorityOutString.=$currentTemplate;
+    # }else{
+    #   $docOutString.=$currentTemplate;
+    # }
     $prioritystate=0;
     $currentTemplate="";
     $example="";
@@ -202,8 +240,11 @@ sub extractExample
     $example.="$_\n";
   }
 }
+
 sub extractDoc
 {
+  $_=$line;
+  # Variable usage §asdf
   if($descriptionstate==1){
     extractDesc();
   }
@@ -228,15 +269,22 @@ while ($line = <$FILE>) {
   if(/^[^%]/){
     next;
   }
+  # Remove pdflatex comments: %!
+  if(s/^%!.*//){
+    next;
+  }
   if(/^[%]+\s*\\BDOC(?!!)/){
     $capturestate=1;
     $prioritystate=0;
-    next;}
+    next;
+  }
+  elsif(variableHandler()){
+    next;
+  }
   elsif(/^[%]+\s*\\BDOC!/){
     $capturestate=1;
     $prioritystate=1;
     next;
-
   }elsif(/^[%]\s*\\BEX(?!!)/){
     $prioritystate=0;
     $examplestate=1;
@@ -256,9 +304,36 @@ while ($line = <$FILE>) {
   }
 
 }
-$docOutString = "$priorityOutString\n$docOutString";
-$docOutString =~ s/§triggers/$triggers/;
+keys %prioritySections; # reset the internal iterator so a prior each() doesn't affect the loop
+foreach (@sectionOrder)
+{
+      my $sec=$_;
+      if(/^§(.*)/){
+        if (exists $variables{$1}){
+            $sec=$variables{$1};
+        }else{
+          talk "Section order uses undefined variable §$1\n";
+        }
+      }
+      talk "Generating section $sec\n";
+      if(exists $prioritySections{$sec} && exists $sections{$sec}){
+        $docOutString.= $sectionHeader=~ s/§section/$sec/r;
+        $docOutString.=$prioritySections{$sec};
+        $docOutString.=$sections{$sec};
+        delete $prioritySections{$sec};
+        delete $sections{$sec};
+      }
+}
+keys %prioritySections;
+while(my($sec, $cont) = each %prioritySections) {
+  talk "Generating section $sec\n";
+  $docOutString.= $sectionHeader=~ s/§section/$sec/r;
+  $docOutString.=$cont;
+  $docOutString.=$sections{$sec};
+}
+# $docOutString = "$priorityOutString\n$docOutString";
+$docOutString =~ s/!!triggers/$triggers/;
 $docOutString = $skeleton =~ s/§content/$docOutString/r;
-
+talk "\n--- output ---\n";
 # talk "$docOutString\n";
 print $docOutString;

@@ -3,4 +3,8 @@ bin/
 *.sty-E
 tmpOut
 tst.tex
+*.aux
+*.log
 tst.pdf
+*/tst.tex
+*/tst.pdf

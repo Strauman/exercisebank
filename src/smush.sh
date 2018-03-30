@@ -1,9 +1,26 @@
 #!/bin/bash
 infile="smush.tex"
 outfile="exbank.sty"
+
+sourceDir=`pwd`
+docDir=../docs/
+
+echo "Making documentation"
+cd $docDir
+
+./docr.sh
+
+echo "Building documentation"
+latexmk -pdf documentation.tex -outdir=bin --shell-escape
+cd bin/
+texclean
+cd ../
+cp bin/documentation.pdf ../manual.pdf
+
+cd $sourceDir
+
 cat packagehead.tex > $outfile
 latexpand --keep-comments $infile >> $outfile
-
 
 # Remove all blank lines
 sed -i.bak -E '/./!d' $outfile

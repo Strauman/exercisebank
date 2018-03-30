@@ -16,5 +16,3 @@ latexpand --keep-comments $expandFileIn >> $expandFileOut
 #Go back and do documentation!
 cd $docdir
 ./docextract.pl $expandFileOut
-# latexmk -pdf documentation.tex -outdir=bin
-# cp bin/documentation.pdf ./
