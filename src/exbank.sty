@@ -112,7 +112,35 @@
     \fi
   \endgroup
 }
-\end{document}
+\generalcomment{solution}
+{\Trigger\AtBeginSolutionHard
+\begingroup
+  \if\@DisplaySolutions\isTrue
+    \if\DisplayProblem\isFalse
+      \xdef\DisplaySolution{\isFalse}
+    \fi
+  \fi
+  \if\DisplaySolution\isTrue
+    \Trigger\BeginSolution
+  \else
+    \def\ProcessCutFile{}
+  \fi
+}{\if\DisplaySolution\isTrue
+\Trigger\EndSolution
+\fi
+\Trigger\EndSolutionHard
+\endgroup
+}
+\generalcomment{intro}{  \if\@countIntros\isTrue
+    \Trigger\DecideProblemDisplay
+    \begingroup
+    \showhideproblem{\Trigger\BeginIntro}
+  \fi
+}{  \if\@countIntros\isTrue
+    \Trigger\EndIntro
+    \endgroup
+  \fi
+}
 \gdef\isin#1#2#3#4{  \def\needle{#2}
   \def\haystack{#1}
   \def\isFalse{0}
@@ -359,7 +387,35 @@
     \fi
   \endgroup
 }
-\end{document}
+\generalcomment{solution}
+{\Trigger\AtBeginSolutionHard
+\begingroup
+  \if\@DisplaySolutions\isTrue
+    \if\DisplayProblem\isFalse
+      \xdef\DisplaySolution{\isFalse}
+    \fi
+  \fi
+  \if\DisplaySolution\isTrue
+    \Trigger\BeginSolution
+  \else
+    \def\ProcessCutFile{}
+  \fi
+}{\if\DisplaySolution\isTrue
+\Trigger\EndSolution
+\fi
+\Trigger\EndSolutionHard
+\endgroup
+}
+\generalcomment{intro}{  \if\@countIntros\isTrue
+    \Trigger\DecideProblemDisplay
+    \begingroup
+    \showhideproblem{\Trigger\BeginIntro}
+  \fi
+}{  \if\@countIntros\isTrue
+    \Trigger\EndIntro
+    \endgroup
+  \fi
+}
 \gdef\isin#1#2#3#4{  \def\needle{#2}
   \def\haystack{#1}
   \def\isFalse{0}
