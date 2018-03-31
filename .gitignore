@@ -5,6 +5,11 @@ tmpOut
 tst.tex
 *.aux
 *.log
+*.fls
+*.fdb_latexmk
+tmpstdout
+tmpstderr
+*.cut
 tst.pdf
 */tst.tex
 */tst.pdf

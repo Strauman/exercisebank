@@ -1,0 +1,40 @@
+\makeatletter
+\def\squeeze{
+  % Floats
+  \newlength{\marginw}
+  \setlength{\marginw}{1.5cm}
+  \newgeometry{margin=\marginw}
+  % \newgeometry{\marginw,
+  %                    rmargin=\marginw,
+  %                    tmargin=\marginw,
+  %                    bmargin=\marginw,
+  %                    includefoot,
+  %                    footskip=2ex}
+  \renewcommand{\topfraction}{0.85}
+  \renewcommand{\bottomfraction}{0.85}
+  \renewcommand{\textfraction}{0.1}
+  \renewcommand{\floatpagefraction}{0.85}
+  \renewcommand{\dbltopfraction}{0.85}
+  \renewcommand{\dblfloatpagefraction}{.85}
+  \setcounter{topnumber}{25}
+  \setcounter{bottomnumber}{25}
+  \setcounter{totalnumber}{25}
+  \setcounter{dbltopnumber}{25}
+
+  \renewcommand{\baselinestretch}{0.9}
+  \let\markeverypar\everypar
+  \newtoks\everypar
+  \everypar\markeverypar
+  \markeverypar{\the\everypar\looseness=-1\relax}
+  \g@addto@macro\define@newfont{%
+    \fontdimen2\font@name=0.8\fontdimen2\font@name
+  }%
+  \fontdimen2\font@name=0.8\fontdimen2\font@name
+    \thinmuskip=0mu plus 3mu
+    \medmuskip=1mu plus 4mu
+    \thickmuskip=2mu plus 5mu
+    \abovedisplayskip=0pt plus 3pt
+    \belowdisplayskip=0pt plus 3pt
+    \abovedisplayshortskip=0pt plus 3pt
+    \belowdisplayshortskip=0pt plus 3pt
+}

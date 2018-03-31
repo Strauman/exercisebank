@@ -25,6 +25,8 @@
 \usepackage{scrextend}
 \usepackage{comment}
 \usepackage{calc}
+\usepackage{pgfpages}
+\usepackage{geometry}
 \pgfkeys{ /exbanki18n/.is family, /exbanki18n,
   default/.style = {Problem = Problem, Solution = Solution},
   Problem/.estore in = \@tr@Problem,
@@ -50,7 +52,6 @@
   \let\mname = \macname
   \@ifundefined{At@\mname}{}{\csname At@\mname\endcsname}
 }
-\long\def\about#1{}
 \def\ppLeading{4em}
 \def\pMarginBelow{1em}
 \def\pMarginAbove{1em}
@@ -166,6 +167,36 @@
   \fi
 }
 }
+\def\squeeze{  \newlength{\marginw}
+  \setlength{\marginw}{1.5cm}
+  \newgeometry{margin=\marginw}
+  \renewcommand{\topfraction}{0.85}
+  \renewcommand{\bottomfraction}{0.85}
+  \renewcommand{\textfraction}{0.1}
+  \renewcommand{\floatpagefraction}{0.85}
+  \renewcommand{\dbltopfraction}{0.85}
+  \renewcommand{\dblfloatpagefraction}{.85}
+  \setcounter{topnumber}{25}
+  \setcounter{bottomnumber}{25}
+  \setcounter{totalnumber}{25}
+  \setcounter{dbltopnumber}{25}
+  \renewcommand{\baselinestretch}{0.9}
+  \let\markeverypar\everypar
+  \newtoks\everypar
+  \everypar\markeverypar
+  \markeverypar{\the\everypar\looseness=-1\relax}
+  \g@addto@macro\define@newfont{%
+    \fontdimen2\font@name=0.8\fontdimen2\font@name
+}%
+  \fontdimen2\font@name=0.8\fontdimen2\font@name
+    \thinmuskip=0mu plus 3mu
+    \medmuskip=1mu plus 4mu
+    \thickmuskip=2mu plus 5mu
+    \abovedisplayskip=0pt plus 3pt
+    \belowdisplayskip=0pt plus 3pt
+    \abovedisplayshortskip=0pt plus 3pt
+    \belowdisplayshortskip=0pt plus 3pt
+}
 \let\ea = \expandafter
 \newcounter{metacounter}
 \def\emptyList{-1}
@@ -190,13 +221,13 @@
 \def\pm@Exclude{exclude}
 \def\pm@Select{select}
 \let\ipm\@ifppMode
-\let\T\isTrue
-\let\F\isFalse
+\let\T@\isTrue
+\let\F@\isFalse
 \At\DecideProblemDisplay{  \if\ppList\emptyList
-    \xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F}
+    \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
   \else
-    \isin{\ppList}{\themetacounter}{      \xdef\DisplayProblem{\ipm\exclude\F\ipm\select\T\ipm\normal\T}
-}{      \xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F\ipm\normal\T}
+    \isin{\ppList}{\themetacounter}{      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+}{      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
   \fi
   \stepcounter{metacounter}
@@ -208,6 +239,8 @@
  introarg/.estore in = \introarg,
  noheadarg/.estore in = \noheadarg
 }
+\gdef\@listOfSets{}
+\gdef\@spriteMode{\isFalse}
 \newcommand\makeset[3][]{  \pgfkeys{/makeset, default, #1}%
   \if\introarg\isTrue%
     \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
@@ -216,10 +249,26 @@
     \ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
   \fi
   \ea\gdef\csname setlist@#2\endcsname{#3}
+  \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
+  \g@addto@macro\@listOfSets{#2}
 }
-\newcommand{\redef}[3][{-1}]{  \gdef\ppList{#1}
-  \gdef\exerciseFile{#2}
-  \gdef\ppMode{#3}
+\long\gdef\about#1{}
+\newcommand\sprite[1][4]{\squeeze
+\gdef\@spriteMode{\isTrue}
+\long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
+\pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
+  \foreach\set in \@listOfSets{    \buildset{\set}
+}
+}
+\newcommand{\redef}[3][{-1}]{  \if\@spriteMode\isFalse%
+    \gdef\ppList{#1}
+    \gdef\exerciseFile{#2}
+    \gdef\ppMode{#3}
+  \else
+    \gdef\ppList{}
+    \gdef\exerciseFile{#2}
+    \gdef\ppMode{exclude}
+\fi
 }
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
@@ -236,7 +285,9 @@
     \stop
 }{}
   \edef\setlist{\csname setlist@#2\endcsname}
-  \Trigger\StartBuildset
+  \if\@spriteMode\isFalse
+    \Trigger\StartBuildset
+  \fi
   \foreach\exerciseFileInfo in \setlist{    \def\continueLoop{\isTrue}
     \gdef\ppList{-1}
     \setcounter{metacounter}{1}
@@ -253,13 +304,20 @@
     \fi\fi
     \if\continueLoop\isTrue
     \Trigger\InputExercise
-    \if\nohead\isFalse\Trigger\BeginProblem\fi
+    \if\nohead\isFalse
+      \if\@spriteMode\isFalse
+        \Trigger\BeginProblem
+      \fi
+    \fi
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
+    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
     \incl{\exercisesDir/\exerciseFile}
     \if\nohead\isFalse\Trigger\EndProblem\fi
     \fi
 }
-  \Trigger\EndBuildset
+  \if\@spriteMode\isFalse
+    \Trigger\EndBuildset
+  \fi
 }
 \newcommand\refcounter[1]{\edef\@currentlabel{#1}%
 }

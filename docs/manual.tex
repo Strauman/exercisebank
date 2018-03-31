@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[all]{tcolorbox}
 \input{styling}
+\input{preamble}
 % \usepackage{tcolorbox.doc.s_main}
 % \tcbuselibrary{documentation,listingsutf8}
 % \tcbset{listing engine=minted}
@@ -8,59 +9,14 @@
 \tcbset{documentation listing style=mydocumentation}
 
 \setlength{\parindent}{0pt}
-\title{Exercise bank - manual}
+% \title{Exercise bank - manual}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
 \tableofcontents
 \clearpage
-\input{templates/intro}
+\input{intro}
 \section{Reference}
-\subsection{Making sets}
-\begin{docCommand}[]{makeset}{\oarg{intro,nohead}\marg{filable}}
- This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
- \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
- \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
-
-\end{docCommand}
-
-\begin{dispListing}
- \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
-
-
-\end{dispListing}
-
-\begin{docCommand}[]{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}
-As you can see in the intro section of the documentation, this is for excluding partproblems
-To be used in \refCom{makeset}
-
-\end{docCommand}
-
-\begin{docCommand}[]{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
-As you can see in the intro section of the documentation, this is for cherry picking partproblems
-To be used in \refCom{makeset}
-
-\end{docCommand}
-
-
-
-
-
-\begin{docCommand}[]{pplabel}{\marg{label}}
- Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
-
-\end{docCommand}
-
-\begin{docCommand}[]{ppref}{\marg{label}}
- Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
-
-\end{docCommand}
-
-\begin{docCommand}[]{ppref}{\marg{label}}
- Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
-
-\end{docCommand}
-
 \subsection{Environments}
 \begin{docEnvironment}[]{problem}{}
  Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
@@ -101,7 +57,6 @@ To be used in \refCom{makeset}
 \begin{dispListing}
  \translateExBank{Problem=Oppgave, Solution=Løsning}
 
-
 \end{dispListing}
 
 \subsection{Triggers}
@@ -111,6 +66,8 @@ Available triggers:\\
  \dac{At}\dac{InputExercise}\\ Triggers before a file is included\\
 \dac{At}\dac{BeginProblem}\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
 \dac{At}\dac{EndProblem}\\ Triggers right after problem is included if [nohead] \emph{not} given\\
+\dac{At}\dac{BeginBuildset}\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
+\dac{At}\dac{EndBuildset}\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
 
 
 \end{docCommand}
@@ -140,13 +97,67 @@ Here you can send any macro because it isn't evaluated! For example \dac{At}\dac
 
 \begin{dispListing}
 \At\BeginSomething{DoSomething}
-
  Which is triggered with
-
  \Trigger\BeginSomething, this evaluates to DoSomething
 
+\end{dispListing}
+
+\subsection{Making sets}
+\begin{docCommand}[]{makeset}{\oarg{intro,nohead}\marg{filable}}
+ This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
+ \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
+ \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
+
+\end{docCommand}
+
+\begin{dispListing}
+ \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
 
 \end{dispListing}
+
+\begin{docCommand}[]{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}
+As you can see in the intro section of the documentation, this is for excluding partproblems
+To be used in \refCom{makeset}
+
+\end{docCommand}
+
+\begin{docCommand}[]{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
+As you can see in the intro section of the documentation, this is for cherry picking partproblems
+To be used in \refCom{makeset}
+
+\end{docCommand}
+
+
+
+\begin{docCommand}[]{about}{\marg{text}}
+ This contains information about an exercise set. It is intended to be on the top of an
+ exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
+
+\end{docCommand}
+
+\begin{docCommand}[]{sprite}{\oarg{PiP}}
+ This is a way to visualize all exercises. It takes one optional argument which is how many pages
+ inside one page. Defaults to 4
+ \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
+
+\end{docCommand}
+
+
+
+\begin{docCommand}[]{pplabel}{\marg{label}}
+ Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
+
+\end{docCommand}
+
+\begin{docCommand}[]{ppref}{\marg{label}}
+ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
+
+\end{docCommand}
+
+\begin{docCommand}[]{ppref}{\marg{label}}
+ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
+
+\end{docCommand}
 
 \subsection{Counters}
 

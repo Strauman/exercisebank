@@ -1,4 +1,3 @@
-
 %\BDOC
 % §env=Environments
 % §lang=Internationalization
@@ -38,6 +37,8 @@
 \usepackage{scrextend}
 \usepackage{comment}
 \usepackage{calc}
+\usepackage{pgfpages}
+\usepackage{geometry}
  %!TEX root = main.tex
 \makeatletter
 \pgfkeys{
@@ -125,7 +126,6 @@
   % \fi
 }
 \makeatother
- \long\def\about#1{}
  %!TEX root = main.tex
 \makeatletter
 \def\ppLeading{4em}
@@ -215,6 +215,7 @@
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % \EDOC
 \generalcomment{problem}{
+\makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
   \edef\DisplaySolution{\@DisplaySolutions}
   %% BeginPartproblemHard is before regardless whether
@@ -323,6 +324,46 @@
   \fi
   }
 }
+ \makeatletter
+\def\squeeze{
+  % Floats
+  \newlength{\marginw}
+  \setlength{\marginw}{1.5cm}
+  \newgeometry{margin=\marginw}
+  % \newgeometry{\marginw,
+  %                    rmargin=\marginw,
+  %                    tmargin=\marginw,
+  %                    bmargin=\marginw,
+  %                    includefoot,
+  %                    footskip=2ex}
+  \renewcommand{\topfraction}{0.85}
+  \renewcommand{\bottomfraction}{0.85}
+  \renewcommand{\textfraction}{0.1}
+  \renewcommand{\floatpagefraction}{0.85}
+  \renewcommand{\dbltopfraction}{0.85}
+  \renewcommand{\dblfloatpagefraction}{.85}
+  \setcounter{topnumber}{25}
+  \setcounter{bottomnumber}{25}
+  \setcounter{totalnumber}{25}
+  \setcounter{dbltopnumber}{25}
+
+  \renewcommand{\baselinestretch}{0.9}
+  \let\markeverypar\everypar
+  \newtoks\everypar
+  \everypar\markeverypar
+  \markeverypar{\the\everypar\looseness=-1\relax}
+  \g@addto@macro\define@newfont{%
+    \fontdimen2\font@name=0.8\fontdimen2\font@name
+  }%
+  \fontdimen2\font@name=0.8\fontdimen2\font@name
+    \thinmuskip=0mu plus 3mu
+    \medmuskip=1mu plus 4mu
+    \thickmuskip=2mu plus 5mu
+    \abovedisplayskip=0pt plus 3pt
+    \belowdisplayskip=0pt plus 3pt
+    \abovedisplayshortskip=0pt plus 3pt
+    \belowdisplayshortskip=0pt plus 3pt
+}
  %!TEX root = main.tex
 %\BDOC
 %§makingSets
@@ -360,16 +401,16 @@
 
 %% Deciding whether problem (and accompanied solution) should be shown
 \let\ipm\@ifppMode
-\let\T\isTrue
-\let\F\isFalse
+\let\T@\isTrue
+\let\F@\isFalse
 \At\DecideProblemDisplay{
   \if\ppList\emptyList
-    \xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F}
+    \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
   \else
     \isin{\ppList}{\themetacounter}{
-      \xdef\DisplayProblem{\ipm\exclude\F\ipm\select\T\ipm\normal\T}
+      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
     }{
-      \xdef\DisplayProblem{\ipm\exclude\T\ipm\select\F\ipm\normal\T}
+      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
     }
   \fi
   % \inspw\DisplayProblem
@@ -385,7 +426,8 @@
  introarg/.estore in = \introarg,
  noheadarg/.estore in = \noheadarg
 }
-
+\gdef\@listOfSets{}
+\gdef\@spriteMode{\isFalse}
 %% Generates sets that can be iterated over
 %% \makeset[intro|nohead]{\select{path/to/file}{1,2}, \exclude{file}{1,2}, file}
 %% Where file is a file in the \exerciseDir-folder and 1,2 are the part problem numbers
@@ -408,12 +450,45 @@
     \ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
   \fi
   \ea\gdef\csname setlist@#2\endcsname{#3}
+  \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
+  % \g@addto@macro\@listOfSets{\csname setlist@#2\endcsname,}
+  \g@addto@macro\@listOfSets{#2}
+}
+%\BDOC
+% \about{text}
+% This contains information about an exercise set. It is intended to be on the top of an
+% exercise, explaining short what the exercise is about. It's only visible when using \sprite
+% \EDOC
+%% It gets defined in \sprite when use
+\long\gdef\about#1{}
+
+%\BDOC
+%\sprite[PiP]
+% This is a way to visualize all exercises. It takes one optional argument which is how many pages
+% inside one page. Defaults to 4
+% \!begin{marker}If \sprite is used, it should be the only command in \begin{document}\end{document}\!end{marker}
+%\EDOC
+\newcommand\sprite[1][4]{
+\squeeze
+\gdef\@spriteMode{\isTrue}
+\long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
+\pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
+  \foreach \set in \@listOfSets{
+    \buildset{\set}
+  }
 }
 %% Sets the variables \ppList and \exerciseFile based on the current set
 \newcommand{\redef}[3][{-1}]{
-  \gdef\ppList{#1}
-  \gdef\exerciseFile{#2}
-  \gdef\ppMode{#3}
+  \if\@spriteMode\isFalse%
+    \gdef\ppList{#1}
+    \gdef\exerciseFile{#2}
+    \gdef\ppMode{#3}
+  \else
+    \gdef\ppList{}
+    \gdef\exerciseFile{#2}
+    \gdef\ppMode{exclude}
+\fi
+
 }
 %% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
 %% as optional arguments to redef. The last is set as ppMode (exclude/select/mix)
@@ -454,7 +529,9 @@
   %% Sets the current setlist from the variable
   %% generated in makeset
   \edef\setlist{\csname setlist@#2\endcsname}
-  \Trigger\StartBuildset
+  \if\@spriteMode\isFalse
+    \Trigger\StartBuildset
+  \fi
   %% Loop through list
   \foreach \exerciseFileInfo in \setlist{
     \def\continueLoop{\isTrue}
@@ -483,22 +560,31 @@
     %% TRIGGER EVERTYHING
 %\Trigger\InputExercise:Triggers before a file is included
 %\Trigger\BeginProblem:Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)
+%\Trigger\EndProblem:Triggers right after problem is included if [nohead] \emph{not} given
+%\Trigger\BeginBuildset:Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here
+%\Trigger\EndBuildset:Triggers when a set has stopped building (not if \dac{sprite} is used)
     \Trigger\InputExercise
-    \if\nohead\isFalse\Trigger\BeginProblem\fi
+    \if\nohead\isFalse
+      \if\@spriteMode\isFalse
+        \Trigger\BeginProblem
+      \fi
+    \fi
     %% \VeryBeginProblem is only for stuff that
     %% is intended to be a part of the problem
     %% e.g. problem header is using this.
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
+    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
     % \inspw\nohead
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
     \incl{\exercisesDir/\exerciseFile}
     %% More triggers
-%\Trigger\EndProblem:Triggers right after problem is included if [nohead] \emph{not} given
     \if\nohead\isFalse\Trigger\EndProblem\fi
     \fi
   }
-  \Trigger\EndBuildset
+  \if\@spriteMode\isFalse
+    \Trigger\EndBuildset
+  \fi
 }
  %!TEX root = ../main.tex
 %% Reference problems
