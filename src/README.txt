@@ -2,7 +2,7 @@ Exercisebank:
 A tool for creating and managing exercise sets in maths, physics, statistics and the like.
 
 Files:
-- exbank.sty : The exercise bank
+- exercisebank.sty : The exercise bank
 - manual.pdf : Description of how the package works
 - example.zip : containing example
   |-- example.tex : example of use
@@ -18,7 +18,7 @@ https://github.com/Strauman/exerciseBank
 
 Licence:
 
-The LaTeX package exbank - version 0.0.2 (2018/03/30)
+The LaTeX package exercisebank - version 0.0.2 (2018/03/30)
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman

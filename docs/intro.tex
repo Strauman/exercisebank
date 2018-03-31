@@ -21,7 +21,7 @@ This package assumes you put all of your exercises within the folder named \text
 Let's build all of them first. In the main file, (the one where you include this package):
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
-  \usepackage{exbank}
+  \usepackage{exercisebank}
   \makeset{myExerciseSet}{myexercise}
   \begin{document}
     \buildset{myExerciseSet}
@@ -32,7 +32,7 @@ This builds the entire set, and adds Problem header and partproblem counters ( (
 Now, let's build only the second problem.
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
-  \usepackage{exbank}
+  \usepackage{exercisebank}
   \makeset{myExerciseSet}{\select{myexercise}{2}}
   \begin{document}
     \buildset{myExerciseSet}
