@@ -3,7 +3,20 @@ cd $sourceDir
 rm quickstart.zip
 zip quickstart.zip example.tex $outfile -r ../exercises
 zip example.zip example.tex -r ../exercises
-zip exbankCTAN.zip ../manual.pdf README.txt $outfile -r ../exercises
+
+rm -rf exercisebank
+mkdir exercisebank
+
+cp ../docs/manual.pdf exercisebank/exercisebank.pdf
+cp ../docs/manual.tex exercisebank/exercisebank.tex
+
+cp exbankCTAN.zip exercisebank/
+cp example.zip exercisebank/
+cp README.txt exercisebank/
+cp $outfile exercisebank/
+
+
+zip exbankCTAN.zip -r exercisebank/
 mv exbankCTAN.zip ../
 
 mv quickstart.zip ../
