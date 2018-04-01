@@ -1,0 +1,43 @@
+% This file shows examples on how to document the code so that it shows up in the documentation.
+% Start a comment with \BDOC on its own line to begin parsing documentation
+% Start a comment with \EDOC on its own line to end parsing
+% Paragraph symbols (§) denotes the section name
+% You can use them as variables (on their own line):
+% §myFirstSection=First section name
+% Then the current documentation is added to that section.
+% Later on, if you have many sections, you can just do
+% §myFirstSection to set the section again.
+% Most macros are automatically typeset when parsed, to avoid this,
+% and actually apply a macro in the docs use \!macroName - syntax.
+% Macros that allways are applied (not typeset) are:
+% \dac, \oarg, \marg, \meta, \refCom, \brackets, \refEnv
+% \dac is a shorthand for \DocumentAuxCommand (what is mainly used for typesetting)
+% Below are some examples. The first is a macro definition
+%\BDOC
+%§macros=Macros
+%\macroname[oarg1,oarg2]{marg1,marg1}{marg3}
+% This macro does something
+% that is amazing!
+Whatever is here without comments are ignored when parsing docs.
+%\EDOC
+% Documenting an environment:
+%\BDOC
+%§envs=Environments
+%\\begin{env}[oarg1]{marg}
+% This env also does something
+% that is amazing!
+%\EDOC
+% Adding an example
+%\BEX
+%§SectOne
+% This is a great \eXaMpLe{about} {somethingGreat} \asdf{somethingGreat}
+%\EEX
+%\BDOC
+% This is just a description with \macros in it
+%\EDOC
+% adding an exclamationmark behind \BDOC or \BEX makes it go in before the others. It's kinda a priority mark.
+%\BDOC!
+%§macros
+%\At{Any macro}
+%The \BeginSomething does not have to be defined and when using \Trigger it just ignores it if it didn't exist. Also this is on top in the docs, but bottom of the test!
+%\EDOC

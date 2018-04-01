@@ -1,27 +1,14 @@
 \lstdefinestyle{mydocumentation}{style=tcbdocumentation,
   classoffset=0,
   texcsstyle=*\color{blue},
-  % LaTeX and other packages
   moretexcs={arrayrulecolor,draw,includegraphics,ifthenelse,isodd,lipsum,path,pgfkeysalso},
   classoffset=1,
-  % tcolorbox macros
   moretexcs={% core
     makeset,phead,buildset,select,exclude,Trigger,At,translateExBank
   },
   texcsstyle=*\color{Definition}\bfseries,
-  % classoffset=2,% restore default
-  % texcsstyle=*\color{cyan},
-  % literate=*%
-  %     {\\!}{{\textcolor{cyan}{\textbackslash{}!}}}2
-  %     {\\\\}{{\textcolor{cyan}{\textbackslash{}\textbackslash{}}}}2,
   classoffset=0,% restore default
   }
-  % \makeatletter
-  % \lst@AddToHook{SelectCharTable}
-  %     {\ifx\lst@literate\@empty\else
-  %          \expandafter\lst@Literate\lst@literate{}\relax\z@
-  %      \fi}
-  % \makeatother
 \newtcolorbox{marker}[1][]{enhanced,
     before skip=2mm,after skip=3mm,
     boxrule=0.4pt,left=5mm,right=2mm,top=1mm,bottom=1mm,
