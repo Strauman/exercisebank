@@ -1,0 +1,30 @@
+%!TEX root = tst.tex
+\makeatletter
+\providecommand\buildno{1}
+\AtBeginDocument{
+\newread\countRead
+    \openin\countRead=count.aux
+    \loop\unless\ifeof\countRead
+        \read\countRead to\fileline % Reads a line of the file into \fileline
+            \fileline
+    \repeat
+\closein\countRead
+\providecommand\buildno{1}
+\@ifundefined{notfirstrun}{
+  \newwrite\countWrite
+  \immediate\openout\countWrite=count.aux
+  \immediate\write\countWrite{\xdef\string\buildno{\the\numexpr\buildno+1\relax}}
+  \closeout\countWrite
+}{
+  \@latex@warning{NFR}
+}
+}
+
+\AtEndDocument{
+  \write\@auxout{\gdef\string\notfirstrun{}}
+  \buildno
+}
+
+% \immediate\write\@auxout{\string\xdef\string\didcount{1}}
+% \AtEndDocument{\the\numexpr\runs}
+\makeatother

@@ -24,6 +24,7 @@ rm ../example.tex
 cp example.tex ../
 
 rm ../$outfile
-cp $outfile ../
+cp $tmpDir/$outfile ../
 
 cp $outfile /Users/Andreas/Documents/uit/fag/TA/FYS-1002/Oppgaver\ FYS-1002/$outfile
+mv example.zip ../

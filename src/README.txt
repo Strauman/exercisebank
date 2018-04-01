@@ -3,7 +3,7 @@ A tool for creating and managing exercise sets in maths, physics, statistics and
 
 Files:
 - exercisebank.sty : The exercise bank
-- manual.pdf : Description of how the package works
+- exercisebank.pdf : Description of how the package works
 - example.zip : containing example
   |-- example.tex : example of use
   |-- exercises/ : Directory containing exercises that could be use
@@ -11,14 +11,14 @@ Files:
   |---| -- secondexercise.tex: example exercise
   |---| -- thirdexercise.tex: example exercise
 
-Author: Andreas Storvik Strauman
+Author: Storvik Strauman, Andreas
 
 For bug report, inquires, contributed or anything else:
 https://github.com/Strauman/exerciseBank
 
 Licence:
 
-The LaTeX package exercisebank - version 0.0.2 (2018/03/30)
+The LaTeX package exercisebank - version #VERSION (#DATE)
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman

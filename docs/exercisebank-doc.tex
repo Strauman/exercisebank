@@ -1,9 +1,21 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This is a generated file %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% exercisebank v0.0.2b4 - 2018/04/01
+%% The LaTeX package exercisebank - version v0.0.2 (2018/04/01) build 4
+%% exercisebank.sty
+%% -------------------------------------------------------------------------------------------
+%% Copyright (c) 2018 by Andreas Storvik Strauman
+%% -------------------------------------------------------------------------------------------
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%% This work has the LPPL maintenance status `author-maintained'.
+%% This work consists of all files listed in README.txt
+
 \documentclass{article}
 \usepackage[all]{tcolorbox}
-\usepackage{vhistory}
 \makeatletter
 \lstdefinestyle{mydocumentation}{style=tcbdocumentation,
   classoffset=0,
@@ -28,21 +40,18 @@
       \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow,#1}
- \def\version#1{\xdef\@version{#1}}
-\title{Exercise bank - Manual\\{\normalsize v0.0.2-1}}
+ \title{Exercise bank - Manual\\{\normalsize v0.0.2}}
  \makeatother
 \let\dac\docAuxCommand
 \tcbset{documentation listing style=mydocumentation}
 
 \setlength{\parindent}{0pt}
+\title{{Handin - manual\\ v0.0.2{\\[-0.5em]\footnotesize(build 4)}}}
 \author{Andreas Strauman}
 \begin{document}
-\begin{versionhistory}
-  \vhEntry{1.0}{22.01.04}{JPW|KW}{created}
-  \vhEntry{1.1}{23.01.04}{DP|JPW}{correction}
-  \vhEntry{1.2}{03.02.04}{DP|JPW}{revised after review}
-\end{versionhistory}
 \maketitle
+ 
+If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exerciseBank/}
 \tableofcontents
 \clearpage
 \section{Motivation}
@@ -232,6 +241,14 @@ Here you can send any macro because it isn't evaluated! For example \dac{At}\dac
 
 \end{dispListing}
 
+\begin{docCommand}[]{isin}{\marg{haystack}\marg{needle}\marg{True}\marg{False}}
+ \meta{haystack} is a comma separated list of integers\\
+ \meta{needle} is an integer\\
+ Executes \meta{True} if \meta{needle} is found in \meta{haystack}
+ else executes \meta{False}
+
+\end{docCommand}
+
 \subsection{Making sets}
 \begin{docCommand}[]{makeset}{\oarg{intro,nohead}\marg{filable}}
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
@@ -297,4 +314,5 @@ To be used in \refCom{makeset}
 
 
 
-\end{document}
+\section{Changelog}
+ \end{document}
