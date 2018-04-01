@@ -20,15 +20,3 @@ All of the code are distributed within the `src`-folder. Here is an overview. Fi
 - (`texpackvars.ini`) contains information that is used when "compiling" the package.
 ### `docs/`
 Docs are generated automatically. Just ignore it if you contribute. See `src/documentingExample.tex` for info on how to do documentation.
-[documentingExample]:https://github.com/Strauman/exerciseBank/blob/master/src/documentingExample.tex
-[at]:https://github.com/Strauman/exerciseBank/blob/master/src/at.tex
-[envcontrol]:https://github.com/Strauman/exerciseBank/blob/master/src/envcontrol.tex
-[i18n]:https://github.com/Strauman/exerciseBank/blob/master/src/i18n.tex
-[isin]:https://github.com/Strauman/exerciseBank/blob/master/src/isin.tex
-[main]:https://github.com/Strauman/exerciseBank/blob/master/src/main.tex
-[packages]:https://github.com/Strauman/exerciseBank/blob/master/src/packages.tex
-[pplabel]:https://github.com/Strauman/exerciseBank/blob/master/src/pplabel.tex
-[preamble]:https://github.com/Strauman/exerciseBank/blob/master/src/preamble.tex
-[problemstyle]:https://github.com/Strauman/exerciseBank/blob/master/src/problemstyle.tex
-[setbuilder]:https://github.com/Strauman/exerciseBank/blob/master/src/setbuilder.tex
-[squeeze]:https://github.com/Strauman/exerciseBank/blob/master/src/squeeze.tex
