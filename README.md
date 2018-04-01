@@ -1,6 +1,7 @@
 # Contributing
 ## TODO list
 - [ ] Prefix internal macros with `exbank@`. E.g. switch all instances of `\isTrue` with `\exbank@isTrue`.
+- [ ] Add an actual translation module, that translates automatically instead of forcing the user to use `\translateExBank`
 ## Files
 All of the code are distributed within the `src`-folder. Here is an overview. Filenames in parenthesis are not a part of the actual package, but used for "compiling" it down to `handin.sty` and documenting.
 ### `src/`:
