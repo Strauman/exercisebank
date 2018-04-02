@@ -28,3 +28,7 @@ cp $tmpDir/$outfile ../
 
 cp $outfile /Users/Andreas/Documents/uit/fag/TA/FYS-1002/Oppgaver\ FYS-1002/$outfile
 mv example.zip ../
+
+cd ../
+# git tag "v${version}b$build"
+echo "Tag at v${version}b$build"

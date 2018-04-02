@@ -1,20 +1,18 @@
 %!TEX root = main.tex
 % This file contains the preamble logic. Mostly including other files
-%\BDOC
-%§ref
-%\ownLineNoSpacesGotIt
-% This is to annoy the user enough to get his attention about the requirements of the \!refEnv{problem}, \!refEnv{solution} and \!refEnv{intro} environments.\\
+%:§ref
+%:=\ownLineNoSpacesGotIt
+%:This is to annoy the user enough to get his attention about the requirements of the \!refEnv{problem}, \!refEnv{solution} and \!refEnv{intro} environments.\\
 % Compilation wont work unless \end{problem}, \end{solution} and \end{intro} are on their own lines and without any spaces. This warning can be removed by doing \def\ownLineNoSpacesGotIt{} before \usepackage{exbank}.
-%\EDOC
+%:-
 \makeatletter
 \@ifundefined{ownLineNoSpacesGotIt}{
 \@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \string\usepackage{exbank}}
 }{}
-% \BDOC
-%\setExercisesDir{directory}
-% This is the directory, relative to the file you included the package,
-% where the package should be looking for exercises. Default is \!texttt{exercises}
-% \EDOC
+%:=\setExercisesDir{directory}
+%:This is the directory, relative to the file you included the package,
+%:where the package should be looking for exercises. Default is \!texttt{exercises}
+%:-
 \gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
 
 \@ifundefined{exercisesDir}{

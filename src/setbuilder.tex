@@ -2,9 +2,8 @@
 % This file contains the logic of the set making and set building.
 % It also decides whether or not a problem,intro and/or solution
 % should be built
-%\BDOC
-%§makingSets
-%\EDOC
+%:§makingSets
+%:-
 \let\ea = \expandafter
 \newcounter{metacounter}
 \def\emptyList{-1}
@@ -68,15 +67,12 @@
 %% Generates sets that can be iterated over
 %% \makeset[intro|nohead]{\select{path/to/file}{1,2}, \exclude{file}{1,2}, file}
 %% Where file is a file in the \exerciseDir-folder and 1,2 are the part problem numbers
-%\BDOC!
-%\makeset[intro,nohead]{filable}
-% This command is the one you use to make a set! Later you use \buildset to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \exerciseDir-path (default its in the root called exercises), or you could use the \select or \exclude to  respectively cherry pick or exclude exercises. (See their docs).\\
-% \oarg{intro} this counts the intro environment as a part problem, so that you can \select or \exclude the intro\\
-% \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
-%\EDOC
-%\BEX!
-% \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
-%\EEX
+%:=\makeset[intro,nohead]{filable}
+%: This command is the one you use to make a set! Later you use \buildset to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \exerciseDir-path (default its in the root called exercises), or you could use the \select or \exclude to  respectively cherry pick or exclude exercises. (See their docs).\\
+%: \oarg{intro} this counts the intro environment as a part problem, so that you can \select or \exclude the intro\\
+%: \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
+%:! \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
+%:-
 \newcommand\makeset[3][]{
   \pgfkeys{/makeset, default, #1}%
   % Is intro sent?
@@ -91,20 +87,18 @@
   % \g@addto@macro\@listOfSets{\csname setlist@#2\endcsname,}
   \g@addto@macro\@listOfSets{#2}
 }
-%\BDOC
-% \about{text}
-% This contains information about an exercise set. It is intended to be on the top of an
-% exercise, explaining short what the exercise is about. It's only visible when using \sprite
-% \EDOC
+%:=\about{text}
+%:This contains information about an exercise set. It is intended to be on the top of an
+%:exercise, explaining short what the exercise is about. It's only visible when using \sprite
+%:-
 %% It gets defined in \sprite when use
 \long\gdef\about#1{}
 
-%\BDOC
-%\sprite[PiP]
-% This is a way to visualize all exercises. It takes one optional argument which is how many pages
-% inside one page. Defaults to 4
-% \!begin{marker}If \sprite is used, it should be the only command in \begin{document}\end{document}\!end{marker}
-%\EDOC
+%:=\sprite[PiP]
+%: This is a way to visualize all exercises. It takes one optional argument which is how many pages
+%: inside one page. Defaults to 4
+%: \!begin{marker}If \sprite is used, it should be the only command in \begin{document}\end{document}\!end{marker}
+%:-
 \newcommand\sprite[1][4]{
 \squeeze
 \gdef\@spriteMode{\isTrue}
@@ -129,18 +123,16 @@
 }
 %% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
 %% as optional arguments to redef. The last is set as ppMode (exclude/select/mix)
-% \BDOC!
-%\exclude{exerciseFileName}{Comma separated numbers}
-%As you can see in the intro section of the documentation, this is for excluding partproblems
-%To be used in \refCom{makeset}
-% \EDOC
+%:=\exclude{exerciseFileName}{Comma separated numbers}
+%:As you can see in the intro section of the documentation, this is for excluding partproblems
+%:To be used in \refCom{makeset}
+% :-
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
 
-% \BDOC!
-%\select{exerciseFileName}{Comma separated numbers}
-%As you can see in the intro section of the documentation, this is for cherry picking partproblems
-%To be used in \refCom{makeset}
-% \EDOC
+%:=\select{exerciseFileName}{Comma separated numbers}
+%:As you can see in the intro section of the documentation, this is for cherry picking partproblems
+%:To be used in \refCom{makeset}
+% :-
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
 
 %% Build one exercise

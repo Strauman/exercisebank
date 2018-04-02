@@ -1,16 +1,14 @@
 %!TEX root = ../main.tex
 % This file contains definition of custom labeling and referring.
 %% Reference problems
-%\BDOC
-%§makingSets
-%\EDOC
+%:§makingSets
+%:-
 \newcommand\refcounter[1]{
 \edef\@currentlabel{#1}%
 }
-%\BDOC
-%\pplabel{label}
-% Labels a partproblem. You can reference to it later using \ppref{\meta{label}}
-%\EDOC
+%:=\pplabel{label}
+%:Labels a partproblem. You can reference to it later using \ppref{\meta{label}}
+%:-
 \DeclareRobustCommand{\pplabel}[1]{
 	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
 	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
@@ -20,17 +18,15 @@
 \newcommand\pppref[1]{%
 (\ref{pp:\exerciseFile:#1})\relax%
 }
-%\BDOC
-%\ppref{label}
-% Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
-%\EDOC
+%:=\ppref{label}
+%:Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
+%:-
 \newcommand\ppref[1]{%
 \ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
 }
-%\BDOC
-%\ppref{label}
-% Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1
-%\EDOC
+%:=\ppref{label}
+%: Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1
+%:-
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
 }

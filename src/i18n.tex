@@ -7,21 +7,16 @@
   Problem/.estore in = \@tr@Problem,
   Solution/.estore in = \@tr@Solution
 }
-% \BDOC
-%§lang
-%\translateExBank{Translation key/vals}
-% This is to translate the text inside the package. As of now the available key/values are
-%\!begin{itemize}
-%\!item Problem
-%\!item Solution
-%\!end{itemize}
-% \EDOC
-%\BDOC
-% The Norwegian translation would then be done with
-%\EDOC
-% \BEX
-% \translateExBank{Problem=Oppgave, Solution=Løsning}
-% \EEX
+%:§lang
+%:=\translateExBank{Translation key/vals}
+%:This is to translate the text inside the package. As of now the available key/values are
+%:\!begin{itemize}
+%:\!item Problem
+%:\!item Solution
+%:\!end{itemize}
+%:The Norwegian translation would then be done with
+%:!\translateExBank{Problem=Oppgave, Solution=Løsning}
+%:-
 \newcommand{\translateExBank}[1]{
   \pgfkeys{/exbanki18n, default, #1}%
 }

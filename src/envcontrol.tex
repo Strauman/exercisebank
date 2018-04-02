@@ -38,12 +38,11 @@
   \fi
 }
 
-% \BDOC!
-%§env
-% \\begin{problem}
-% Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
+%:§env
+%:=\\begin{problem}
+%:Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
-% \EDOC
+% :-
 \generalcomment{problem}{
 \makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
@@ -59,16 +58,15 @@
     \fi
   \endgroup
 }
-% \BDOC!
-%§env
-% \\begin{solution}
-% Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
-%\!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
-% \EDOC
-% \BDOC!
-% \DisplaySolutions
-% Turns on the solutions, so they are shown.
-% \EDOC
+
+%:§env
+%:=\\begin{solution}
+%: Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
+%: \!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
+%:-
+%:\DisplaySolutions
+%:Turns on the solutions, so they are shown.
+%:-
 %% Solutions
 \generalcomment{solution}
 {
@@ -99,12 +97,11 @@
 \endgroup
 }
 %% Problem introductions
-%\BDOC!
-%§env
-%\\begin{intro}
-% Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
+%:§env
+%:=\\begin{intro}
+%:Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 %\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
-% \EDOC
+%:-
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)

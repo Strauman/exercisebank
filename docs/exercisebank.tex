@@ -5,14 +5,14 @@
 % §ref=General reference
 % §makingSets=Making sets
 % §count=Counters
-%\EDOC
+%:-
 %!TEX root = main.tex
 %\BDOC
 %§ref
 %\ownLineNoSpacesGotIt
 % This is to annoy the user enough to get his attention about the requirements of the \!refEnv{problem}, \!refEnv{solution} and \!refEnv{intro} environments.\\
 % Compilation wont work unless \end{problem}, \end{solution} and \end{intro} are on their own lines and without any spaces. This warning can be removed by doing \def\ownLineNoSpacesGotIt{} before \usepackage{exbank}.
-%\EDOC
+%:-
 \makeatletter
 \@ifundefined{ownLineNoSpacesGotIt}{
 \@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \string\usepackage{exbank}}
@@ -21,7 +21,7 @@
 %\setExercisesDir{directory}
 % This is the directory, relative to the file you included the package,
 % where the package should be looking for exercises. Default is \!texttt{exercises}
-% \EDOC
+% :-
 \gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
 
 \@ifundefined{exercisesDir}{
@@ -55,13 +55,13 @@
 %\!item Problem
 %\!item Solution
 %\!end{itemize}
-% \EDOC
+% :-
 %\BDOC
 % The Norwegian translation would then be done with
-%\EDOC
+%:-
 % \BEX
 % \translateExBank{Problem=Oppgave, Solution=Løsning}
-% \EEX
+% :-
 \newcommand{\translateExBank}[1]{
   \pgfkeys{/exbanki18n, default, #1}%
 }
@@ -77,23 +77,23 @@
  %!TEX root = main.tex
 %\BDOC
 %§ref
-%\EDOC
+%:-
 \makeatletter
 %% Adds macro to queue
 \let\ea = \expandafter
 \def\removebs#1{\if#1\@backslashchar\else#1\fi}
 %\BDOC
 % This package also includes some extra stuff. For example the \At and \Trigger
-%\EDOC
+%:-
 %\BDOC
 %\At{AnyMacro}
 %Here you can send any macro because it isn't evaluated! For example \At\BeginSomething is fine and even if \BeginSomething is not defined. Also and when using \Trigger it just ignores it if it didn't exist. It's pretty similar in function as to \AtBeginDocument.
-%\EDOC
+%:-
 %\BEX
 %\At\BeginSomething{DoSomething}
 % Which is triggered with
 % \Trigger\BeginSomething, this evaluates to DoSomething
-%\EEX
+%:-
 %% Usage: \At\BeginSomething (\BeginSomething) doesn't have to be defined
 \newcommand{\At}[2]{
   \def\macname{\expandafter\removebs\detokenize{#1}}
@@ -112,7 +112,7 @@
 %Available triggers:\\
 %§triggers
 % !!triggers
-% \EDOC
+% :-
 \newcommand{\Trigger}[1]{
   \def\macname{\expandafter\removebs\detokenize{#1}}
   \let\mname = \macname
@@ -140,7 +140,7 @@
 %§count
 %\!docCounter{problemcounter}-counter holds the current problem number and
 %\!docCounter{partproblemcounter}-counter holds the current partproblem \!emph{number}.
-%\EDOC
+%:-
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
@@ -213,7 +213,7 @@
 % \\begin{problem}
 % Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
-% \EDOC
+% :-
 \generalcomment{problem}{
 \makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
@@ -234,11 +234,11 @@
 % \\begin{solution}
 % Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
 %\!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
-% \EDOC
+% :-
 % \BDOC!
 % \DisplaySolutions
 % Turns on the solutions, so they are shown.
-% \EDOC
+% :-
 %% Solutions
 \generalcomment{solution}
 {
@@ -274,7 +274,7 @@
 %\\begin{intro}
 % Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 %\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
-% \EDOC
+% :-
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)
@@ -296,7 +296,7 @@
 % \meta{needle} is an integer\\
 % Executes \meta{True} if \meta{needle} is found in \meta{haystack}
 % else executes \meta{False}
-%\EDOC
+%:-
 % #1: haystack
 % #2: needle
 % #3: action if found in list
@@ -367,7 +367,7 @@
  %!TEX root = main.tex
 %\BDOC
 %§makingSets
-%\EDOC
+%:-
 \let\ea = \expandafter
 \newcounter{metacounter}
 \def\emptyList{-1}
@@ -436,10 +436,10 @@
 % This command is the one you use to make a set! Later you use \buildset to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \exerciseDir-path (default its in the root called exercises), or you could use the \select or \exclude to  respectively cherry pick or exclude exercises. (See their docs).\\
 % \oarg{intro} this counts the intro environment as a part problem, so that you can \select or \exclude the intro\\
 % \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
-%\EDOC
+%:-
 %\BEX!
 % \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
-%\EEX
+%:-
 \newcommand\makeset[3][]{
   \pgfkeys{/makeset, default, #1}%
   % Is intro sent?
@@ -458,7 +458,7 @@
 % \about{text}
 % This contains information about an exercise set. It is intended to be on the top of an
 % exercise, explaining short what the exercise is about. It's only visible when using \sprite
-% \EDOC
+% :-
 %% It gets defined in \sprite when use
 \long\gdef\about#1{}
 
@@ -467,7 +467,7 @@
 % This is a way to visualize all exercises. It takes one optional argument which is how many pages
 % inside one page. Defaults to 4
 % \!begin{marker}If \sprite is used, it should be the only command in \begin{document}\end{document}\!end{marker}
-%\EDOC
+%:-
 \newcommand\sprite[1][4]{
 \squeeze
 \gdef\@spriteMode{\isTrue}
@@ -496,14 +496,14 @@
 %\exclude{exerciseFileName}{Comma separated numbers}
 %As you can see in the intro section of the documentation, this is for excluding partproblems
 %To be used in \refCom{makeset}
-% \EDOC
+% :-
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
 
 % \BDOC!
 %\select{exerciseFileName}{Comma separated numbers}
 %As you can see in the intro section of the documentation, this is for cherry picking partproblems
 %To be used in \refCom{makeset}
-% \EDOC
+% :-
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
 
 %% Build one exercise
@@ -590,14 +590,14 @@
 %% Reference problems
 %\BDOC
 %§makingSets
-%\EDOC
+%:-
 \newcommand\refcounter[1]{
 \edef\@currentlabel{#1}%
 }
 %\BDOC
 %\pplabel{label}
 % Labels a partproblem. You can reference to it later using \ppref{\meta{label}}
-%\EDOC
+%:-
 \DeclareRobustCommand{\pplabel}[1]{
 	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
 	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
@@ -610,14 +610,14 @@
 %\BDOC
 %\ppref{label}
 % Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
-%\EDOC
+%:-
 \newcommand\ppref[1]{%
 \ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
 }
 %\BDOC
 %\ppref{label}
 % Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1
-%\EDOC
+%:-
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
 }
