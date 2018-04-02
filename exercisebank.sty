@@ -14,19 +14,19 @@
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
 \ProvidesPackage{exercisebank}[2018/04/02 v0.0.2 Creates a setup that gives freedom in making sets and exercises.]
-\@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \string\usepackage{exbank}}
+\@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
 \gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
 \@ifundefined{exercisesDir}{\gdef\exercisesDir{exercises}
 }{}
 \global\let\incl = \input
-\usepackage{xstring}
-\usepackage{pgffor}
-\usepackage{scrextend}
-\usepackage{comment}
-\usepackage{calc}
-\usepackage{pgfpages}
-\usepackage{geometry}
+\RequirePackage{xstring}
+\RequirePackage{pgffor}
+\RequirePackage{scrextend}
+\RequirePackage{comment}
+\RequirePackage{calc}
+\RequirePackage{pgfpages}
+\RequirePackage{geometry}
 \pgfkeys{ /exbanki18n/.is family, /exbanki18n,
   default/.style = {Problem = Problem, Solution = Solution},
   Problem/.estore in = \@tr@Problem,
