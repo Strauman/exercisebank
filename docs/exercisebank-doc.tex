@@ -1,5 +1,5 @@
-%% exercisebank v0.0.2b11 - 2018/04/02
-%% The LaTeX package exercisebank - version v0.0.2 (2018/04/02) build 11
+%% exercisebank v0.0.2b28 - 2018/04/02
+%% The LaTeX package exercisebank - version v0.0.2 (2018/04/02) build 28
 %% exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -16,6 +16,7 @@
 
 \documentclass{article}
 \usepackage[all]{tcolorbox}
+\usepackage{needspace}
 \makeatletter
 \lstdefinestyle{mydocumentation}{style=tcbdocumentation,
   classoffset=0,
@@ -44,9 +45,15 @@
  \makeatother
 \let\dac\docAuxCommand
 \tcbset{documentation listing style=mydocumentation}
+% Give section some space
+\let\oldsection\section
+\gdef\section{\needspace{0.3\paperheight}\oldsection}
+\let\oldsubsection\subsection
+\gdef\subsection{\needspace{0.2\paperheight}\oldsubsection}
+
 
 \setlength{\parindent}{0pt}
-\title{{Handin - manual\\ v0.0.2{\\[-0.5em]\footnotesize(build 11)}}}
+\title{{Handin - manual\\ v0.0.2{\\[-0.5em]\footnotesize(build 28)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -157,162 +164,104 @@ That covers the basics. Enjoy
 \end{marker}
  \section{Reference}
 \subsection{Environments}
-\begin{docEnvironment}[]{problem}{}
- Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
-\begin{marker}\dac{end}\{problem\} has to be on it's own line without any leading spaces!\end{marker}
-
+\begin{docEnvironment}{problem}{}
+Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
 \end{docEnvironment}
-
-\begin{docEnvironment}[]{solution}{}
+\begin{docEnvironment}{solution}{}
  Things inside here is only visible if \refCom{DisplaySolutions} are given before \dac{begin}\{document\}
-\begin{marker}\dac{end}\{solution\} has to be on it's own line without any leading spaces!\end{marker}
-
+ \begin{marker}\dac{end}\{solution\} has to be on it's own line without any leading spaces!\end{marker}
 \end{docEnvironment}
-
-\begin{docCommand}[]{DisplaySolutions}{}
- Turns on the solutions, so they are shown.
-
+\begin{docCommand}{DisplaySolutions}{}
+Turns on the solutions, so they are shown.
 \end{docCommand}
-
-\begin{docEnvironment}[]{intro}{}
- Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
-\begin{marker}\dac{end}\{intro\} has to be on it's own line without any leading spaces!\end{marker}
-
+\begin{docEnvironment}{intro}{}
+Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 \end{docEnvironment}
-
 \subsection{Internationalization}
-\begin{docCommand}[]{translateExBank}{\marg{Translation key/vals}}
- This is to translate the text inside the package. As of now the available key/values are
+\begin{docCommand}{translateExBank}{\marg{Translation key/vals}}
+This is to translate the text inside the package. As of now the available key/values are
 \begin{itemize}
 \item Problem
 \item Solution
 \end{itemize}
-
-\end{docCommand}
-
- The Norwegian translation would then be done with
-
-
+The Norwegian translation would then be done with
 \begin{dispListing}
- \translateExBank{Problem=Oppgave, Solution=Løsning}
-
+\translateExBank{Problem=Oppgave, Solution=Løsning}
 \end{dispListing}
-
+\end{docCommand}
 \subsection{Triggers}
-\begin{docCommand}[]{Trigger}{\marg{Any Macro}}
+\begin{docCommand}{Trigger}{\marg{Any Macro}}
  See \refCom{At}\\
-Available triggers:\\
- \dac{At}\dac{InputExercise}\\ Triggers before a file is included\\
-\dac{At}\dac{BeginProblem}\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
-\dac{At}\dac{EndProblem}\\ Triggers right after problem is included if [nohead] \emph{not} given\\
-\dac{At}\dac{BeginBuildset}\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
-\dac{At}\dac{EndBuildset}\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
+ Available triggers:\\
+\dac{Trigger}\dac{InputExercise}:\\ Triggers before a file is included\\\
+\dac{Trigger}\dac{BeginProblem}:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
+\dac{Trigger}\dac{EndProblem}:\\ Triggers right after problem is included if [nohead] \dac{emph}\{not\} given\\
+\dac{Trigger}\dac{BeginBuildset}:\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
+\dac{Trigger}\dac{EndBuildset}:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
 
 
 \end{docCommand}
-
 \subsection{General reference}
-\begin{docCommand}[]{ownLineNoSpacesGotIt}{}
- This is to annoy the user enough to get his attention about the requirements of the \refEnv{problem}, \refEnv{solution} and \refEnv{intro} environments.\\
- Compilation wont work unless \dac{end}\{problem\}, \dac{end}\{solution\} and \dac{end}\{intro\} are on their own lines and without any spaces. This warning can be removed by doing \dac{def}\dac{ownLineNoSpacesGotIt}{} before \dac{usepackage}\{exbank\}.
-
+\begin{docCommand}{ownLineNoSpacesGotIt}{}
+This is to annoy the user enough to get his attention about the requirements of the \refEnv{problem}, \refEnv{solution} and \refEnv{intro} environments.\\
 \end{docCommand}
-
-\begin{docCommand}[]{setExercisesDir}{\marg{directory}}
- This is the directory, relative to the file you included the package,
- where the package should be looking for exercises. Default is \texttt{exercises}
-
+\begin{docCommand}{setExercisesDir}{\marg{directory}}
+This is the directory, relative to the file you included the package,
+where the package should be looking for exercises. Default is \texttt{exercises}
 \end{docCommand}
-
-
-
- This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
-
-
-\begin{docCommand}[]{At}{\marg{AnyMacro}}
+This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
+\begin{docCommand}{At}{\marg{AnyMacro}}
 Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
-
-\end{docCommand}
-
 \begin{dispListing}
-\At\BeginSomething{DoSomething}
+ \At\BeginSomething{DoSomething}
  Which is triggered with
  \Trigger\BeginSomething, this evaluates to DoSomething
-
 \end{dispListing}
-
-\begin{docCommand}[]{isin}{\marg{haystack}\marg{needle}\marg{True}\marg{False}}
+\end{docCommand}
+\begin{docCommand}{isin}{\marg{haystack}\marg{needle}\marg{True}\marg{False}}
  \meta{haystack} is a comma separated list of integers\\
  \meta{needle} is an integer\\
  Executes \meta{True} if \meta{needle} is found in \meta{haystack}
  else executes \meta{False}
-
 \end{docCommand}
-
 \subsection{Making sets}
-\begin{docCommand}[]{makeset}{\oarg{intro,nohead}\marg{filable}}
+\begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
-
-\end{docCommand}
-
 \begin{dispListing}
  \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
-
 \end{dispListing}
-
-\begin{docCommand}[]{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}
-As you can see in the intro section of the documentation, this is for excluding partproblems
-To be used in \refCom{makeset}
-
 \end{docCommand}
-
-\begin{docCommand}[]{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
-As you can see in the intro section of the documentation, this is for cherry picking partproblems
-To be used in \refCom{makeset}
-
+\begin{docCommand}{about}{\marg{text}}
+This contains information about an exercise set. It is intended to be on the top of an
+exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
 \end{docCommand}
-
-
-
-\begin{docCommand}[]{about}{\marg{text}}
- This contains information about an exercise set. It is intended to be on the top of an
- exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
-
-\end{docCommand}
-
-\begin{docCommand}[]{sprite}{\oarg{PiP}}
+\begin{docCommand}{sprite}{\oarg{PiP}}
  This is a way to visualize all exercises. It takes one optional argument which is how many pages
  inside one page. Defaults to 4
  \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
-
 \end{docCommand}
-
-
-
-\begin{docCommand}[]{pplabel}{\marg{label}}
- Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
-
+\begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}
+As you can see in the intro section of the documentation, this is for excluding partproblems
+To be used in \refCom{makeset}
 \end{docCommand}
-
-\begin{docCommand}[]{ppref}{\marg{label}}
- Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
-
+\begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
+As you can see in the intro section of the documentation, this is for cherry picking partproblems
+To be used in \refCom{makeset}
 \end{docCommand}
-
-\begin{docCommand}[]{ppref}{\marg{label}}
+\begin{docCommand}{pplabel}{\marg{label}}
+Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
+\end{docCommand}
+\begin{docCommand}{ppref}{\marg{label}}
+Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
+\end{docCommand}
+\begin{docCommand}{ppref}{\marg{label}}
  Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
-
 \end{docCommand}
-
 \subsection{Counters}
-
-
 \docCounter{problemcounter}-counter holds the current problem number and
 \docCounter{partproblemcounter}-counter holds the current partproblem \emph{number}.
-
-
 
 \section{Changelog}
 \begin{tabular}{lll}
