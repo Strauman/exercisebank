@@ -8,7 +8,7 @@ tst.tex
 *.fls
 *.fdb_latexmk
 tmpstdout
-tmpstderr
+tmpstderror
 *.cut
 tst.pdf
 */tst.tex
@@ -17,3 +17,5 @@ exbank/*
 packaging/
 exercisebank/
 exercisebank/*
+exbankCTAN.zip
+packaging
