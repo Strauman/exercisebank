@@ -1,0 +1,65 @@
+The documentation is ultimately formatted by tcolorbox. But it is parsed by a custom script.
+The syntax for doc parsing is explained through these examples:
+
+It's programmed to end when the next comment is none of the four styles, but to be safe, use:
+%:-
+What section are we in?
+
+%:§sectionVar=Section name
+%:-
+
+Macro definition
+%:=\someMacro[oarg]{marg1}{marg2}
+%: Description
+%: of
+%: someMacro goes here
+%:-
+
+Environment definition
+%:=\\begin{someEnv}[oarg]{marg1}{marg2}
+%: Description
+%: of
+%: environment
+%:-
+
+Example
+%:! Exampleusage of \someMacro
+%:! or any \othermacro
+%:! goes here
+%:-
+
+Example within definition
+%:=\someMacroWithExample
+%:! My example
+%:! Within the def
+%: Description of anything else
+%: Goes like this
+%:! another example within def
+%:-
+
+You can make variables:
+%:$MYVAR.=Something
+%:$MYVAR.=\Hello\World
+%:$MYVAR.= \somewhere{overtherainbow}
+%:$MYVAR.= \!foo{bar}
+
+Then later you can use it in two ways:
+The first way is to just print what the variable has now:
+%:MYVAR IS
+%:$MYVAR
+
+The second way is to wait until the entire script has finished and then
+print the variables:
+%:$$MYVAR
+
+Macro escaping:
+Most macros will be escaped automatically with \dac. That is:
+
+%:Talking about some \macro
+will print in the documentation as Talking about some \dac{macro}.
+(\dac is defined by \let\dac\DocumentAuxCommand, which displays the macro nicely in tcolorbox)
+
+To avoid escaping macros, then you'd use \!macro. E.g.
+%: it is \!emph{very} important to note that.
+
+Contents of variables and descriptions will always be macro-escaped.
