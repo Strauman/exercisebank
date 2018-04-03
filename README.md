@@ -23,4 +23,4 @@ All of the code are distributed within the `src`-folder. Here is an overview. Fi
 - (`texpack.tex`) is the file that is built when making all these files into packaging
 - (`texpackvars.ini`) contains information that is used when "compiling" the package.
 ### `docs/`
-Docs are generated automatically. Just ignore it if you contribute. See `src/documentingExample.tex` for info on how to do documentation.
+Docs are generated automatically. See `src/documentingExample.tex` for info on how to do documentation.
