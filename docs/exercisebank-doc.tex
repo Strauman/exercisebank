@@ -1,5 +1,5 @@
-%% exercisebank v0.0.2b37 - 2018/04/03
-%% The LaTeX package exercisebank - version v0.0.2 (2018/04/03) build 37
+%% exercisebank v0.0.3b39 - 2018/04/03
+%% The LaTeX package exercisebank - version v0.0.3 (2018/04/03) build 39
 %% exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -17,6 +17,7 @@
 \documentclass{article}
 \usepackage[all]{tcolorbox}
 \usepackage{needspace}
+\usepackage{tabularx}
 \makeatletter
 \lstdefinestyle{mydocumentation}{style=tcbdocumentation,
   classoffset=0,
@@ -41,7 +42,7 @@
       \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow,#1}
- \title{Exercise bank - Manual\\{\normalsize v0.0.2}}
+ \title{Exercise bank - Manual\\{\normalsize v0.0.3}}
  \makeatother
 \let\dac\docAuxCommand
 \tcbset{documentation listing style=mydocumentation}
@@ -53,12 +54,12 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{Handin - manual\\ v0.0.2{\\[-0.5em]\footnotesize(build 37)}}}
+\title{{Handin - manual\\ v0.0.3{\\[-0.5em]\footnotesize(build 39)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
  
-If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exerciseBank/}
+If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{#GITHUB}
 \tableofcontents
 \clearpage
 \section{Motivation}
@@ -156,6 +157,25 @@ Solution goes here
 They are hidden by default, so you would have to use \dac{DisplaySolutions} in
 your main file to display them.
 
+\subsection{Using \dac{At}}
+\subsubsection{Making your own front page for a set}
+To create your own front page for each set, you'd use\\ \dac{At}\dac{StartBuildset}\brackets{\meta{FrontPageContents}}. Anyhing you send in to \dac{At}\dac{StartBuildset} will be executed before the first problem starts:
+\begin{dispListing}
+  \At\StartBuildset{
+    \input{myFrontpage}
+  }
+\end{dispListing}
+\subsubsection{Printing the file name beneath the problem header}
+Maybe you want to see what files are what problems. One way to do that is hook into the \dac{At}\dac{VeryBeginProblem} and use \refCom{exerciseFile}.This is the command that the headers call, so anything you put in there will be executed right after the headers.
+
+\begin{dispListing}
+  \At\VeryBeginProblem{
+    \exerciseFile\\
+  }
+\end{dispListing}
+
+Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
+
 That covers the basics. Enjoy
 \begin{marker}
 \dac{begin}\{problem\},\dac{end}\{problem\},\\
@@ -193,6 +213,8 @@ The Norwegian translation would then be done with
 \begin{docCommand}{Trigger}{\marg{Any Macro}}
  See \refCom{At}\\
  Available triggers:\\
+\dac{Trigger}\dac{BeginPartproblem}:\\ Triggers before a partproblem is inserted\\
+\dac{Trigger}\dac{VeryBeginPartproblem}:\\ Triggers right after \dac{BeginPartproblem}. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \dac{At}\dac{VeryBeginPartproblem}
 \dac{Trigger}\dac{InputExercise}:\\ Triggers before a file is included\\\
 \dac{Trigger}\dac{BeginProblem}:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
 \dac{Trigger}\dac{EndProblem}:\\ Triggers right after problem is included if [nohead] \dac{emph}\{not\} given\\
@@ -224,6 +246,9 @@ Here you can send any macro because it isn't evaluated! For example \dac{At}\dac
  Executes \meta{True} if \meta{needle} is found in \meta{haystack}
  else executes \meta{False}
 \end{docCommand}
+\begin{docCommand}{exerciseFile}{}
+This is a `read-only' macro that contains the name of the current exerciseFile
+\end{docCommand}
 \subsection{Making sets}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
@@ -250,6 +275,20 @@ To be used in \refCom{makeset}
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
+\begin{docCommand}{setName}{}
+This variable prints out the name of your set that you sent to \dac{buildset}.
+The following example prints "Exercise set number 1" and "Exercise set number 2" on the top of each set
+\begin{dispListing}
+\At\StartBuildset{
+ Exercise set number \setName
+}
+ %... \makesets here ...%
+\begin{document}
+ \buildset{1}{myexercise}
+ \buildset{2}{myexercise}
+\end{document}
+\end{dispListing}
+\end{docCommand}
 \begin{docCommand}{pplabel}{\marg{label}}
 Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
 \end{docCommand}
@@ -264,8 +303,17 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 \docCounter{partproblemcounter}-counter holds the current partproblem \emph{number}.
 
 \section{Changelog}
-\begin{tabular}{lll}
+%!TEX root = exercisebank-doc.tex
+\begin{tabularx}{\textwidth}{llX}
   Version&Date&Change\\
-  v0.0.2b11&2018/04/02&Updated documentation syntax.
-\end{tabular}
+  v0.0.2b11&2018/04/02&Updated documentation syntax.\\
+  v0.0.3b38&2018/04/03&\nobreak\begin{itemize}
+    \item Updated triggers doc
+    \item added trigger \dac{VeryBeginPartproblem}
+  \end{itemize}\\
+  v0.0.3b39&2018/04/03&\begin{itemize}
+    \item Added examples that uses the \dac{At} command.
+      Making front page and other snacks
+  \end{itemize}\\
+\end{tabularx}
  \end{document}

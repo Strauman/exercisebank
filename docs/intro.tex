@@ -93,6 +93,25 @@ Solution goes here
 They are hidden by default, so you would have to use \dac{DisplaySolutions} in
 your main file to display them.
 
+\subsection{Using \dac{At}}
+\subsubsection{Making your own front page for a set}
+To create your own front page for each set, you'd use\\ \dac{At}\dac{StartBuildset}\brackets{\meta{FrontPageContents}}. Anyhing you send in to \dac{At}\dac{StartBuildset} will be executed before the first problem starts:
+\begin{dispListing}
+  \At\StartBuildset{
+    \input{myFrontpage}
+  }
+\end{dispListing}
+\subsubsection{Printing the file name beneath the problem header}
+Maybe you want to see what files are what problems. One way to do that is hook into the \dac{At}\dac{VeryBeginProblem} and use \refCom{exerciseFile}.This is the command that the headers call, so anything you put in there will be executed right after the headers.
+
+\begin{dispListing}
+  \At\VeryBeginProblem{
+    \exerciseFile\\
+  }
+\end{dispListing}
+
+Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
+
 That covers the basics. Enjoy
 \begin{marker}
 \dac{begin}\{problem\},\dac{end}\{problem\},\\

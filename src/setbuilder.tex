@@ -108,6 +108,11 @@
     \buildset{\set}
   }
 }
+%:§ref
+%:=\exerciseFile
+%:This is a `read-only' macro that contains the name of the current exerciseFile
+%:-
+%:§makingSets
 %% Sets the variables \ppList and \exerciseFile based on the current set
 \newcommand{\redef}[3][{-1}]{
   \if\@spriteMode\isFalse%
@@ -149,6 +154,19 @@
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
   %% Setting the global setName
+%:=\setName
+%:This variable prints out the name of your set that you sent to \buildset.
+%:The following example prints "Exercise set number 1" and "Exercise set number 2" on the top of each set
+%:!\At\StartBuildset{
+%:! Exercise set number \setName
+%:!}
+%:! %... \makesets here ...%
+%:!\begin{document}
+%:! \buildset{1}{myexercise}
+%:! \buildset{2}{myexercise}
+%:!\end{document}
+%:-
+
   \xdef\setName{#2}
   %% Warnins if the set doesn't exist
   \@ifundefined{setlist@#2}{

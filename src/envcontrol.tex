@@ -24,10 +24,13 @@
 }
 \global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems
+%:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
+%:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem
 \gdef\showhideproblem#1{%
   \if\@displayMetaCounter\isTrue%
     {P:\Large\themetacounter}
     \Trigger\BeginPartproblem
+    \Trigger\VeryBeginPartproblem
     \gdef\DisplayProblem{\isTrue}
   \else
     \if\DisplayProblem\isFalse
@@ -47,11 +50,14 @@
 \makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
   \edef\DisplaySolution{\@DisplaySolutions}
-  %% BeginPartproblemHard is before regardless whether
+  %% BeginProblemHard is before regardless whether
   %% the problem is included or not.
   \Trigger\DecideProblemDisplay
   \begingroup
-     \showhideproblem{\Trigger\BeginPartproblem}
+     \showhideproblem{
+      \Trigger\BeginPartproblem
+      \Trigger\VeryBeginPartproblem
+    }
   }{
     \if\DisplayProblem\isFalse\else
       \Trigger\EndPartproblem
