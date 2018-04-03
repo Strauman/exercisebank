@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exerciseBank
-%% The LaTeX package exercisebank - version v0.0.4 (2018/04/03) - build 45
+%% The LaTeX package exercisebank - version v0.0.5 (2018/04/03) - build 46
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,18 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/03 v0.0.4 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/04/03 v0.0.5 Creates a setup that gives freedom in making sets and exercises.]
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
+\gdef\@pens#1{\interlinepenalty#1%
+\postdisplaypenalty#1%
+\interdisplaylinepenalty#1%
+\@beginparpenalty#1%
+\@endparpenalty#1%
+\@itempenalty#1%
+\@secpenalty#1%
+\interfootnotelinepenalty#1%
+}
 \gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
 \@ifundefined{exercisesDir}{\gdef\exercisesDir{exercises}
 }{}
@@ -52,42 +61,59 @@
   \let\mname = \macname
   \@ifundefined{At@\mname}{}{\csname At@\mname\endcsname}
 }
-\def\ppLeading{4em}
-\def\pMarginBelow{1em}
-\def\pMarginAbove{1em}
-\def\pMarginLeft{-1.5em}
-\def\ppMargin{2em}
-\def\ppPullback{3.5em}
-\def\solMargin{\dimexpr\ppMargin+\ppMargin\relax}
+\newlength{\ppLeading}
+\newlength{\pMarginBelow}
+\newlength{\pMarginAbove}
+\newlength{\pMarginLeft}
+\newlength{\ppMarginBelow}
+\newlength{\ppMarginAbove}
+\newlength{\ppMargin}
+\newlength{\ppPullback}
+\setlength{\ppLeading}{4em}
+\setlength{\pMarginBelow}{1em}
+\setlength{\pMarginAbove}{1em}
+\setlength{\pMarginLeft}{-1.5em}
+\setlength{\ppMarginBelow}{2em}
+\setlength{\ppMarginAbove}{2em}
+\setlength{\ppMargin}{2em}
+\setlength{\ppPullback}{3.5em}
+\def\solMargin{\dimexpr\ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
-\At\VeryBeginProblem{  \stepcounter{problemcounter}
-  \setcounter{partproblemcounter}{1}
-  \vspace*{\pMarginAbove}
-  \begin{addmargin}{\pMarginLeft}
-    {\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter}
-  \end{addmargin}
-  \vspace*{\pMarginBelow}
+\At\VeryBeginProblem{	\stepcounter{problemcounter}
+	\setcounter{partproblemcounter}{1}
+	\vspace*{\pMarginAbove}
+	\begin{addmargin}{\pMarginLeft}
+		{\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter}
+	\end{addmargin}
+	\vspace*{\pMarginBelow}
 }
-\At\VeryBeginPartproblem{	\vspace{\ppMargin}%
-\stepcounter{partproblemcounter}%
-\def\@pproblemHead{\textbf{(\theproblemcounter\alph{partproblemcounter})}}
-\addtolength{\leftmargin}{-\ppMargin}
-\begin{itemize}
-  \item[\@pproblemHead]
+\At\EndProblem{	\filbreak
 }
-\At\EndPartproblem{\hfill
-\end{itemize}
-\addtolength{\leftmargin}{\ppMargin}
+\At\VeryBeginPartproblem{%
+	\stepcounter{partproblemcounter}%
+	\def\@pproblemHead{\large\textbf{(\theproblemcounter\alph{partproblemcounter})}}
+	\begin{addmargin}{\ppMargin}
+		\filbreak
+		\begin{itemize}
+			\item[\@pproblemHead]
 }
-\At\BeginSolution{  \vspace*{1em}
-  \begin{addmargin}{\solMargin}%
-\hspace*{-\solMargin}\large{\textbf{\@tr{Solution}:}}\normalsize
+\At\EndPartproblem{		\end{itemize}
+	\end{addmargin}
+	\vspace*{\pMarginBelow}%
 }
-\At\EndSolution{  \end{addmargin}\vspace*{1em}
+\At\BeginSolution{	\vspace*{1em}
+	\def\@solutionHead{\large{\textbf{\@tr{Solution}:}}}
+	\begin{addmargin}{\solMargin}
+		\filbreak
+		\begin{itemize}
+			\item[\@solutionHead]
+}
+\At\EndSolution{		\end{itemize}
+	\end{addmargin}
 }
 \gdef\isFalse{0}
 \gdef\isTrue{1}
