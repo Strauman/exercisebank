@@ -6,7 +6,8 @@
 \def\pMarginBelow{1em}
 \def\pMarginAbove{1em}
 \def\pMarginLeft{-1.5em}
-\def\ppMargin{1em}
+\def\ppMargin{2em}
+\def\ppPullback{3.5em}
 \def\solMargin{\dimexpr \ppMargin+\ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
@@ -29,13 +30,17 @@
 }
 \At\VeryBeginPartproblem{
 	\vspace{\ppMargin}%
-	 \begin{addmargin}{\ppMargin}%
-\large\hspace*{-\ppMargin}\textbf{(\theproblemcounter\alph{partproblemcounter})}\normalsize
-\makeatletter
-  \stepcounter{partproblemcounter}
+\stepcounter{partproblemcounter}%
+	 % \begin{addmargin}{\ppMargin}%
+% \large\hspace*{-\ppPullback}\textbf{(\theproblemcounter\alph{partproblemcounter})}\normalsize
+\def\@pproblemHead{\textbf{(\theproblemcounter\alph{partproblemcounter})}}
+\addtolength{\leftmargin}{-\ppMargin}
+\begin{itemize}
+  \item[\@pproblemHead]
 }
 \At\EndPartproblem{\hfill
-\end{addmargin}\vspace*{0.5em}
+\end{itemize}
+\addtolength{\leftmargin}{\ppMargin}
 }
 \At\BeginSolution{
   \vspace*{1em}
