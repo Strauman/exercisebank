@@ -5,7 +5,7 @@
 # Versions
 CTAN version: v0.0.2 (2018/04/01) build 1
 
-GitHub version: v0.0.3 (2018/04/03) build 40
+GitHub version: v0.0.3 (2018/04/03) build 42
 
 A build has no major changes in the core code (could be changes in documentation, or cosmetic changes in the code). Every time a minor version (that is the middle version number) changes, an upload is made to CTAN. If the patch version change (the last version number) is significant, it will also be uploaded to CTAN. The build number (ideally) never resets.
 
