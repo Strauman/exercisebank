@@ -1,5 +1,7 @@
 # Versions
-CTAN version: v0.0.2 (2018/04/01) build 1
+CTAN version: v0.0.6 (2018/04/03) build 47
+
+*It might take up to 24 hours from CTAN version is uploaded until you can download it!*
 
 GitHub version: @@VERSION (@@DATE) build @@BUILD
 

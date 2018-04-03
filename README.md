@@ -3,9 +3,11 @@
  EDITS SHOULD BE DONE IN src/README.template.md 
 -->
 # Versions
-CTAN version: v0.0.2 (2018/04/01) build 1
+CTAN version: v0.0.6 (2018/04/03) build 47
 
-GitHub version: v0.0.5 (2018/04/03) build 46
+*It might take up to 24 hours from CTAN version is uploaded until you can download it!*
+
+GitHub version: v0.0.6 (2018/04/03) build 47
 
 A build has no major changes in the core code (could be changes in documentation, or cosmetic changes in the code). Every time a minor version (that is the middle version number) changes, an upload is made to CTAN. If the patch version change (the last version number) is significant, it will also be uploaded to CTAN. The build number (ideally) never resets.
 

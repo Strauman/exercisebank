@@ -5,7 +5,8 @@ Files:
 - exercisebank.sty : The exercise bank
 - exercisebank.pdf : Description of how the package works
 - example.zip : containing example
-  |-- example.tex : example of use
+  |-- example.tex : example of use texfile
+  |-- exampe.pdf  : example of use output
   |-- exercises/ : Directory containing exercises that could be use
   |---| -- firstexercise.tex: example exercise
   |---| -- secondexercise.tex: example exercise
