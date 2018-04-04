@@ -3,14 +3,15 @@ A tool for creating and managing exercise sets in maths, physics, statistics and
 
 Files:
 - exercisebank.sty : The exercise bank
-- exercisebank.pdf : Description of how the package works
+- exercisebank-doc.pdf : Description of how the package works
+- exercisebank-doc.tex : Description of how the package works - documentation
 - example.zip : containing example
   |-- example.tex : example of use texfile
   |-- exampe.pdf  : example of use output
   |-- exercises/ : Directory containing exercises that could be use
-  |---| -- firstexercise.tex: example exercise
-  |---| -- secondexercise.tex: example exercise
-  |---| -- thirdexercise.tex: example exercise
+  |---|--- firstexercise.tex: example exercise
+  |---|--- secondexercise.tex: example exercise
+  |---|--- thirdexercise.tex: example exercise
 
 Author: Storvik Strauman, Andreas
 
