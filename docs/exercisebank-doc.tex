@@ -1,6 +1,6 @@
-%% exercisebank v0.0.6b47 - 2018/04/04
-%% The LaTeX package exercisebank - version v0.0.6 (2018/04/04) build 47
-%% exercisebank.sty
+%% exercisebank v0.0.6b48 - 2018/04/05
+%% The LaTeX package exercisebank - version v0.0.6 (2018/04/05) build 48
+%% #PACKAGE.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
 %% -------------------------------------------------------------------------------------------
@@ -13,7 +13,6 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README.txt
-
 \documentclass{article}
 \usepackage[all]{tcolorbox}
 \usepackage{needspace}
@@ -46,6 +45,9 @@
  \makeatother
 \let\dac\docAuxCommand
 \tcbset{documentation listing style=mydocumentation}
+% Magenta HREF style
+\let\oldhref\href
+\gdef\href#1#2{{\color{magenta}\oldhref{#1}{#2}}}
 % Give section some space
 \let\oldsection\section
 \gdef\section{\needspace{0.3\paperheight}\oldsection}
@@ -54,7 +56,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{Handin - manual\\ v0.0.6{\\[-0.5em]\footnotesize(build 47)}}}
+\title{{exercisebank - manual\\ v0.0.6{\\[-0.5em]\footnotesize(build 48)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
