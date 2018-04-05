@@ -1,5 +1,5 @@
-%% exercisebank v0.0.6b48 - 2018/04/05
-%% The LaTeX package exercisebank - version v0.0.6 (2018/04/05) build 48
+%% exercisebank v0.0.7b49 - 2018/04/05
+%% The LaTeX package exercisebank - version v0.0.7 (2018/04/05) build 49
 %% #PACKAGE.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -41,7 +41,7 @@
       \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow,#1}
- \title{Exercise bank - Manual\\{\normalsize v0.0.6}}
+ \title{Exercise bank - Manual\\{\normalsize v0.0.7}}
  \makeatother
 \let\dac\docAuxCommand
 \tcbset{documentation listing style=mydocumentation}
@@ -56,7 +56,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.0.6{\\[-0.5em]\footnotesize(build 48)}}}
+\title{{exercisebank - manual\\ v0.0.7{\\[-0.5em]\footnotesize(build 49)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -70,7 +70,8 @@ Exercises are saved as separate files containing part problems. These files can 
 \section{Flow/Moderate start}
 I suspect that working with this package will break you current flow. So let's go throught it.
 
-This package assumes you put all of your exercises within the folder named \texttt{exercises} (you can change the default folder using \refCom{setExercisesDir})
+Most likely you would want to put all your exercises in a folder. To set the default folder, use \refCom{setExercisesDir}.
+In these examples we use \texttt{exercises/}.
 \begin{dispListing*}{title=exercises/myexercise.tex}
 \begin{intro}
   This introduces our problem
@@ -88,6 +89,7 @@ Let's build all of them first. In the main file, (the one where you include this
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
   \usepackage{exercisebank}
+  \setExercisesDir{exercises}
   \makeset{myExerciseSet}{myexercise}
   \begin{document}
     \buildset{myExerciseSet}
@@ -99,6 +101,7 @@ Now, let's build only the second problem.
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
   \usepackage{exercisebank}
+  \setExercisesDir{exercises}
   \makeset{myExerciseSet}{\select{myexercise}{2}}
   \begin{document}
     \buildset{myExerciseSet}
@@ -187,7 +190,7 @@ That covers the basics. Enjoy
  \section{Reference}
 \subsection{Environments}
 \begin{docEnvironment}{problem}{}
-Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
+Inside the \refCom{setExercisesDir} folder, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
 \end{docEnvironment}
 \begin{docEnvironment}{solution}{}
  Things inside here is only visible if \refCom{DisplaySolutions} are given before \dac{begin}\{document\}
@@ -231,7 +234,7 @@ This is to annoy the user enough to get his attention about the requirements of 
 \end{docCommand}
 \begin{docCommand}{setExercisesDir}{\marg{directory}}
 This is the directory, relative to the file you included the package,
-where the package should be looking for exercises. Default is \texttt{exercises}
+where the package should be looking for exercises. Default is the same directory as your main file (the one you build).
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
@@ -253,7 +256,7 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 \end{docCommand}
 \subsection{Making sets}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}
- This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
+ This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
 \begin{dispListing}
@@ -322,6 +325,10 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
   \end{itemize}\\
   v0.0.5b46&2018/04/03&\begin{itemize}
     \item Fixed partproblems and solutions to fit on pages using \dac{filbreak}.
+  \end{itemize}\\
+  v0.0.7b49&2018/04/05&\begin{itemize}
+    \item {\Large Removed default exercise directory!} Use \dac{setExercisesDir}\brackets{exercises} if you used the package before 2018/04/05!
+    \item Fixed title of documentation to match actual package.
   \end{itemize}\\
 \end{tabularx}
  \end{document}

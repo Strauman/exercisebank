@@ -3,7 +3,7 @@
  EDITS SHOULD BE DONE IN src/README.template.md 
 -->
 # Versions
-GitHub at version: v0.0.6 (2018/04/05) build 48
+GitHub at version: v0.0.7 (2018/04/05) build 49
 
 CTAN at version: v0.0.6 (2018/04/03) build 47
 

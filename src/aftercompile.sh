@@ -12,7 +12,7 @@ cp ../docs/exercisebank-doc.tex exercisebank/
 rm ../example.tex
 cp example.tex ../
 cd $mainDir
-latexmk -pdf ../example.tex -f -outdir=bin
+latexmk -pdf example.tex -f -outdir=bin
 mv bin/example.pdf $sourceDir/example.pdf
 cd $sourceDir
 # Zip example

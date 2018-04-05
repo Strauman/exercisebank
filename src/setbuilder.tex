@@ -66,9 +66,9 @@
 \gdef\@spriteMode{\isFalse}
 %% Generates sets that can be iterated over
 %% \makeset[intro|nohead]{\select{path/to/file}{1,2}, \exclude{file}{1,2}, file}
-%% Where file is a file in the \exerciseDir-folder and 1,2 are the part problem numbers
+%% Where file is a file in the \setExercisesDir-folder (default it's the same folder you have the file). See  and 1,2 are the part problem numbers
 %:=\makeset[intro,nohead]{filable}
-%: This command is the one you use to make a set! Later you use \buildset to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \exerciseDir-path (default its in the root called exercises), or you could use the \select or \exclude to  respectively cherry pick or exclude exercises. (See their docs).\\
+%: This command is the one you use to make a set! Later you use \buildset to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \setExercisesDir-path (default is nothing, so it's in the root path), or you could use the \select or \exclude to  respectively cherry pick or exclude exercises. (See their docs).\\
 %: \oarg{intro} this counts the intro environment as a part problem, so that you can \select or \exclude the intro\\
 %: \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
 %:! \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
@@ -229,7 +229,12 @@
     % \inspw\nohead
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
-    \incl{\exercisesDir/\exerciseFile}
+    \IfFileExists{\@exercisesDir/\exerciseFile}{
+    \incl{\@exercisesDir/\exerciseFile}
+    }{
+      \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\setExercisesDir{exercises}}{}
+    }
+
     %% More triggers
     \if\nohead\isFalse\Trigger\EndProblem\fi
     \fi

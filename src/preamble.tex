@@ -11,12 +11,12 @@
 }{}
 %:=\setExercisesDir{directory}
 %:This is the directory, relative to the file you included the package,
-%:where the package should be looking for exercises. Default is \!texttt{exercises}
+%:where the package should be looking for exercises. Default is the same directory as your main file (the one you build).
 %:-
-\gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
+\gdef\setExercisesDir#1{\gdef\@exercisesDir{#1}}
 
 \@ifundefined{exercisesDir}{
-\gdef\exercisesDir{exercises}
+\gdef\@exercisesDir{.}
 }{}
 \makeatother
 

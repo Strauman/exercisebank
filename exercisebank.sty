@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exerciseBank
-%% The LaTeX package exercisebank - version v0.0.6 (2018/04/05) - build 48
+%% The LaTeX package exercisebank - version v0.0.7 (2018/04/05) - build 49
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,11 +13,12 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/05 v0.0.6 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/04/05 v0.0.7 Creates a setup that gives freedom in making sets and exercises.]
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
-\gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
-\@ifundefined{exercisesDir}{\gdef\exercisesDir{exercises}
+\gdef\setExercisesDir#1{\gdef\@exercisesDir{#1}}
+\@ifundefined{exercisesDir}{\gdef\@exercisesDir{}
+\@latex@warning{The default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\setExercisesDir{exercises}}
 }{}
 \global\let\incl = \input
 \usepackage{xstring}
@@ -336,7 +337,7 @@
     \fi
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
     \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
-    \incl{\exercisesDir/\exerciseFile}
+    \incl{\@exercisesDir/\exerciseFile}
     \if\nohead\isFalse\Trigger\EndProblem\fi
     \fi
 }
