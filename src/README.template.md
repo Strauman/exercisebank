@@ -1,9 +1,13 @@
+# Updated documentation
+You can download the latest documentation here: [exercisebank-doc.pdf](https://github.com/Strauman/exerciseBank/raw/master/docs/exercisebank-doc.pdf).
+This is the documentation for version @@VERSION, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
+
 # Versions
 GitHub at version: @@VERSION (@@DATE) build @@BUILD
 
 CTAN at version: v0.0.6 (2018/04/03) build 47
 
-*It might take up to 24 hours from CTAN version is uploaded until you can download it!*
+*It might take up to 24 hours from CTAN version is uploaded until you can download it, and then even a few more days until it is updated at TeXLive and MiKTeX*
 
 A build has no major changes in the core code (could be changes in documentation, or cosmetic changes in the code). Every time a minor version (that is the middle version number) changes, an upload is made to CTAN. If the patch version change (the last version number) is significant, it will also be uploaded to CTAN. The build number (ideally) never resets.
 
