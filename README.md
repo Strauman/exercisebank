@@ -4,10 +4,10 @@
 -->
 # Updated documentation
 You can download the latest documentation here: [exercisebank-doc.pdf](https://github.com/Strauman/exerciseBank/raw/master/docs/exercisebank-doc.pdf).
-This is the documentation for version v0.1.0, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
+This is the documentation for version v0.1.0-beta, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
 
 # Versions
-GitHub at version: v0.1.0 (2018/04/06) build 51
+GitHub at version: v0.1.0-beta (2018/04/06) build 51
 
 CTAN at version: v0.0.6 (2018/04/03) build 47
 
