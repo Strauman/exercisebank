@@ -34,6 +34,8 @@ cp $docOutDir/$docOutFileBaseName.pdf exercisebank/
 zip exbankCTAN.zip -r exercisebank/
 rm ../exbankCTAN.zip
 mv exbankCTAN.zip ../
+rm ../exercisebank.zip
+cp ../exbankCTAN.zip ../exercisebank.zip
 
 # Cleanup
 # Update .sty
