@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exerciseBank
-%% The LaTeX package exercisebank - version v0.0.7 (2018/04/05) - build 49
+%% The LaTeX package exercisebank - version v0.1.0 (2018/04/06) - build 50
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,12 +13,12 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/05 v0.0.7 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/04/06 v0.1.0 Creates a setup that gives freedom in making sets and exercises.]
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
-\gdef\setExercisesDir#1{\gdef\@exercisesDir{#1}}
-\@ifundefined{exercisesDir}{\gdef\@exercisesDir{}
-\@latex@warning{The default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\setExercisesDir{exercises}}
+\gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
+}
+\@ifundefined{exercisesDir}{\gdef\@exercisesDir{.}
 }{}
 \global\let\incl = \input
 \usepackage{xstring}
@@ -28,6 +28,33 @@
 \usepackage{calc}
 \usepackage{pgfpages}
 \usepackage{geometry}
+\edef\@isTrue{1}
+\edef\@isFalse{0}
+\pgfkeys{/exbanksetup/.is family, /exbanksetup,
+default/.style = {  part problems = On,
+  tighten paragraphs = True,
+  problem header={\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter},
+  part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
+  solution header={\large{\textbf{\@tr{Solution}:}}},
+  exercise directory=.,
+},
+exercise directory/.estore in = \@exercisesDir, %
+problem header/.store in = \exbank@opt@problemHeader,
+part problem header/.store in = \exbank@opt@partProblemHeader,
+solution header/.store in = \exbank@opt@solutionHeader,
+part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
+tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
+switches/.cd,
+  On/.initial = \@isTrue,
+  on/.initial = \@isTrue,
+  T/.initial =  \@isTrue
+  Off/.initial = \@isFalse,
+  off/.initial = \@isFalse,
+  F/.initial = \@isFalse,
+}
+\newcommand\exercisebanksetup[1]{  \pgfkeys{/exbanksetup, #1}%
+}
+\exercisebanksetup{default}
 \pgfkeys{ /exbanki18n/.is family, /exbanki18n,
   default/.style = {Problem = Problem, Solution = Solution},
   Problem/.estore in = \@tr@Problem,
@@ -79,30 +106,27 @@
 	\setcounter{partproblemcounter}{1}
 	\vspace*{\pMarginAbove}
 	\begin{addmargin}{\pMarginLeft}
-		{\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter}
+		{\exbank@opt@problemHeader}
 	\end{addmargin}
 	\vspace*{\pMarginBelow}
 }
-\At\EndProblem{	\filbreak
+\At\EndProblem{	\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
 }
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
-	\def\@pproblemHead{\large\textbf{(\theproblemcounter\alph{partproblemcounter})}}
 	\begin{addmargin}{\ppMargin}
-		\filbreak
+		\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
 		\begin{itemize}
-			\item[\@pproblemHead]
+			\item[\exbank@opt@partProblemHeader]
 }
 \At\EndPartproblem{		\end{itemize}
 	\end{addmargin}
 	\vspace*{\pMarginBelow}%
 }
 \At\BeginSolution{	\vspace*{1em}
-	\def\@solutionHead{\large{\textbf{\@tr{Solution}:}}}
 	\begin{addmargin}{\solMargin}
-		\filbreak
 		\begin{itemize}
-			\item[\@solutionHead]
+			\item[\exbank@opt@solutionHeader]
 }
 \At\EndSolution{		\end{itemize}
 	\end{addmargin}
@@ -136,11 +160,20 @@
 \generalcomment{problem}{  \edef\DisplaySolution{\@DisplaySolutions}
   \Trigger\DecideProblemDisplay
   \begingroup
-     \showhideproblem{      \Trigger\BeginPartproblem
-      \Trigger\VeryBeginPartproblem
+     \showhideproblem{        \if\exbank@opt@partProblems\isTrue
+            \Trigger\BeginPartproblem
+            \Trigger\VeryBeginPartproblem
+        \else
+            \Trigger\BeginProblem
+            \Trigger\VeryBeginProblem
+        \fi
 }
 }{    \if\DisplayProblem\isFalse\else
-      \Trigger\EndPartproblem
+      \if\exbank@opt@partProblems\isTrue
+        \Trigger\EndPartproblem
+      \else
+        \Trigger\EndProblem
+      \fi
     \fi
   \endgroup
 }
@@ -308,7 +341,7 @@
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
   \xdef\setName{#2}
   \@ifundefined{setlist@#2}{    \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}?}
-    \stop
+    \stop\bye
 }{}
   \edef\setlist{\csname setlist@#2\endcsname}
   \if\@spriteMode\isFalse
@@ -337,7 +370,10 @@
     \fi
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
     \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
-    \incl{\@exercisesDir/\exerciseFile}
+    \IfFileExists{\@exercisesDir/\exerciseFile}{      \incl{\@exercisesDir/\exerciseFile}
+}{      \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
+      \stop\bye
+}
     \if\nohead\isFalse\Trigger\EndProblem\fi
     \fi
 }

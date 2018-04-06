@@ -43,7 +43,7 @@
 
 %:§env
 %:=\\begin{problem}
-%:Inside the \refCom{setExercisesDir} folder, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
+%:Inside the \keyRef{exercise directory}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % :-
 \generalcomment{problem}{
@@ -55,12 +55,22 @@
   \Trigger\DecideProblemDisplay
   \begingroup
      \showhideproblem{
-      \Trigger\BeginPartproblem
-      \Trigger\VeryBeginPartproblem
-    }
+        % If the user haven't turned off part problems
+        \if\exbank@opt@partProblems\isTrue
+            \Trigger\BeginPartproblem
+            \Trigger\VeryBeginPartproblem
+        \else
+            \Trigger\BeginProblem
+            \Trigger\VeryBeginProblem
+        \fi
+      }
   }{
     \if\DisplayProblem\isFalse\else
-      \Trigger\EndPartproblem
+      \if\exbank@opt@partProblems\isTrue
+        \Trigger\EndPartproblem
+      \else
+        \Trigger\EndProblem
+      \fi
     \fi
   \endgroup
 }

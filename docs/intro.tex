@@ -4,7 +4,7 @@ Exercises are saved as separate files containing part problems. These files can 
 \section{Flow/Moderate start}
 I suspect that working with this package will break you current flow. So let's go throught it.
 
-Most likely you would want to put all your exercises in a folder. To set the default folder, use \refCom{setExercisesDir}.
+Most likely you would want to put all your exercises in a folder. To set the default folder, use \refCom{exercisebanksetup}.
 In these examples we use \texttt{exercises/}.
 \begin{dispListing*}{title=exercises/myexercise.tex}
 \begin{intro}
@@ -23,7 +23,7 @@ Let's build all of them first. In the main file, (the one where you include this
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
   \usepackage{exercisebank}
-  \setExercisesDir{exercises}
+  \exercisebanksetup{exercise directory=exercises}
   \makeset{myExerciseSet}{myexercise}
   \begin{document}
     \buildset{myExerciseSet}
@@ -35,7 +35,7 @@ Now, let's build only the second problem.
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
   \usepackage{exercisebank}
-  \setExercisesDir{exercises}
+  \exercisebanksetup{exercise directory=exercises}
   \makeset{myExerciseSet}{\select{myexercise}{2}}
   \begin{document}
     \buildset{myExerciseSet}
