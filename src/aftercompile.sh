@@ -12,7 +12,7 @@ cp ../docs/exercisebank-doc.tex exercisebank/
 rm ../example.tex
 cp example.tex ../
 cd $mainDir
-latexmk -pdf ../example.tex -f -outdir=bin
+latexmk -pdf example.tex -f -outdir=bin
 mv bin/example.pdf $sourceDir/example.pdf
 cd $sourceDir
 # Zip example
@@ -41,7 +41,8 @@ rm ../$outfile
 cp $tmpDir/$outfile ../
 
 # Copy .sty to live project
-cp ../$outfile /Users/Andreas/Documents/uit/fag/TA/FYS-1002/Oppgaver\ FYS-1002/$outfile
+echo "!!NOT UPDATING FYS-1002!!"
+# cp ../$outfile /Users/Andreas/Documents/uit/fag/TA/FYS-1002/Oppgaver\ FYS-1002/$outfile
 # Copy example zip to root
 rm ../example.zip
 mv example.zip ../

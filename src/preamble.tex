@@ -9,20 +9,24 @@
 \@ifundefined{ownLineNoSpacesGotIt}{
 \@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
+%:\!begin{marker}DEPRECATED! use \refCom{exercisebanksetup} with \refKey{exercise directory} instead!\!end{marker}
 %:=\setExercisesDir{directory}
 %:This is the directory, relative to the file you included the package,
-%:where the package should be looking for exercises. Default is \!texttt{exercises}
+%:where the package should be looking for exercises. Default is the same directory as your main file (the one you build).
 %:-
-\gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
+\gdef\setExercisesDir#1{
+\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
+}
 
 \@ifundefined{exercisesDir}{
-\gdef\exercisesDir{exercises}
+\gdef\@exercisesDir{.}
 }{}
 \makeatother
 
 
 \global\let\incl = \input
 \input{packages}
+\input{packageoptions}
 \input{i18n}
 \input{at}
 \input{problemstyle}

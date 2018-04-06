@@ -18,8 +18,8 @@
 \setlength{\ppMarginBelow}{2em}
 \setlength{\ppMarginAbove}{2em}
 \setlength{\ppMargin}{2em}
-
 \setlength{\ppPullback}{3.5em}
+
 \def\solMargin{\dimexpr \ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
@@ -33,23 +33,22 @@
 
 \At\VeryBeginProblem{
 	\stepcounter{problemcounter}
-	\setcounter{partproblemcounter}{1}
+	\setcounter{partproblemcounter}{0}
 	\vspace*{\pMarginAbove}
 	\begin{addmargin}{\pMarginLeft}
-		{\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter}
+		{\exbank@opt@problemHeader}
 	\end{addmargin}
 	\vspace*{\pMarginBelow}
 }
 \At\EndProblem{
-	\filbreak
+	\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
 }
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
-	\def\@pproblemHead{\large\textbf{(\theproblemcounter\alph{partproblemcounter})}}
 	\begin{addmargin}{\ppMargin}
-		\filbreak
+		\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
 		\begin{itemize}
-			\item[\@pproblemHead]
+			\item[\exbank@opt@partProblemHeader]
 }
 \At\EndPartproblem{
 		\end{itemize}
@@ -60,11 +59,9 @@
 \At\BeginSolution{
 	% \@pens\@lowpenalty
 	\vspace*{1em}
-	\def\@solutionHead{\large{\textbf{\@tr{Solution}:}}}
 	\begin{addmargin}{\solMargin}
-		\filbreak
 		\begin{itemize}
-			\item[\@solutionHead]
+			\item[\exbank@opt@solutionHeader]
 }
 \At\EndSolution{
 		\end{itemize}

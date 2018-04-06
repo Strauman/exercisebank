@@ -22,10 +22,10 @@
 % This is the directory, relative to the file you included the package,
 % where the package should be looking for exercises. Default is \!texttt{exercises}
 % :-
-\gdef\setExercisesDir#1{\gdef\exercisesDir{#1}}
+\gdef\setExercisesDir#1{\gdef\@exercisesDir{#1}}
 
 \@ifundefined{exercisesDir}{
-\gdef\exercisesDir{exercises}
+\gdef\@exercisesDir{exercises}
 }{}
 \makeatother
 
@@ -582,7 +582,7 @@
     % \inspw\nohead
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
-    \incl{\exercisesDir/\exerciseFile}
+    \incl{\@exercisesDir/\exerciseFile}
     %% More triggers
     \if\nohead\isFalse\Trigger\EndProblem\fi
     \fi

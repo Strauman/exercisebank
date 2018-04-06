@@ -1,0 +1,71 @@
+%!TEX root = main.tex
+\makeatletter
+\edef\@isTrue{1}
+\edef\@isFalse{0}
+%:§config
+%:You can do a lot of configurations on this package, and probably
+%: even more to come in later versions!
+\pgfkeys{
+/exbanksetup/.is family, /exbanksetup,
+default/.style = {
+  part problems = On,
+  tighten paragraphs = True,
+  problem header={\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter},
+  part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
+  solution header={\large{\textbf{\@tr{Solution}:}}},
+  exercise directory=.,
+},
+% Expanded macros
+exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
+% Unexpanded macros
+problem header/.store in = \exbank@opt@problemHeader,
+part problem header/.store in = \exbank@opt@partProblemHeader,
+solution header/.store in = \exbank@opt@solutionHeader,
+% Bools
+part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
+tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
+% True/False
+switches/.cd,
+% True
+  On/.initial = \@isTrue,
+  on/.initial = \@isTrue,
+  T/.initial =  \@isTrue
+% False
+  Off/.initial = \@isFalse,
+  off/.initial = \@isFalse,
+  F/.initial = \@isFalse,
+}
+%:=\exercisebanksetup{[key/values]}
+\newcommand\exercisebanksetup[1]{
+  \pgfkeys{/exbanksetup, #1}%
+}
+\exercisebanksetup{default}
+%: Here is a list of the different keys and their meaning
+%:\keyDef{part problems}{On/Off}{On}{
+%: This is whether or not to do part problems. E.g. 1a), 1b) etc.
+%: If this is turned Off, then the part problems will be treated as problems
+%:}
+%:\keyDef{tighten paragraphs}{True/False}{True}{
+%: Disabling this will prevent
+%: the package from attempting to prevent part problems to scatter across pages
+%:}
+%:\keyDef{problem header}{macro}{see below}{
+%: This sets the problem header. To access the translation of the problem text, use \@tr{Problem}, and
+%: the problem counter is accessed with \theproblemcounter.\\
+%: Defaults to\\
+%: \brackets{\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter}.
+%:}
+%:\keyDef{part problem header}{macro}{see below}{
+%: This sets the problem header. To access the current problem, use \theproblemcounter, and then the current
+%: part problem \thepartproblemcounter. To make it a letter, as per default use \alph{partproblemcounter}\\
+%: Default is:\\
+%: \large\textbf{(\theproblemcounter\alph{partproblemcounter})}
+%:}
+%:\keyDef{solution header}{string}{see below}{
+%:\large{\textbf{\@tr{Solution}:}}
+%:}
+%:\keyDef{exercise directory}{string}{./}{
+%:This key is used for setting the default exercise directory.
+%:}
+%:! \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
+%:-

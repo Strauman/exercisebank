@@ -1,5 +1,5 @@
-%% exercisebank v0.0.6b48 - 2018/04/05
-%% The LaTeX package exercisebank - version v0.0.6 (2018/04/05) build 48
+%% exercisebank v0.1.0-betab51 - 2018/04/06
+%% The LaTeX package exercisebank - version v0.1.0-beta (2018/04/06) build 51
 %% #PACKAGE.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -24,7 +24,7 @@
   moretexcs={arrayrulecolor,draw,includegraphics,ifthenelse,isodd,lipsum,path,pgfkeysalso},
   classoffset=1,
   moretexcs={% core
-    makeset,phead,buildset,select,exclude,Trigger,At,translateExBank
+    makeset,phead,buildset,select,exclude,Trigger,At,translateExBank,exercisebanksetup,exerciseFile
   },
   texcsstyle=*\color{Definition}\bfseries,
   classoffset=0,% restore default
@@ -41,9 +41,10 @@
       \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow,#1}
- \title{Exercise bank - Manual\\{\normalsize v0.0.6}}
+ \title{Exercise bank - Manual\\{\normalsize v0.1.0-beta}}
  \makeatother
 \let\dac\docAuxCommand
+\long\def\keyDef#1#2#3#4{\begin{docKey}{#1}{=\meta{#2}}{\meta{default}=#3}#4\end{docKey}}
 \tcbset{documentation listing style=mydocumentation}
 % Magenta HREF style
 \let\oldhref\href
@@ -56,7 +57,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.0.6{\\[-0.5em]\footnotesize(build 48)}}}
+\title{{exercisebank - manual\\ v0.1.0-beta{\\[-0.5em]\footnotesize(build 51)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -70,7 +71,8 @@ Exercises are saved as separate files containing part problems. These files can 
 \section{Flow/Moderate start}
 I suspect that working with this package will break you current flow. So let's go throught it.
 
-This package assumes you put all of your exercises within the folder named \texttt{exercises} (you can change the default folder using \refCom{setExercisesDir})
+Most likely you would want to put all your exercises in a folder. To set the default folder, use \refCom{exercisebanksetup}.
+In these examples we use \texttt{exercises/}.
 \begin{dispListing*}{title=exercises/myexercise.tex}
 \begin{intro}
   This introduces our problem
@@ -88,6 +90,7 @@ Let's build all of them first. In the main file, (the one where you include this
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
   \usepackage{exercisebank}
+  \exercisebanksetup{exercise directory=exercises}
   \makeset{myExerciseSet}{myexercise}
   \begin{document}
     \buildset{myExerciseSet}
@@ -99,6 +102,7 @@ Now, let's build only the second problem.
 \begin{dispListing*}{title=main.tex}
   \documentclass{article}
   \usepackage{exercisebank}
+  \exercisebanksetup{exercise directory=exercises}
   \makeset{myExerciseSet}{\select{myexercise}{2}}
   \begin{document}
     \buildset{myExerciseSet}
@@ -187,7 +191,7 @@ That covers the basics. Enjoy
  \section{Reference}
 \subsection{Environments}
 \begin{docEnvironment}{problem}{}
-Inside the exercises folder, you keep your exercises. Inside there you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
+Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
 \end{docEnvironment}
 \begin{docEnvironment}{solution}{}
  Things inside here is only visible if \refCom{DisplaySolutions} are given before \dac{begin}\{document\}
@@ -199,6 +203,41 @@ Turns on the solutions, so they are shown.
 \begin{docEnvironment}{intro}{}
 Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 \end{docEnvironment}
+\subsection{Configuration and options}
+You can do a lot of configurations on this package, and probably
+ even more to come in later versions!
+\begin{docCommand}{exercisebanksetup}{\marg{[key/values]}}
+ Here is a list of the different keys and their meaning
+\keyDef{part problems}{On/Off}{On}{
+ This is whether or not to do part problems. E.g. 1a), 1b) etc.
+ If this is turned Off, then the part problems will be treated as problems
+}
+\keyDef{tighten paragraphs}{True/False}{True}{
+ Disabling this will prevent
+ the package from attempting to prevent part problems to scatter across pages
+}
+\keyDef{problem header}{macro}{see below}{
+ This sets the problem header. To access the translation of the problem text, use \dac{@tr}\{Problem\}, and
+ the problem counter is accessed with \dac{theproblemcounter}.\\
+ Defaults to\\
+ \brackets{\dac{normalfont}\dac{Large}\dac{bfseries}\dac{@tr}\{Problem\}~\dac{theproblemcounter}}.
+}
+\keyDef{part problem header}{macro}{see below}{
+ This sets the problem header. To access the current problem, use \dac{theproblemcounter}, and then the current
+ part problem \dac{thepartproblemcounter}. To make it a letter, as per default use \dac{alph}\{partproblemcounter\}\\
+ Default is:\\
+ \dac{large}\dac{textbf}\{(\dac{theproblemcounter}\dac{alph}{partproblemcounter\})}
+}
+\keyDef{solution header}{string}{see below}{
+\dac{large}\{\dac{textbf}{\dac{@tr}{Solution\}:}}
+}
+\keyDef{exercise directory}{string}{./}{
+This key is used for setting the default exercise directory.
+}
+\begin{dispListing}
+ \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
+\end{dispListing}
+\end{docCommand}
 \subsection{Internationalization}
 \begin{docCommand}{translateExBank}{\marg{Translation key/vals}}
 This is to translate the text inside the package. As of now the available key/values are
@@ -229,9 +268,10 @@ The Norwegian translation would then be done with
 \begin{docCommand}{ownLineNoSpacesGotIt}{}
 This is to annoy the user enough to get his attention about the requirements of the \refEnv{problem}, \refEnv{solution} and \refEnv{intro} environments.\\
 \end{docCommand}
+\begin{marker}DEPRECATED! use \refCom{exercisebanksetup} with \refKey{exercise directory} instead!\end{marker}
 \begin{docCommand}{setExercisesDir}{\marg{directory}}
 This is the directory, relative to the file you included the package,
-where the package should be looking for exercises. Default is \texttt{exercises}
+where the package should be looking for exercises. Default is the same directory as your main file (the one you build).
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
@@ -253,7 +293,7 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 \end{docCommand}
 \subsection{Making sets}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}
- This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{exerciseDir}-path (default its in the root called exercises), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
+ This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
 \begin{dispListing}
@@ -322,6 +362,12 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
   \end{itemize}\\
   v0.0.5b46&2018/04/03&\begin{itemize}
     \item Fixed partproblems and solutions to fit on pages using \dac{filbreak}.
+  \end{itemize}\\
+  v0.1.0-beta&2018/04/06&\begin{itemize}
+    \item \begin{marker}Backward incompability from v0.0.5:Removed default exercise directory! \end{marker} Use \dac{exercisebanksetup}\brackets{exercise directory=exercises} if you used the package before 2018/04/06!
+    \item Fixed title of documentation to match actual package.
+    \item Fixed weird paragraph styling when displaying solutions
+    \item Added a few package options. More to come!
   \end{itemize}\\
 \end{tabularx}
  \end{document}
