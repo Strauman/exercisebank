@@ -147,19 +147,21 @@
 }
 %% Commands that can be sent to makeset
 %% Problem header
-\gdef\exbank@def@makeset@command#1#2{
+\gdef\exbank@def@makeset@command#1#2{%
 \gdef#1{?\expandafter\unexpanded{#2}}
 }
 \let\exbank@isFirstProblem\isTrue
-\exbank@def@makeset@command{\phead}{
-\if\exbank@isFirstProblem\isTrue
-\let\exbank@isFirstProblem\isFalse
-\else
-\Trigger\EndProblem
-\fi
-\Trigger\VeryBeginProblem
-\Trigger\BeginProblem
+\exbank@def@makeset@command{\phead}{%
+  \if\exbank@isFirstProblem\isTrue%
+    \let\exbank@isFirstProblem\isFalse%
+  \else%
+    \Trigger\EndProblem%
+  \fi%
+  \Trigger\BeginProblem%
+  \Trigger\VeryBeginProblem%
 }
+\exbank@def@makeset@command{\pbreak}{\clearpage}
+\gdef\exec#1{?\unexpanded{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \newcommand\buildset[2][]{
