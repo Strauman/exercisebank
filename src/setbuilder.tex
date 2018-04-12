@@ -145,9 +145,23 @@
   \makeset{#1}{#1}
   \buildset{#1}
 }
+%% Commands that can be sent to makeset
+%% Problem header
+\gdef\exbank@def@makeset@command#1#2{
+\gdef#1{?\expandafter\unexpanded{#2}}
+}
+\let\exbank@isFirstProblem\isTrue
+\exbank@def@makeset@command{\phead}{
+\if\exbank@isFirstProblem\isTrue
+\let\exbank@isFirstProblem\isFalse
+\else
+\Trigger\EndProblem
+\fi
+\Trigger\VeryBeginProblem
+\Trigger\BeginProblem
+}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
-\gdef\phead{?\noexpand\Trigger\noexpand\VeryBeginProblem}
 \newcommand\buildset[2][]{
   \def\oarg{#1}
   % \def\argToShowIntro{intro}

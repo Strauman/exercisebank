@@ -8,11 +8,11 @@
   % \@latex@warning{COMPILING EXBANK MAIN}
   \@latex@warning{COMPILING EXBANK MAIN}
 \usepackage[english]{babel}
-\input{preamble}
+\input{texpack}
 \exercisebanksetup{exercise directory=../exercises}
 \usepackage{lipsum}
-% \makeset{2}{secondexercise, firstexercise}
-\makeset[intro]{2}{\exclude{secondexercise}{2,3}, firstexercise, \select{thirdexercise}{1,2}}
+\makeset[nohead,intro]{2}{\phead, thirdexercise, secondexercise, firstexercise}
+% \makeset[nohead,intro]{2}{\phead,\exclude{secondexercise}{2,3}, firstexercise, \select{thirdexercise}{1,2}}
 % \makeset[intro,nohead]{2}{\phead,\select{thirdexercise}{1,2,3},\exclude{secondexercise}{2,3},\phead,\select{firstexercise}{1}}
 % \makeset[intro]{2}{\exclude{secondexercise}{1}}
 \begin{document}

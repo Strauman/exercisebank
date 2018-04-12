@@ -31,11 +31,8 @@ outHandle "Error when inserting package-variables to README.txt-file" $perlDir/v
 cd ../
 cp $docOutDir/$docOutFileBaseName.tex exercisebank/
 cp $docOutDir/$docOutFileBaseName.pdf exercisebank/
-zip exbankCTAN.zip -r exercisebank/
-rm ../exbankCTAN.zip
-mv exbankCTAN.zip ../
+zip exercisebank.zip -r exercisebank/
 rm ../exercisebank.zip
-cp ../exbankCTAN.zip ../exercisebank.zip
 
 # Cleanup
 # Update .sty

@@ -34,7 +34,9 @@
 \newcommand{\Trigger}[1]{
   \def\macname{\expandafter\removebs\detokenize{#1}}
   \let\mname = \macname
-  \@ifundefined{At@\mname}{}{\csname At@\mname\endcsname}
+\@ifundefined{At@\mname}{}{\csname At@\mname\endcsname%
+\expandafter\let\csname At@\mname\endcsname\relax%
+}
   % \ifcsname At@\mname\endcsname
   %   % \begingroup
   %   \makeatletter
