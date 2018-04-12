@@ -161,6 +161,11 @@
   \Trigger\VeryBeginProblem%
 }
 \exbank@def@makeset@command{\pbreak}{\clearpage}
+%:=\exec{macros}
+%:You can use this in \makeset to execute commands between problems.
+%:E.g. to insert a new page in between two problems when using nohead:
+%:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
+%:-
 \gdef\exec#1{?\unexpanded{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}

@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exerciseBank
-%% The LaTeX package exercisebank - version v0.1.0 (2018/04/08) - build 55
+%% The LaTeX package exercisebank - version v0.1.1 (2018/04/12) - build 56
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,8 +13,8 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/08 v0.1.0 Creates a setup that gives freedom in making sets and exercises.]
-\PackageWarningNoLine{exercisebank-v0.1.0}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\ProvidesPackage{exercisebank}[2018/04/12 v0.1.1 Creates a setup that gives freedom in making sets and exercises.]
+\PackageWarningNoLine{exercisebank-v0.1.1}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -79,7 +79,9 @@ switches/.cd,
 }
 \newcommand{\Trigger}[1]{  \def\macname{\expandafter\removebs\detokenize{#1}}
   \let\mname = \macname
-  \@ifundefined{At@\mname}{}{\csname At@\mname\endcsname}
+\@ifundefined{At@\mname}{}{\csname At@\mname\endcsname%
+\expandafter\let\csname At@\mname\endcsname\relax%
+}
 }
 \newlength{\ppLeading}
 \newlength{\pMarginBelow}
@@ -335,8 +337,22 @@ switches/.cd,
 \gdef\buildex#1{  \makeset{#1}{#1}
   \buildset{#1}
 }
+\gdef\exbank@def@makeset@command#1#2{%
+\gdef#1{?\expandafter\unexpanded{#2}}
+}
+\let\exbank@isFirstProblem\isTrue
+\exbank@def@makeset@command{\phead}{%
+  \if\exbank@isFirstProblem\isTrue%
+    \let\exbank@isFirstProblem\isFalse%
+  \else%
+    \Trigger\EndProblem%
+  \fi%
+  \Trigger\BeginProblem%
+  \Trigger\VeryBeginProblem%
+}
+\exbank@def@makeset@command{\pbreak}{\clearpage}
+\gdef\exec#1{?\unexpanded{#1}}
 \gdef\@countIntros{\isFalse}
-\gdef\phead{?\noexpand\Trigger\noexpand\VeryBeginProblem}
 \newcommand\buildset[2][]{  \def\oarg{#1}
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}

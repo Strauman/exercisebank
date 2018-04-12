@@ -1,5 +1,5 @@
-%% exercisebank v0.1.0b55 - 2018/04/08
-%% The LaTeX package exercisebank - version v0.1.0 (2018/04/08) build 55
+%% exercisebank v0.1.1b56 - 2018/04/12
+%% The LaTeX package exercisebank - version v0.1.1 (2018/04/12) build 56
 %% #PACKAGE.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -41,7 +41,7 @@
       \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow,#1}
- \title{Exercise bank - Manual\\{\normalsize v0.1.0}}
+ \title{Exercise bank - Manual\\{\normalsize v0.1.1}}
  \makeatother
 \let\dac\docAuxCommand
 \long\def\keyDef#1#2#3#4{\begin{docKey}{#1}{=\meta{#2}}{\meta{default}=#3}#4\end{docKey}}
@@ -57,12 +57,12 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.0{\\[-0.5em]\footnotesize(build 55)}}}
+\title{{exercisebank - manual\\ v0.1.1{\\[-0.5em]\footnotesize(build 56)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
  
-If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exerciseBank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
+If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
 
 \tableofcontents
 \clearpage
@@ -318,6 +318,13 @@ To be used in \refCom{makeset}
 \begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
+\end{docCommand}
+\begin{docCommand}{exec}{\marg{macros}}
+You can use this in \dac{makeset} to execute commands between problems.
+E.g. to insert a new page in between two problems when using nohead:
+\begin{dispListing}
+\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
+\end{dispListing}
 \end{docCommand}
 \begin{docCommand}{setName}{}
 This variable prints out the name of your set that you sent to \dac{buildset}.

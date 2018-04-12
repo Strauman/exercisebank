@@ -40,8 +40,8 @@ rm ../$outfile
 cp $tmpDir/$outfile ../
 
 # Copy .sty to live project
-echo "!!NOT UPDATING FYS-1002!!"
-# cp ../$outfile /Users/Andreas/Documents/uit/fag/TA/FYS-1002/Oppgaver\ FYS-1002/$outfile
+# echo "!!NOT UPDATING FYS-1002!!"
+cp ../$outfile /Users/Andreas/Documents/uit/fag/TA/FYS-1002/Oppgaver\ FYS-1002/$outfile
 # Copy example zip to root
 rm ../example.zip
 mv example.zip ../
