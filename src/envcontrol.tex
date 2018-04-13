@@ -124,6 +124,12 @@
   \if\@countIntros\isTrue
     \Trigger\DecideProblemDisplay
     \begingroup
+    \if\@spriteMode\isTrue
+      \if\introarg\isTrue
+        \stepcounter{partproblemcounter}
+        {\exbank@opt@partProblemHeader}
+      \fi
+    \fi
     \showhideproblem{\Trigger\BeginIntro}
   \fi
 }{

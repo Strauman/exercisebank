@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exerciseBank
-%% The LaTeX package exercisebank - version v0.1.1 (2018/04/12) - build 56
+%% The LaTeX package exercisebank - version @@VERSION (@@DATE) - build @@BUILD
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,8 +13,8 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/12 v0.1.1 Creates a setup that gives freedom in making sets and exercises.]
-\PackageWarningNoLine{exercisebank-v0.1.1}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\ProvidesPackage{exercisebank}[@@DATE @@VERSION Creates a setup that gives freedom in making sets and exercises.]
+\PackageWarningNoLine{exercisebank-@@VERSION}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exbank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -202,6 +202,12 @@ switches/.cd,
 \generalcomment{intro}{  \if\@countIntros\isTrue
     \Trigger\DecideProblemDisplay
     \begingroup
+    \if\@spriteMode\isTrue
+      \if\introarg\isTrue
+        \stepcounter{partproblemcounter}
+        {\exbank@opt@partProblemHeader}
+      \fi
+    \fi
     \showhideproblem{\Trigger\BeginIntro}
   \fi
 }{  \if\@countIntros\isTrue
@@ -282,6 +288,7 @@ switches/.cd,
 }%
 \def\pm@Exclude{exclude}
 \def\pm@Select{select}
+\def\pm@Normal{normal}
 \let\ipm\@ifppMode
 \let\T@\isTrue
 \let\F@\isFalse
@@ -305,6 +312,7 @@ switches/.cd,
 \gdef\@spriteMode{\isFalse}
 \newcommand\makeset[3][]{  \pgfkeys{/makeset, default, #1}%
   \if\introarg\isTrue%
+    \gdef\introarg{\isTrue}
     \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
   \fi
   \if\noheadarg\isTrue%
@@ -312,14 +320,19 @@ switches/.cd,
   \fi
   \ea\gdef\csname setlist@#2\endcsname{#3}
   \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
-  \g@addto@macro\@listOfSets{#2}
+  \g@addto@macro\@listOfSets{,#2}
 }
 \long\gdef\about#1{}
-\newcommand\sprite[1][4]{\squeeze
+\newcommand\sprite[1][4]{\exercisebanksetup{part problem header={\Large\textbf{\thepartproblemcounter}}}
+\squeeze
 \gdef\@spriteMode{\isTrue}
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
 \pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
-  \foreach\set in \@listOfSets{    \buildset{\set}
+\edef\@thelist{\ea\@secondoftwo\@listOfSets}
+  \foreach\set in \@thelist{    \edef\theset{{\set}}
+    \if\theset\empty\relax\else%
+    \buildset{\set}%
+    \fi%
 }
 }
 \newcommand{\redef}[3][{-1}]{  \if\@spriteMode\isFalse%
@@ -329,7 +342,7 @@ switches/.cd,
   \else
     \gdef\ppList{}
     \gdef\exerciseFile{#2}
-    \gdef\ppMode{exclude}
+    \gdef\ppMode{\pm@Normal}
 \fi
 }
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
@@ -338,7 +351,7 @@ switches/.cd,
   \buildset{#1}
 }
 \gdef\exbank@def@makeset@command#1#2{%
-\gdef#1{?\expandafter\unexpanded{#2}}
+\gdef#1{\if\@spriteMode\isFalse?\expandafter\unexpanded{#2}\else?\relax\fi}
 }
 \let\exbank@isFirstProblem\isTrue
 \exbank@def@makeset@command{\phead}{%
@@ -351,7 +364,7 @@ switches/.cd,
   \Trigger\VeryBeginProblem%
 }
 \exbank@def@makeset@command{\pbreak}{\clearpage}
-\gdef\exec#1{?\unexpanded{#1}}
+\gdef\exec#1{\if\@spriteMode\isFalse?\unexpanded{#1}\else?\relax\fi}
 \gdef\@countIntros{\isFalse}
 \newcommand\buildset[2][]{  \def\oarg{#1}
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
@@ -368,11 +381,13 @@ switches/.cd,
     \gdef\ppList{-1}
     \setcounter{metacounter}{1}
     \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
-    \if[\firstchar
+    \if[\firstchar%
       \ea\redef\exerciseFileInfo\relax
       \def\continueLoop{\isTrue}
-    \else\if?\firstchar
-        \expandafter\@secondoftwo\exerciseFileInfo
+    \else\if?\firstchar%
+        \if\@spriteMode\isFalse%
+          \expandafter\@secondoftwo\exerciseFileInfo%
+        \fi%
       \def\continueLoop{\isFalse}
     \else
         \redef{\exerciseFileInfo}{normal}
@@ -388,11 +403,14 @@ switches/.cd,
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
     \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
     \IfFileExists{\@exercisesDir/\exerciseFile}{      \incl{\@exercisesDir/\exerciseFile}
+      \if\@spriteMode\isTrue
+        \setcounter{partproblemcounter}{0}%
+      \fi
 }{      \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
       \stop\bye
 }
     \if\nohead\isFalse\Trigger\EndProblem\fi
-    \fi
+    \fi%
 }
   \if\@spriteMode\isFalse
     \Trigger\EndBuildset

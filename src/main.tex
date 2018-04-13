@@ -11,10 +11,15 @@
 \input{texpack}
 \exercisebanksetup{exercise directory=../exercises}
 \usepackage{lipsum}
-% \makeset[nohead,intro]{2}{\phead, thirdexercise, secondexercise, firstexercise}
-% \makeset[nohead,intro]{2}{\phead,\exclude{secondexercise}{2,3}, firstexercise, \select{thirdexercise}{1,2}}
-\makeset[intro,nohead]{2}{\phead,\select{thirdexercise}{1,2,3},\exclude{secondexercise}{2,3},\exec{\newpage}\phead,\select{firstexercise}{1}}
+
+% \makeset[nohead,intro]{1}{\phead,\exclude{secondexercise}{2,3}, firstexercise, \select{thirdexercise}{1,2}}
+% \makeset[nohead,intro]{1}{\phead,\exclude{secondexercise}{2,3},secondexercise}
+\makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
+
+% \makeset[intro,nohead]{2}{\phead,\select{thirdexercise}{1,2,3},\exclude{secondexercise}{2,3},\exec{\newpage}\phead,\select{firstexercise}{1}}
 % \makeset[intro]{2}{\exclude{secondexercise}{1}}
 \begin{document}
-\buildset{2}
+% \buildset{1}
+\sprite
+% A
 \end{document}

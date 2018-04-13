@@ -11,7 +11,7 @@
 \begingroup\lccode`\|=`\\
 \lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
 \newcommand{\macroname}[1]{\expandafter\removebs\string#1}
-
+%
 \gdef\ifppMode#1{
   \def\mname{\macroname{#1}}
   \if\mname\ppMode
@@ -22,10 +22,8 @@
 }
 \gdef\@noneofone#1{}
 \gdef\@noneOfTwo#1#2{}
-
-%%% NOT WORKING
+% \ppMode is what list mode we're in. Either it's \pm@Exclude or \pm@Select
 \gdef\@ifppMode#1{%
-% \edef\mname{\macroname{#1}}
 \ifnum\pdfstrcmp{\macroname{#1}}{\ppMode}=\z@%
 \expandafter\@firstofone%
 \else%
@@ -34,6 +32,7 @@
 }%
 \def\pm@Exclude{exclude}
 \def\pm@Select{select}
+\def\pm@Normal{normal}
 
 %% Deciding whether problem (and accompanied solution) should be shown
 \let\ipm\@ifppMode
@@ -62,6 +61,8 @@
  introarg/.estore in = \introarg,
  noheadarg/.estore in = \noheadarg
 }
+% When a \makeset is made, it adds the set name to the
+% \@listOfSets for use in \sprite
 \gdef\@listOfSets{}
 \gdef\@spriteMode{\isFalse}
 %% Generates sets that can be iterated over
@@ -77,6 +78,7 @@
   \pgfkeys{/makeset, default, #1}%
   % Is intro sent?
   \if\introarg\isTrue%
+    \gdef\introarg{\isTrue}
     \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
   \fi
   \if\noheadarg\isTrue%
@@ -85,7 +87,7 @@
   \ea\gdef\csname setlist@#2\endcsname{#3}
   \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
   % \g@addto@macro\@listOfSets{\csname setlist@#2\endcsname,}
-  \g@addto@macro\@listOfSets{#2}
+  \g@addto@macro\@listOfSets{,#2}
 }
 %:=\about{text}
 %:This contains information about an exercise set. It is intended to be on the top of an
@@ -100,12 +102,17 @@
 %: \!begin{marker}If \sprite is used, it should be the only command in \begin{document}\end{document}\!end{marker}
 %:-
 \newcommand\sprite[1][4]{
+\exercisebanksetup{part problem header={\Large\textbf{\thepartproblemcounter}}}
 \squeeze
 \gdef\@spriteMode{\isTrue}
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
 \pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
-  \foreach \set in \@listOfSets{
-    \buildset{\set}
+\edef\@thelist{\ea\@secondoftwo\@listOfSets}
+  \foreach \set in \@thelist{
+    \edef\theset{{\set}}
+    \if\theset\empty\relax\else%
+    \buildset{\set}%
+    \fi%
   }
 }
 %:§ref
@@ -122,7 +129,7 @@
   \else
     \gdef\ppList{}
     \gdef\exerciseFile{#2}
-    \gdef\ppMode{exclude}
+    \gdef\ppMode{\pm@Normal}
 \fi
 
 }
@@ -148,7 +155,7 @@
 %% Commands that can be sent to makeset
 %% Problem header
 \gdef\exbank@def@makeset@command#1#2{%
-\gdef#1{?\expandafter\unexpanded{#2}}
+\gdef#1{\if\@spriteMode\isFalse?\expandafter\unexpanded{#2}\else?\relax\fi}
 }
 \let\exbank@isFirstProblem\isTrue
 \exbank@def@makeset@command{\phead}{%
@@ -166,12 +173,11 @@
 %:E.g. to insert a new page in between two problems when using nohead:
 %:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
 %:-
-\gdef\exec#1{?\unexpanded{#1}}
+\gdef\exec#1{\if\@spriteMode\isFalse?\unexpanded{#1}\else?\relax\fi}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \newcommand\buildset[2][]{
   \def\oarg{#1}
-  % \def\argToShowIntro{intro}
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
   %% Setting the global setName
@@ -213,11 +219,16 @@
     %% I.e. one of the arguments are sent via \exclude
     %% And then send it to \redef
     \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
-    \if[\firstchar
+    \if[\firstchar%
+      %If \exerciseFileInfo starts with a [, then optional arguments
+      %that are to be sent to \redef. That is from \exclude or \select
       \ea\redef\exerciseFileInfo\relax
       \def\continueLoop{\isTrue}
-    \else\if?\firstchar
-        \expandafter\@secondoftwo\exerciseFileInfo
+    \else\if?\firstchar% if it starts with a ?, then it's a macro to be executed
+        % Execute given macro only if not spritemode
+        \if\@spriteMode\isFalse%
+          \expandafter\@secondoftwo\exerciseFileInfo%
+        \fi%
       \def\continueLoop{\isFalse}
     \else
         \redef{\exerciseFileInfo}{normal}
@@ -247,11 +258,14 @@
     %% e.g. problem header is using this.
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
     \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
-    % \inspw\nohead
+
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
     \IfFileExists{\@exercisesDir/\exerciseFile}{
       \incl{\@exercisesDir/\exerciseFile}
+      \if\@spriteMode\isTrue
+        \setcounter{partproblemcounter}{0}%
+      \fi
     }{
       \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
       \stop\bye
@@ -259,7 +273,7 @@
 
     %% More triggers
     \if\nohead\isFalse\Trigger\EndProblem\fi
-    \fi
+    \fi%<- End \continueLoop
   }
   \if\@spriteMode\isFalse
     \Trigger\EndBuildset

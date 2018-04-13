@@ -1,5 +1,5 @@
-%% exercisebank v0.1.1b56 - 2018/04/12
-%% The LaTeX package exercisebank - version v0.1.1 (2018/04/12) build 56
+%% @@PACKAGE @@VERSIONB - @@DATE
+%% The LaTeX package @@PACKAGE - version @@VERSION (@@DATE) build @@BUILD
 %% #PACKAGE.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -18,31 +18,9 @@
 \usepackage{needspace}
 \usepackage{tabularx}
 \makeatletter
-\lstdefinestyle{mydocumentation}{style=tcbdocumentation,
-  classoffset=0,
-  texcsstyle=*\color{blue},
-  moretexcs={arrayrulecolor,draw,includegraphics,ifthenelse,isodd,lipsum,path,pgfkeysalso},
-  classoffset=1,
-  moretexcs={% core
-    makeset,phead,buildset,select,exclude,Trigger,At,translateExBank,exercisebanksetup,exerciseFile
-  },
-  texcsstyle=*\color{Definition}\bfseries,
-  classoffset=0,% restore default
-  }
-\newtcolorbox{marker}[1][]{enhanced,
-    before skip=2mm,after skip=3mm,
-    boxrule=0.4pt,left=5mm,right=2mm,top=1mm,bottom=1mm,
-    colback=yellow!50,
-    colframe=yellow!20!black,
-    sharp corners,rounded corners=southeast,arc is angular,arc=3mm,
-    underlay={%
-      \path[fill=tcbcol@back!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
-      \path[draw=tcbcol@frame,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
-      \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
-      },
-    drop fuzzy shadow,#1}
- \title{Exercise bank - Manual\\{\normalsize v0.1.1}}
- \makeatother
+\input{styling}
+\input{preamble}
+\makeatother
 \let\dac\docAuxCommand
 \long\def\keyDef#1#2#3#4{\begin{docKey}{#1}{=\meta{#2}}{\meta{default}=#3}#4\end{docKey}}
 \tcbset{documentation listing style=mydocumentation}
@@ -57,139 +35,18 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.1{\\[-0.5em]\footnotesize(build 56)}}}
+\title{{@@PACKAGE - manual\\ @@VERSION{\\[-0.5em]\footnotesize(build @@BUILD)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
- 
-If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
+\input{pretoc}
+
+If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{@@GITHUB}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
 
 \tableofcontents
 \clearpage
-\section{Motivation}
-Exercises are saved as separate files containing part problems. These files can be used to make sets, and you can cherry-pick or exclude certain part problems as you see fit. This makes it easier to maintain and keep your exercises flexible as the syllabus changes.
-
-\section{Flow/Moderate start}
-I suspect that working with this package will break you current flow. So let's go throught it.
-
-Most likely you would want to put all your exercises in a folder. To set the default folder, use \refCom{exercisebanksetup}.
-In these examples we use \texttt{exercises/}.
-\begin{dispListing*}{title=exercises/myexercise.tex}
-\begin{intro}
-  This introduces our problem
-\end{intro}
-\begin{problem}
-  This is a partproblem 1,
-  and will be hidden (just wait, you'll see)
-\end{problem}
-\begin{problem}
-  This is a partproblem 2.
-  This will not be hidden, but become part problem a!
-\end{problem}
-\end{dispListing*}
-Let's build all of them first. In the main file, (the one where you include this package):
-\begin{dispListing*}{title=main.tex}
-  \documentclass{article}
-  \usepackage{exercisebank}
-  \exercisebanksetup{exercise directory=exercises}
-  \makeset{myExerciseSet}{myexercise}
-  \begin{document}
-    \buildset{myExerciseSet}
-  \end{document}
-\end{dispListing*}
-This builds the entire set, and adds Problem header and partproblem counters ( (1a) and (1b) ) by default.
-\subsection{Select}
-Now, let's build only the second problem.
-\begin{dispListing*}{title=main.tex}
-  \documentclass{article}
-  \usepackage{exercisebank}
-  \exercisebanksetup{exercise directory=exercises}
-  \makeset{myExerciseSet}{\select{myexercise}{2}}
-  \begin{document}
-    \buildset{myExerciseSet}
-  \end{document}
-\end{dispListing*}
-This should only build the intro and the one exercise you \refCom*{select}ed!
-
-Now, say you want to hide the intro. Well all you have to do in this case is
-make the package treat the intro as a problem in regards to what is \refCom*{select}ed.
-Just add the optional argument \oarg{intro} to \dac{make}. That is switch
-\begin{dispListing}
-\makeset{myExerciseSet}{\select{myexercise}{2}}
-\end{dispListing}
-with
-\begin{dispListing}
-\makeset[intro]{myExerciseSet}{\select{myexercise}{3}}
-\end{dispListing}
-Notice that there are 3 `partproblems' now since we have to count the intro!
-
-\subsection{Exclude}
-But what if you have an exercise with 12 partproblems, and you only want to exclude the 7th partproblem? Well, then \dac{Exclude} is here to rescue the day for you.
-\begin{dispListing}
-  \makeset{myExerciseSet}{\exclude{soManyExercises}{7}}
-\end{dispListing}
-Here it's important to note that the [intro] argument would not make the intros disappear. If we wanted to only exclude the intro from our previous example file \texttt{exercises/myexercise.tex} we would do
-\begin{dispListing}
-\makeset[intro]{myExerciseSet}{\exclude{myexercise}{1}}
-\end{dispListing}
-So we're excluding the partproblem 1. But that's the intro when we send the [intro] optional argument
-\subsection{Multiple}
-In \dac{makeset} you can just separate exercises with commas! Here is an example:
-
-Let's say you have two files with exercises. One located in \texttt{exercises/circuits/RLC.tex} and one in \texttt{exercises/ohm/ohmsGeneralLaw.tex}, and you want to include partproblem 1 through 5 from \texttt{RLC.tex} and all of the exercises from \texttt{ohmsGeneralLaw.tex}.
-
-\begin{dispListing}
-\makeset{\select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
-\end{dispListing}
-This will divide it up with problem headers. So that what is in the \texttt{RLC.tex}-file will be Problem 1, and \texttt{ohmsGeneralLaw.tex} Problem 2.
-\subsection{Mixnmatch}
-What if you want to make both of them the same exercise? Well, then you pass the [nohead] argument to \dac{makeset}:
-\begin{dispListing}
-\makeset[nohead]{\phead, \select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
-\end{dispListing}
-The \dac{phead} command makes a problem header. You can pass them as much as you want:
-
-\begin{dispListing}
-\makeset[nohead]{\phead, \select{circuits/RLC}{1,...,5},
-              ohmsGeneralLaw, \phead, someOtherExercise, moreExercises}
-\end{dispListing}
-
-\subsection{Solutions}
-The last thing to cover then is solutions. In your exercise files you just use the solution environment
-\begin{dispListing}
-\begin{solution}
-Solution goes here
-\end{solution}
-\end{dispListing}
-They are hidden by default, so you would have to use \dac{DisplaySolutions} in
-your main file to display them.
-
-\subsection{Using \dac{At}}
-\subsubsection{Making your own front page for a set}
-To create your own front page for each set, you'd use\\ \dac{At}\dac{StartBuildset}\brackets{\meta{FrontPageContents}}. Anyhing you send in to \dac{At}\dac{StartBuildset} will be executed before the first problem starts:
-\begin{dispListing}
-  \At\StartBuildset{
-    \input{myFrontpage}
-  }
-\end{dispListing}
-\subsubsection{Printing the file name beneath the problem header}
-Maybe you want to see what files are what problems. One way to do that is hook into the \dac{At}\dac{VeryBeginProblem} and use \refCom{exerciseFile}.This is the command that the headers call, so anything you put in there will be executed right after the headers.
-
-\begin{dispListing}
-  \At\VeryBeginProblem{
-    \exerciseFile\\
-  }
-\end{dispListing}
-
-Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
-
-That covers the basics. Enjoy
-\begin{marker}
-\dac{begin}\{problem\},\dac{end}\{problem\},\\
-\dac{begin}\{solution\},\dac{end}\{solution\},\\
-\dac{begin}\{intro\} and \dac{end}\{intro\} has to be on their own line without any spaces!
-\end{marker}
- \section{Reference}
+\input{intro}
+\section{Reference}
 \subsection{Environments}
 \begin{docEnvironment}{problem}{}
 Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
@@ -354,29 +211,5 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 \docCounter{partproblemcounter}-counter holds the current partproblem \emph{number}.
 
 \section{Changelog}
-%!TEX root = exercisebank-doc.tex
-\begin{tabularx}{\textwidth}{llX}
-  Version&Date&Change\\
-  v0.0.2b11&2018/04/02&Updated documentation syntax.\\
-  v0.0.3b38&2018/04/03&\nobreak\begin{itemize}
-    \item Updated triggers doc
-    \item added trigger \dac{VeryBeginPartproblem}
-  \end{itemize}\\
-  v0.0.3b40&2018/04/03&\begin{itemize}
-    \item Added examples that uses the \dac{At} command.
-      Making front page and other snacks
-  \end{itemize}\\
-  v0.0.4b44&2018/04/03&\begin{itemize}
-    \item Changed design of part problems. (Looks much better now!)
-  \end{itemize}\\
-  v0.0.5b46&2018/04/03&\begin{itemize}
-    \item Fixed partproblems and solutions to fit on pages using \dac{filbreak}.
-  \end{itemize}\\
-  v0.1.0&2018/04/08&\begin{itemize}
-    \item \begin{marker}Backward incompability from v0.0.5:Removed default exercise directory! \end{marker} Use \dac{exercisebanksetup}\brackets{exercise directory=exercises} if you used the package before 2018/04/08!
-    \item Fixed title of documentation to match actual package.
-    \item Fixed weird paragraph styling when displaying solutions
-    \item Added a few package options. More to come!
-  \end{itemize}\\
-\end{tabularx}
- \end{document}
+\input{changelog}
+\end{document}

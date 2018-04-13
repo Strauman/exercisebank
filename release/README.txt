@@ -1,16 +1,31 @@
 Exercisebank:
 A tool for creating and managing exercise sets in maths, physics, statistics and the like.
 
-#FILES
+Files:
+
+├── README.txt
+├── example.zip
+│   ├── example.pdf
+│   ├── example.tex
+│   ├── exercisebank.sty
+│   └── exercises
+│       ├── firstexercise.tex
+│       ├── secondexercise.tex
+│       └── thirdexercise.tex
+├── exercisebank-doc.pdf
+├── exercisebank-doc.tex
+└── exercisebank.sty
+
+2 directories, 10 files
 
 Author: Storvik Strauman, Andreas
 
 For bug report, inquires, contributed or anything else:
-@@GITHUB
+https://github.com/Strauman/exercisebank/
 
 Licence:
 
-The LaTeX package exercisebank - version @@VERSION (@@DATE)
+The LaTeX package exercisebank - version v0.1.1 (2018/04/13)
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman
