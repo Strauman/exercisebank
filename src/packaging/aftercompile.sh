@@ -64,6 +64,7 @@ function finalize_paths(){
   cd "$mainDir"
   rm -rf "$mainDir/$CTANDirBase"
   mv "$CTANDir" "$mainDir"
+  rm "$packagename.zip"
   outHandle "Error in zipping exercisebank.zip" zip "$packagename.zip" -r "./$CTANDirBase"
   if [ -d "release" ]; then
     rm -rf "release"
@@ -72,6 +73,7 @@ function finalize_paths(){
 }
 
 cd $sourceDir
+rm -rf "$mainDir/$packagename/"
 make_example
 readme_tree
 make_github_readme
