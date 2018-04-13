@@ -31,7 +31,7 @@ function make_example(){
     echo "Building example"
     cp $pkgSTY ./
     outHandle "Error in latexmk - example.tex" latexmk -pdf "example.tex" -outdir="./bin" --shell-escape -interaction=nonstopmode -f
-    rm $pkgSTY
+    rm "$outfile"
     cp "bin/example.pdf" ./
     rm -rf ./bin
   cd $sourceDir
@@ -52,21 +52,30 @@ function make_github_readme(){
   cp -f "$sourceDir/$packageSettingsDir/README.template.md" "$mainDir/README.md"
   add_version_vars_to "$mainDir/README.md"
 }
-# 
-# cd $sourceDir
-# make_example
-# rm -rf "$mainDir/$CTANDirBase"
-# mv "$CTANDir" "$mainDir"
-# cd "$mainDir/$CTANDirBase"
-# file_structure=`zip_tree "example"`
-# pattern="s/\#FILES/$file_structure/"
-# perl -p -e "$pattern or next;" -i "$mainDir/$CTANDirBase/README.txt"
-# make_github_readme
-# cd "$mainDir"
-# outHandle "Error in zipping exercisebank.zip" zip "$packagename.zip" -r "$mainDir/$CTANDirBase"
-# if [ -d "release" ]; then
-#   rm -rf "release"
-# fi
-# mv -f "$CTANDirBase" "release"
-# echo "v${version}"
-# echo "b${build}"
+function readme_tree(){
+  pushd . > /dev/null
+  cd "$CTANDir"
+  file_structure=`zip_tree "example"`
+  pattern="s/\#FILES/$file_structure/"
+  perl -p -e "$pattern or next;" -i "$CTANDir/README.txt"
+  popd > /dev/null
+}
+function finalize_paths(){
+  cd "$mainDir"
+  rm -rf "$mainDir/$CTANDirBase"
+  mv "$CTANDir" "$mainDir"
+  outHandle "Error in zipping exercisebank.zip" zip "$packagename.zip" -r "./$CTANDirBase"
+  if [ -d "release" ]; then
+    rm -rf "release"
+  fi
+  mv -f "$CTANDirBase" "release"
+}
+
+cd $sourceDir
+make_example
+readme_tree
+make_github_readme
+finalize_paths
+
+echo "v${version}"
+echo "b${build}"

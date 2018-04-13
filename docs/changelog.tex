@@ -22,8 +22,13 @@
     \item Fixed weird paragraph styling when displaying solutions
     \item Added a few package options. More to come!
   \end{itemize}\\
-  @@VERSION&@@DATE&\begin{itemize}
-    \item Added \dac{exec}
-    \item Fixed bug where \dac{At} would cause crash due to latexmk multiple builds
-  \end{itemize}\\
+\end{tabularx}
+\clearpage
+\begin{tabularx}{\textwidth}{llX}
+v0.1.1&2018/04/13&\begin{itemize}
+  \item Added \dac{exec}, which allows the user to execute macros between problems
+  \item Bug fix: \dac{At} would cause crash due to latexmk multiple builds
+  \item Bug fix: \dac{sprite} wouldn't build correctly
+  \item Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}
+\end{itemize}\\
 \end{tabularx}
