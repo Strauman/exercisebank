@@ -20,3 +20,8 @@ exercisebank/*
 exbankCTAN.zip
 packaging
 *.bak
+docs/
+!docs/styling.tex
+!docs/intro.tex
+!docs/preamble.tex
+!docs/changelog.tex

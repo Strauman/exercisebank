@@ -21,16 +21,14 @@ zip example.zip example.tex -r ../exercises example.pdf
 mv example.pdf ../
 
 # Create CTAN zip
-rm -rf exercisebank
-mkdir exercisebank
-cp example.zip exercisebank/
-cp README.txt exercisebank/
-cp $tmpDir/$outfile exercisebank/
-cd exercisebank/
+cp example.zip "$CTANDir"
+cp README.txt "$CTANDir"
+cp $tmpDir/$outfile "$CTANDir"
+cd "$CTANDir"
 outHandle "Error when inserting package-variables to README.txt-file" $perlDir/vars.pl -v $version -p $packagename -g $github -b $build README.txt
 cd ../
-cp $docOutDir/$docOutFileBaseName.tex exercisebank/
-cp $docOutDir/$docOutFileBaseName.pdf exercisebank/
+cp $docOutDir/$docOutFileBaseName.tex "$CTANDir"
+cp $docOutDir/$docOutFileBaseName.pdf "$CTANDir"
 zip exercisebank.zip -r exercisebank/
 rm ../exercisebank.zip
 
