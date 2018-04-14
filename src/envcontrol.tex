@@ -25,7 +25,7 @@
 \global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
-%:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem
+%:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
 \gdef\showhideproblem#1{%
   \if\@displayMetaCounter\isTrue%
     {P:\Large\themetacounter}

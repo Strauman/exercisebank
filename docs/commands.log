@@ -1,5 +1,4 @@
 !DisplaySolutions
-!exercisebanksetup
 !translateExBank
 !Trigger
 !ownLineNoSpacesGotIt
@@ -18,4 +17,7 @@
 !ppref
 !ppref
 :@@VERSION:@@DATE
+:v0.1.0:2018/04/08
+@@VERSION:@@DATE
+\exercisebanksetup
 \MACROSCHANGEDINTHISVERSION
