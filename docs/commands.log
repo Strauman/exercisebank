@@ -25,4 +25,8 @@
 \makeset
 \buildset
 \phead
-:@@VERSION:@@DATE
+:v0.1.2:2018/04/17
+\At
+\select
+\exclude
+\ShowNumbers

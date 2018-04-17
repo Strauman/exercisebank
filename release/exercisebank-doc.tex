@@ -241,12 +241,12 @@ exercise, explaining short what the exercise is about. It's only visible when us
  \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
 \end{docCommand}
 \begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{exclude}}
-
+\updated{v0.1.2\\2018/04/17 }
 As you can see in the intro section of the documentation, this is for excluding partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{select}}
-
+\updated{v0.1.2\\2018/04/17 }
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
@@ -289,7 +289,7 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 You can do a lot of configurations on this package, and probably
  even more to come in later versions!
 \begin{docCommand}{ShowNumbers}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowNumbers}}
-
+\defnew{v0.1.2\\2018/04/17 }
  Shows the numbers in fron of the part problems and intros that should be used with
  \dac{exclude} and \dac{select}
 \end{docCommand}
@@ -368,7 +368,7 @@ where the package should be looking for exercises. Default is the same directory
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
-\updated{v0.1.1\\2018/04/13 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
+\updated{v0.1.2\\2018/04/17 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
 \begin{dispListing}
  \At\BeginSomething{DoSomething}
  Which is triggered with
@@ -449,5 +449,9 @@ v0.1.1&2018/04/13&\begin{itemize}
   \item Bug fix: \dac{sprite} wouldn't build correctly
   \item Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}
 \end{itemize}\\
+  v0.1.2&2018/04/17&\begin{itemize}
+    \item Fixed bug that \dac{select} and \dac{exclude} not working as expected.
+    \item Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}
+  \end{itemize}\\
 \end{tabularx}
  \end{document}
