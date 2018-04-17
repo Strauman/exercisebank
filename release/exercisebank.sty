@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.1.1+edge (2018/04/17) - build 66
+%% The LaTeX package exercisebank - version v0.1.2 (2018/04/17) - build 67
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,8 +13,8 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/17 v0.1.1+edge Creates a setup that gives freedom in making sets and exercises.]
-\PackageWarningNoLine{exercisebank-v0.1.1+edge}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\ProvidesPackage{exercisebank}[2018/04/17 v0.1.2 Creates a setup that gives freedom in making sets and exercises.]
+\PackageWarningNoLine{exercisebank-v0.1.2}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -31,6 +31,7 @@
 \usepackage{geometry}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
+\gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
 default/.style = {  part problems = On,
   tighten paragraphs = True,
@@ -76,13 +77,13 @@ switches/.cd,
     \ea\g@addto@macro\csname At@\mname\endcsname{#2}
   \else
     \ea\gdef\csname At@\mname\endcsname{#2}
+    \AtEndDocument{        \expandafter\let\csname At@\mname\endcsname\relax
+}
   \fi
 }
 \newcommand{\Trigger}[1]{  \def\macname{\expandafter\removebs\detokenize{#1}}
   \let\mname = \macname
-\@ifundefined{At@\mname}{}{\csname At@\mname\endcsname%
-\expandafter\let\csname At@\mname\endcsname\relax%
-}
+  \@ifundefined{At@\mname}{}{\csname At@\mname\endcsname}
 }
 \newlength{\ppLeading}
 \newlength{\pMarginBelow}
@@ -140,7 +141,6 @@ switches/.cd,
 \gdef\isTrue{1}
 \gdef\DisplayProblem{\isTrue}
 \gdef\@displayMetaCounter{\isFalse}
-\gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
 \gdef\@DisplaySolutions{\isFalse}
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \AtBeginDocument{  \if\@DisplaySolutions\isFalse
@@ -149,20 +149,15 @@ switches/.cd,
 }
 \global\let\do@ProcessCutFile = \ProcessCutFile
 \gdef\showhideproblem#1{%
-  \if\@displayMetaCounter\isTrue%
-    {P:\Large\themetacounter}
-    \Trigger\BeginPartproblem
-    \Trigger\VeryBeginPartproblem
-    \gdef\DisplayProblem{\isTrue}
+  \if\DisplayProblem\isFalse
+    \def\ProcessCutFile{}
   \else
-    \if\DisplayProblem\isFalse
-      \def\ProcessCutFile{}
-    \else
-      #1
-    \fi
+    \if\@displayMetaCounter\isTrue\relax{\Large\themetacounter}\fi
+    #1
   \fi
 }
 \generalcomment{problem}{  \edef\DisplaySolution{\@DisplaySolutions}
+  \stepcounter{metacounter}
   \Trigger\DecideProblemDisplay
   \begingroup
      \showhideproblem{        \if\exbank@opt@partProblems\isTrue
@@ -202,6 +197,7 @@ switches/.cd,
 \endgroup
 }
 \generalcomment{intro}{  \if\@countIntros\isTrue
+    \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
     \begingroup
     \if\@spriteMode\isTrue
@@ -269,6 +265,7 @@ switches/.cd,
 }
 \let\ea = \expandafter
 \newcounter{metacounter}
+\setcounter{metacounter}{0}
 \def\emptyList{-1}
 \begingroup\lccode`\|=`\\
 \lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
@@ -301,7 +298,6 @@ switches/.cd,
 }{      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
   \fi
-  \stepcounter{metacounter}
 }
 \pgfkeys{ /makeset/.is family, /makeset,
  default/.style = {noheadarg=\isFalse, introarg=\isFalse},
@@ -381,7 +377,7 @@ switches/.cd,
   \fi
   \foreach\exerciseFileInfo in \setlist{    \def\continueLoop{\isTrue}
     \gdef\ppList{-1}
-    \setcounter{metacounter}{1}
+    \setcounter{metacounter}{0}
     \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
     \if[\firstchar%
       \ea\redef\exerciseFileInfo\relax

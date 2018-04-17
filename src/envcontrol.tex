@@ -11,8 +11,6 @@
 \gdef\DisplayProblem{\isTrue}
 \gdef\@displayMetaCounter{\isFalse}
 
-\gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
-
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
 \gdef\@DisplaySolutions{\isFalse}
 %%NB: DOC for \DisplaySolutions are moved down
@@ -27,17 +25,11 @@
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
 \gdef\showhideproblem#1{%
-  \if\@displayMetaCounter\isTrue%
-    {P:\Large\themetacounter}
-    \Trigger\BeginPartproblem
-    \Trigger\VeryBeginPartproblem
-    \gdef\DisplayProblem{\isTrue}
+  \if\DisplayProblem\isFalse
+    \def\ProcessCutFile{}
   \else
-    \if\DisplayProblem\isFalse
-      \def\ProcessCutFile{}
-    \else
-      #1
-    \fi
+    \if\@displayMetaCounter\isTrue\relax{\Large\themetacounter}\fi
+    #1
   \fi
 }
 
@@ -50,6 +42,7 @@
 \makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
   \edef\DisplaySolution{\@DisplaySolutions}
+  \stepcounter{metacounter}
   %% BeginProblemHard is before regardless whether
   %% the problem is included or not.
   \Trigger\DecideProblemDisplay
@@ -122,6 +115,7 @@
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)
   \if\@countIntros\isTrue
+    \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
     \begingroup
     \if\@spriteMode\isTrue

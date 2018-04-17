@@ -1,5 +1,5 @@
-%% exercisebank v0.1.1+edgeb66 - 2018/04/17
-%% The LaTeX package exercisebank - version v0.1.1+edge (2018/04/17) build 66
+%% exercisebank v0.1.2b67 - 2018/04/17
+%% The LaTeX package exercisebank - version v0.1.2 (2018/04/17) build 67
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -66,7 +66,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.1+edge{\\[-0.5em]\footnotesize(build 66)}}}
+\title{{exercisebank - manual\\ v0.1.2{\\[-0.5em]\footnotesize(build 67)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -288,6 +288,11 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 \filbreak\subsection{Configuration and options}
 You can do a lot of configurations on this package, and probably
  even more to come in later versions!
+\begin{docCommand}{ShowNumbers}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowNumbers}}
+
+ Shows the numbers in fron of the part problems and intros that should be used with
+ \dac{exclude} and \dac{select}
+\end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{[key/values]}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
 \defnew{v0.1.0\\2018/04/08 }
  Here is a list of the different keys and their meaning
@@ -388,6 +393,7 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 
  \addcontentsline{mac}{macro}{\refCom{At}}{}
 \addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
+\addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
 \addcontentsline{mac}{macro}{\refCom{Trigger}}{}
 \addcontentsline{mac}{macro}{\refCom{about}}{}
 \addcontentsline{mac}{macro}{\refCom{exclude}}{}
