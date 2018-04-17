@@ -1,5 +1,5 @@
-%% exercisebank v0.1.1b62 - 2018/04/13
-%% The LaTeX package exercisebank - version v0.1.1 (2018/04/13) build 62
+%% exercisebank v0.1.2b67 - 2018/04/17
+%% The LaTeX package exercisebank - version v0.1.2 (2018/04/17) build 67
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -18,6 +18,7 @@
 \usepackage{needspace}
 \usepackage{tabularx}
 \makeatletter
+\def\input@path{{../../docs/}}
 \lstdefinestyle{mydocumentation}{style=tcbdocumentation,
   classoffset=0,
   texcsstyle=*\color{blue},
@@ -41,13 +42,22 @@
       \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow,#1}
-  \makeatother
+  \def\l@macro#1#2{#1\hfill\newline}
+\newcommand\macrotable{\hypersetup{linkcolor=black}\@starttoc{mac}\hypersetup{linkcolor=Definition}}
+\let\oldTOC\tableofcontents
+\renewcommand\tableofcontents{\hypersetup{linkcolor=black}\oldTOC\hypersetup{linkcolor=Definition}}
+\reversemarginpar
+\def\updated#1{\tcbdocmarginnote{\bfseries{\color{blue}U}#1}}
+\def\defnew#1{\tcbdocmarginnote{\bfseries{\color{green}N}#1}}
+\makeatother
 \let\dac\docAuxCommand
 \long\def\keyDef#1#2#3#4{\begin{docKey}{#1}{=\meta{#2}}{\meta{default}=#3}#4\end{docKey}}
 \tcbset{documentation listing style=mydocumentation}
 % Magenta HREF style
 \let\oldhref\href
 \gdef\href#1#2{{\color{magenta}\oldhref{#1}{#2}}}
+\tcbset{documentation listing style=mydocumentation,/tcb/color hyperlink=Definition}
+\hypersetup{colorlinks=true}
 % Give section some space
 \let\oldsection\section
 \gdef\section{\needspace{0.3\paperheight}\oldsection}
@@ -56,7 +66,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.1{\\[-0.5em]\footnotesize(build 62)}}}
+\title{{exercisebank - manual\\ v0.1.2{\\[-0.5em]\footnotesize(build 67)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -189,7 +199,12 @@ That covers the basics. Enjoy
 \dac{begin}\{intro\} and \dac{end}\{intro\} has to be on their own line without any spaces!
 \end{marker}
  \section{Reference}
-\subsection{Environments}
+\filbreak\subsection{Environments}
+ \addcontentsline{toc}{subsubsection}{\refEnv{intro}}
+\addcontentsline{toc}{subsubsection}{\refEnv{problem}}
+\addcontentsline{toc}{subsubsection}{\refEnv{solution}}
+
+
 \begin{docEnvironment}{problem}{}
 Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
 \end{docEnvironment}
@@ -197,16 +212,89 @@ Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside t
  Things inside here is only visible if \refCom{DisplaySolutions} are given before \dac{begin}\{document\}
  \begin{marker}\dac{end}\{solution\} has to be on it's own line without any leading spaces!\end{marker}
 \end{docEnvironment}
-\begin{docCommand}{DisplaySolutions}{}
+\begin{docCommand}{DisplaySolutions}{}\addcontentsline{toc}{subsubsection}{\refCom{DisplaySolutions}}
+
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docEnvironment}{intro}{}
 Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 \end{docEnvironment}
-\subsection{Configuration and options}
+\filbreak\subsection{Making sets}
+\begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}\addcontentsline{toc}{subsubsection}{\refCom{makeset}}
+\updated{v0.1.1\\2018/04/13 }
+ This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
+ \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
+ \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
+\begin{dispListing}
+ \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
+\end{dispListing}
+\end{docCommand}
+\begin{docCommand}{about}{\marg{text}}\addcontentsline{toc}{subsubsection}{\refCom{about}}
+
+This contains information about an exercise set. It is intended to be on the top of an
+exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
+\end{docCommand}
+\begin{docCommand}{sprite}{\oarg{PiP}}\addcontentsline{toc}{subsubsection}{\refCom{sprite}}
+\updated{v0.1.1\\2018/04/13 }
+ This is a way to visualize all exercises. It takes one optional argument which is how many pages
+ inside one page. Defaults to 4
+ \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
+\end{docCommand}
+\begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{exclude}}
+\updated{v0.1.2\\2018/04/17 }
+As you can see in the intro section of the documentation, this is for excluding partproblems
+To be used in \refCom{makeset}
+\end{docCommand}
+\begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{select}}
+\updated{v0.1.2\\2018/04/17 }
+As you can see in the intro section of the documentation, this is for cherry picking partproblems
+To be used in \refCom{makeset}
+\end{docCommand}
+\begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
+\defnew{v0.1.1\\2018/04/13 }
+You can use this in \dac{makeset} to execute commands between problems.
+E.g. to insert a new page in between two problems when using nohead:
+\begin{dispListing}
+\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
+\end{dispListing}
+\end{docCommand}
+\begin{docCommand}{setName}{}\addcontentsline{toc}{subsubsection}{\refCom{setName}}
+
+This variable prints out the name of your set that you sent to \dac{buildset}.
+The following example prints "Exercise set number 1" and "Exercise set number 2" on the top of each set
+\begin{dispListing}
+\At\StartBuildset{
+ Exercise set number \setName
+}
+ %... \makesets here ...%
+\begin{document}
+ \buildset{1}{myexercise}
+ \buildset{2}{myexercise}
+\end{document}
+\end{dispListing}
+\end{docCommand}
+\begin{docCommand}{pplabel}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pplabel}}
+
+Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
+\end{docCommand}
+\begin{docCommand}{ppref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{ppref}}
+
+Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
+\end{docCommand}
+\begin{docCommand}{pref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pref}}
+
+ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
+\end{docCommand}
+\filbreak\subsection{Configuration and options}
 You can do a lot of configurations on this package, and probably
  even more to come in later versions!
-\begin{docCommand}{exercisebanksetup}{\marg{[key/values]}}
+\begin{docCommand}{ShowNumbers}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowNumbers}}
+\defnew{v0.1.2\\2018/04/17 }
+ Shows the numbers in fron of the part problems and intros that should be used with
+ \dac{exclude} and \dac{select}
+\end{docCommand}
+\begin{docCommand}{exercisebanksetup}{\marg{[key/values]}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
+\defnew{v0.1.0\\2018/04/08 }
  Here is a list of the different keys and their meaning
 \keyDef{part problems}{On/Off}{On}{
  This is whether or not to do part problems. E.g. 1a), 1b) etc.
@@ -238,8 +326,9 @@ This key is used for setting the default exercise directory.
  \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
 \end{dispListing}
 \end{docCommand}
-\subsection{Internationalization}
-\begin{docCommand}{translateExBank}{\marg{Translation key/vals}}
+\filbreak\subsection{Internationalization}
+\begin{docCommand}{translateExBank}{\marg{Translation key/vals}}\addcontentsline{toc}{subsubsection}{\refCom{translateExBank}}
+
 This is to translate the text inside the package. As of now the available key/values are
 \begin{itemize}
 \item Problem
@@ -250,12 +339,13 @@ The Norwegian translation would then be done with
 \translateExBank{Problem=Oppgave, Solution=Løsning}
 \end{dispListing}
 \end{docCommand}
-\subsection{Triggers}
-\begin{docCommand}{Trigger}{\marg{Any Macro}}
+\filbreak\subsection{Triggers}
+\begin{docCommand}{Trigger}{\marg{Any Macro}}\addcontentsline{toc}{subsubsection}{\refCom{Trigger}}
+\updated{v0.1.1\\2018/04/13 }
  See \refCom{At}\\
  Available triggers:\\
 \dac{Trigger}\dac{BeginPartproblem}:\\ Triggers before a partproblem is inserted\\
-\dac{Trigger}\dac{VeryBeginPartproblem}:\\ Triggers right after \dac{BeginPartproblem}. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \dac{At}\dac{VeryBeginPartproblem}
+\dac{Trigger}\dac{VeryBeginPartproblem}:\\ Triggers right after \dac{BeginPartproblem}. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \dac{At}\dac{VeryBeginPartproblem}\\
 \dac{Trigger}\dac{InputExercise}:\\ Triggers before a file is included\\\
 \dac{Trigger}\dac{BeginProblem}:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
 \dac{Trigger}\dac{EndProblem}:\\ Triggers right after problem is included if [nohead] \dac{emph}\{not\} given\\
@@ -264,93 +354,66 @@ The Norwegian translation would then be done with
 
 
 \end{docCommand}
-\subsection{General reference}
-\begin{docCommand}{ownLineNoSpacesGotIt}{}
+\filbreak\subsection{General reference}
+\begin{docCommand}{ownLineNoSpacesGotIt}{}\addcontentsline{toc}{subsubsection}{\refCom{ownLineNoSpacesGotIt}}
+
 This is to annoy the user enough to get his attention about the requirements of the \refEnv{problem}, \refEnv{solution} and \refEnv{intro} environments.\\
 \end{docCommand}
 \begin{marker}DEPRECATED! use \refCom{exercisebanksetup} with \refKey{exercise directory} instead!\end{marker}
-\begin{docCommand}{setExercisesDir}{\marg{directory}}
+\begin{docCommand}{setExercisesDir}{\marg{directory}}\addcontentsline{toc}{subsubsection}{\refCom{setExercisesDir}}
+
 \begin{marker}\dac{setExercisesDir} is deprecated! use \refCom{exercisebanksetup} with \refKey{exercise directory} instead!\end{marker}
 This is the directory, relative to the file you included the package,
 where the package should be looking for exercises. Default is the same directory as your main file (the one you build).
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
-Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
+\updated{v0.1.2\\2018/04/17 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
 \begin{dispListing}
  \At\BeginSomething{DoSomething}
  Which is triggered with
  \Trigger\BeginSomething, this evaluates to DoSomething
 \end{dispListing}
 \end{docCommand}
-\begin{docCommand}{isin}{\marg{haystack}\marg{needle}\marg{True}\marg{False}}
+\begin{docCommand}{isin}{\marg{haystack}\marg{needle}\marg{True}\marg{False}}\addcontentsline{toc}{subsubsection}{\refCom{isin}}
+
  \meta{haystack} is a comma separated list of integers\\
  \meta{needle} is an integer\\
  Executes \meta{True} if \meta{needle} is found in \meta{haystack}
  else executes \meta{False}
 \end{docCommand}
-\begin{docCommand}{exerciseFile}{}
+\begin{docCommand}{exerciseFile}{}\addcontentsline{toc}{subsubsection}{\refCom{exerciseFile}}
+
 This is a `read-only' macro that contains the name of the current exerciseFile
 \end{docCommand}
-\subsection{Making sets}
-\begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}
- This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
- \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
- \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
-\begin{dispListing}
- \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
-\end{dispListing}
-\end{docCommand}
-\begin{docCommand}{about}{\marg{text}}
-This contains information about an exercise set. It is intended to be on the top of an
-exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
-\end{docCommand}
-\begin{docCommand}{sprite}{\oarg{PiP}}
- This is a way to visualize all exercises. It takes one optional argument which is how many pages
- inside one page. Defaults to 4
- \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
-\end{docCommand}
-\begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}
-As you can see in the intro section of the documentation, this is for excluding partproblems
-To be used in \refCom{makeset}
-\end{docCommand}
-\begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}
-As you can see in the intro section of the documentation, this is for cherry picking partproblems
-To be used in \refCom{makeset}
-\end{docCommand}
-\begin{docCommand}{exec}{\marg{macros}}
-You can use this in \dac{makeset} to execute commands between problems.
-E.g. to insert a new page in between two problems when using nohead:
-\begin{dispListing}
-\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
-\end{dispListing}
-\end{docCommand}
-\begin{docCommand}{setName}{}
-This variable prints out the name of your set that you sent to \dac{buildset}.
-The following example prints "Exercise set number 1" and "Exercise set number 2" on the top of each set
-\begin{dispListing}
-\At\StartBuildset{
- Exercise set number \setName
-}
- %... \makesets here ...%
-\begin{document}
- \buildset{1}{myexercise}
- \buildset{2}{myexercise}
-\end{document}
-\end{dispListing}
-\end{docCommand}
-\begin{docCommand}{pplabel}{\marg{label}}
-Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
-\end{docCommand}
-\begin{docCommand}{ppref}{\marg{label}}
-Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
-\end{docCommand}
-\begin{docCommand}{ppref}{\marg{label}}
- Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
-\end{docCommand}
-\subsection{Counters}
+\filbreak\subsection{Counters}
 \docCounter{problemcounter}-counter holds the current problem number and
 \docCounter{partproblemcounter}-counter holds the current partproblem \emph{number}.
+\filbreak\subsection{Macro definitions}
+
+ \addcontentsline{mac}{macro}{\refCom{At}}{}
+\addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
+\addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
+\addcontentsline{mac}{macro}{\refCom{Trigger}}{}
+\addcontentsline{mac}{macro}{\refCom{about}}{}
+\addcontentsline{mac}{macro}{\refCom{exclude}}{}
+\addcontentsline{mac}{macro}{\refCom{exec}}{}
+\addcontentsline{mac}{macro}{\refCom{exerciseFile}}{}
+\addcontentsline{mac}{macro}{\refCom{exercisebanksetup}}{}
+\addcontentsline{mac}{macro}{\refCom{isin}}{}
+\addcontentsline{mac}{macro}{\refCom{makeset}}{}
+\addcontentsline{mac}{macro}{\refCom{ownLineNoSpacesGotIt}}{}
+\addcontentsline{mac}{macro}{\refCom{pplabel}}{}
+\addcontentsline{mac}{macro}{\refCom{ppref}}{}
+\addcontentsline{mac}{macro}{\refCom{pref}}{}
+\addcontentsline{mac}{macro}{\refCom{select}}{}
+\addcontentsline{mac}{macro}{\refCom{setExercisesDir}}{}
+\addcontentsline{mac}{macro}{\refCom{setName}}{}
+\addcontentsline{mac}{macro}{\refCom{sprite}}{}
+\addcontentsline{mac}{macro}{\refCom{translateExBank}}{}
+
+ \macrotable
+
 
 \section{Changelog}
 %!TEX root = exercisebank-doc.tex
@@ -386,5 +449,9 @@ v0.1.1&2018/04/13&\begin{itemize}
   \item Bug fix: \dac{sprite} wouldn't build correctly
   \item Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}
 \end{itemize}\\
+  v0.1.2&2018/04/17&\begin{itemize}
+    \item Fixed bug that \dac{select} and \dac{exclude} not working as expected.
+    \item Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}
+  \end{itemize}\\
 \end{tabularx}
  \end{document}

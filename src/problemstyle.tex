@@ -41,18 +41,19 @@
 	\vspace*{\pMarginBelow}
 }
 \At\EndProblem{
-	\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
+\tighten@paragraph
 }
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
+	\bgroup
 	\begin{addmargin}{\ppMargin}
-		\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
 		\begin{itemize}
 			\item[\exbank@opt@partProblemHeader]
 }
 \At\EndPartproblem{
 		\end{itemize}
 	\end{addmargin}
+	\egroup\tighten@paragraph
 	\vspace*{\pMarginBelow}%
 }
 
