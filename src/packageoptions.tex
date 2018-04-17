@@ -40,6 +40,7 @@ switches/.cd,
   \pgfkeys{/exbanksetup, #1}%
 }
 \exercisebanksetup{default}
+\def\tighten@paragraph{\if\exbank@opt@tightenparagraphs\@isTrue\relax\filbreak\else\relax\fi}
 %: Here is a list of the different keys and their meaning
 %:\keyDef{part problems}{On/Off}{On}{
 %: This is whether or not to do part problems. E.g. 1a), 1b) etc.
