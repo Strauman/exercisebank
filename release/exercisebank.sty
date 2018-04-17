@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v>0.1.1-edge (2018/04/14) - build 65
+%% The LaTeX package exercisebank - version v0.1.1+ (2018/04/17) - build 66
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,8 +13,8 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/14 v>0.1.1-edge Creates a setup that gives freedom in making sets and exercises.]
-\PackageWarningNoLine{exercisebank-v>0.1.1-edge}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\ProvidesPackage{exercisebank}[2018/04/17 v0.1.1+ Creates a setup that gives freedom in making sets and exercises.]
+\PackageWarningNoLine{exercisebank-v0.1.1+}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -56,6 +56,7 @@ switches/.cd,
 \newcommand\exercisebanksetup[1]{  \pgfkeys{/exbanksetup, #1}%
 }
 \exercisebanksetup{default}
+\def\tighten@paragraph{\if\exbank@opt@tightenparagraphs\@isTrue\relax\filbreak\else\relax\fi}
 \pgfkeys{ /exbanki18n/.is family, /exbanki18n,
   default/.style = {Problem = Problem, Solution = Solution},
   Problem/.estore in = \@tr@Problem,
@@ -113,17 +114,18 @@ switches/.cd,
 	\end{addmargin}
 	\vspace*{\pMarginBelow}
 }
-\At\EndProblem{	\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
+\At\EndProblem{\tighten@paragraph
 }
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
+	\bgroup
 	\begin{addmargin}{\ppMargin}
-		\if\exbank@opt@tightenparagraphs\isTrue\filbreak\fi
 		\begin{itemize}
 			\item[\exbank@opt@partProblemHeader]
 }
 \At\EndPartproblem{		\end{itemize}
 	\end{addmargin}
+	\egroup\tighten@paragraph
 	\vspace*{\pMarginBelow}%
 }
 \At\BeginSolution{	\vspace*{1em}
@@ -214,7 +216,7 @@ switches/.cd,
     \Trigger\EndIntro
     \endgroup
   \fi
-  \vspace*{1em}
+  \vspace*{1em}\tighten@paragraph
 }
 \gdef\isin#1#2#3#4{  \def\needle{#2}
   \def\haystack{#1}
