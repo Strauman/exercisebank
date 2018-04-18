@@ -7,7 +7,7 @@
 \let\ea = \expandafter
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
-\def\emptyList{-1}
+\gdef\emptyList{0}
 
 \begingroup\lccode`\|=`\\
 \lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
@@ -15,11 +15,11 @@
 %
 \gdef\ifppMode#1{
   \def\mname{\macroname{#1}}
-  \if\mname\ppMode
+  \strif\mname\ppMode
 }
 \gdef\isppMode#1#2{
   \edef\mname{\macroname{#1}}
-  \if{\macroname{#1}}\ppMode#2\fi
+  \strif{\macroname{#1}}{\ppMode}\relax#2\fi
 }
 \gdef\@noneofone#1{}
 \gdef\@noneOfTwo#1#2{}
@@ -39,8 +39,8 @@
 \let\ipm\@ifppMode
 \let\T@\isTrue
 \let\F@\isFalse
-\At\DecideProblemDisplay{
-  \if\ppList\emptyList
+\At\DecideProblemDisplay{%
+  \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
     \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
   \else
     \isin{\ppList}{\themetacounter}{
@@ -65,6 +65,13 @@
 % \@listOfSets for use in \sprite
 \gdef\@listOfSets{}
 \gdef\@spriteMode{\isFalse}
+\gdef\exbank@spriteSets{\emptyList}
+%:=\spritesets{setlist}
+%: This is a command that is used by sprite to determine what sets are shown in sprite. If this is not given, sprite uses all sets given in \makset
+%:-
+\long\gdef\spritesets#1{
+  \gdef\exbank@spriteSets{#1}
+}
 %% Generates sets that can be iterated over
 %% \makeset[intro|nohead]{\select{path/to/file}{1,2}, \exclude{file}{1,2}, file}
 %% Where file is a file in the \setExercisesDir-folder (default it's the same folder you have the file). See  and 1,2 are the part problem numbers
@@ -107,13 +114,23 @@
 \gdef\@spriteMode{\isTrue}
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
 \pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
-\edef\@thelist{\ea\@secondoftwo\@listOfSets}
+\ifnum\pdfstrcmp{\exbank@spriteSets}{\emptyList}=\z@\relax%
+  \edef\@thelist{\ea\@secondoftwo\@listOfSets}
   \foreach \set in \@thelist{
     \edef\theset{{\set}}
     \if\theset\empty\relax\else%
     \buildset{\set}%
     \fi%
   }
+\else
+  \edef\@thelist{\exbank@spriteSets}
+  \foreach \set in \@thelist{
+    \edef\theset{{\set}}
+    \if\theset\empty\relax\else%
+    \buildex{\set}%
+    \fi%
+  }
+\fi
 }
 %:§ref
 %:=\exerciseFile
@@ -127,7 +144,7 @@
     \gdef\exerciseFile{#2}
     \gdef\ppMode{#3}
   \else
-    \gdef\ppList{}
+    \gdef\ppList{\emptyList}
     \gdef\exerciseFile{#2}
     \gdef\ppMode{\pm@Normal}
 \fi
@@ -210,8 +227,8 @@
   \foreach \exerciseFileInfo in \setlist{
     \def\continueLoop{\isTrue}
     % \inspw\exerciseFileInfo
-    %% ppList is -1 if it's not a list
-    \gdef\ppList{-1}
+    %% ppList is 0 if it's not a list
+    \gdef\ppList{\emptyList}
     %% Counter used for iterating over partproblems
     %% (Cant' use partproblemcounter since some of them might be excluded)
     \setcounter{metacounter}{0}
@@ -234,6 +251,7 @@
         \redef{\exerciseFileInfo}{normal}
         \def\continueLoop{\isTrue}
     \fi\fi
+    \Trigger\InputExercise
     \if\continueLoop\isTrue
 
     %% TRIGGER EVERTYHING
@@ -247,7 +265,6 @@
 
 %:$triggers.=\Trigger\EndBuildset:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
 
-    \Trigger\InputExercise
     \if\nohead\isFalse
       \if\@spriteMode\isFalse
         \Trigger\BeginProblem
