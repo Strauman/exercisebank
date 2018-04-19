@@ -11,9 +11,8 @@
 \At\PathControl{
   \makeatletter
   \xdef\figuresPath{\@figrootDir/}
-  %^ Done right beforw every exercise file is input
-  % Parse file and add /path/to/current/exercise.tex
-  % and /path/to/current/ to the input stream
+  % Parse file and add \@figrootDir/path/to/directoryWithSameNameAsExerciseFile/
+  % and \@figrootDir/path/to/ to the input stream
   \edef\exfile{\exerciseFile}
   \expandafter\filename@parse{\exfile}
   \xdef\fileInputPath{\figuresPath\filename@area}
