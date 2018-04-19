@@ -8,7 +8,7 @@
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
 \gdef\emptyList{0}
-
+\global\let\keep\noexpand
 \begingroup\lccode`\|=`\\
 \lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
 \newcommand{\macroname}[1]{\expandafter\removebs\string#1}
@@ -172,18 +172,20 @@
 %% Commands that can be sent to makeset
 %% Problem header
 \gdef\exbank@def@makeset@command#1#2{%
-\gdef#1{\if\@spriteMode\isFalse?\expandafter\unexpanded{#2}\else?\relax\fi}
+  \edef\macroname{\exbank@macroname{#1}}%
+  \xdef#1{\unexpanded\expandafter{\ea\keep\csname @\macroname\endcsname}}%
+  \ea\gdef\csname @\macroname\endcsname{#2}%
 }
 \let\exbank@isFirstProblem\isTrue
-\exbank@def@makeset@command{\phead}{%
-  \if\exbank@isFirstProblem\isTrue%
-    \let\exbank@isFirstProblem\isFalse%
-  \else%
-    \Trigger\EndProblem%
-  \fi%
-  \Trigger\BeginProblem%
-  \Trigger\VeryBeginProblem%
-}
+\exbank@def@makeset@command{\phead}{PHEAD}%
+  % \if\exbank@isFirstProblem\isTrue%
+  %   \let\exbank@isFirstProblem\isFalse%
+  % \else%
+  %   \Trigger\EndProblem%
+  % \fi%
+  % \Trigger\BeginProblem%
+  % \Trigger\VeryBeginProblem%
+% }
 \exbank@def@makeset@command{\pbreak}{\clearpage}
 %:=\exec{macros}
 %:You can use this in \makeset to execute commands between problems.
