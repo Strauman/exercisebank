@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.1.3-prerelease (2018/04/19) - build 69
+%% The LaTeX package exercisebank - version v0.1.3 (2018/04/19) - build 70
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/19 v0.1.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/04/19 v0.1.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\PackageWarningNoLine{exercisebank-v0.1.3-prerelease}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\PackageWarningNoLine{exercisebank-v0.1.3}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -134,7 +134,8 @@ switches/.cd,
   \xdef\fileInputPath{\figuresPath\filename@area}
   \xdef\fileInputBase{\figuresPath\filename@area\filename@base/}
   \graphicspath{{\fileInputBase}{\fileInputPath}}
-  \@ifundefined{input@path}{\xdef\input@path{{\fileInputBase}{\fileInputPath}}}{}
+  \@dlog{\fileInputBase}
+  \@ifundefined{input@path}{\gdef\input@path{{\fileInputBase}{\fileInputPath}}}{}
 }
 \newlength{\ppLeading}
 \newlength{\pMarginBelow}
