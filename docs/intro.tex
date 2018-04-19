@@ -65,6 +65,10 @@ Here it's important to note that the [intro] argument would not make the intros 
 \makeset[intro]{myExerciseSet}{\exclude{myexercise}{1}}
 \end{dispListing}
 So we're excluding the partproblem 1. But that's the intro when we send the [intro] optional argument
+
+\subsection{Displaying numbers}
+If you have many part problems, counting the problem numbers can be a real hassle. Just use \dac{ShowNumbers}, and a big number will appear in front of every part problem!
+
 \subsection{Multiple}
 In \dac{makeset} you can just separate exercises with commas! Here is an example:
 
@@ -114,6 +118,20 @@ Maybe you want to see what files are what problems. One way to do that is hook i
 \end{dispListing}
 
 Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
+
+\subsection{Dynamic figure path}
+Exercisebank automatically allows you to \dac{input} and \dac{includegraphics} from
+the same as exercise is in. E.g. if you have a declared the option
+\begin{dispListing}
+\exercisebanksetup{exercise directory=exercises}
+\end{dispListing}
+ and you have a file \texttt{exercises/somedir/myexercise.tex}, you can put a figure in \texttt{exercises/somedir/} or make a directory with the same name as the file \texttt{exercises/somedir/myexercise/}. Then if you put a figure  \texttt{exercises/somedir/myfig.png} or \texttt{exercises/somedir/myexercise/myfig.png} you can just do
+\begin{dispListing}
+  \includegraphics{myfig}
+\end{dispListing}
+
+You can change the root dir by doing \\
+\dac{exercisebanksetup}\brackets{\refKey{figure root directory}=figures}. See the \refKey{figure root directory} key for more info.
 
 That covers the basics. Enjoy
 \begin{marker}

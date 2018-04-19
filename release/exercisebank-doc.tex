@@ -1,5 +1,5 @@
-%% exercisebank v0.1.2b67 - 2018/04/17
-%% The LaTeX package exercisebank - version v0.1.2 (2018/04/17) build 67
+%% exercisebank v0.1.3-prereleaseb68 - 2018/04/19
+%% The LaTeX package exercisebank - version v0.1.3-prerelease (2018/04/19) build 68
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -66,7 +66,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.2{\\[-0.5em]\footnotesize(build 67)}}}
+\title{{exercisebank - manual\\ v0.1.3-prerelease{\\[-0.5em]\footnotesize(build 68)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -142,6 +142,10 @@ Here it's important to note that the [intro] argument would not make the intros 
 \makeset[intro]{myExerciseSet}{\exclude{myexercise}{1}}
 \end{dispListing}
 So we're excluding the partproblem 1. But that's the intro when we send the [intro] optional argument
+
+\subsection{Displaying numbers}
+If you have many part problems, counting the problem numbers can be a real hassle. Just use \dac{ShowNumbers}, and a big number will appear in front of every part problem!
+
 \subsection{Multiple}
 In \dac{makeset} you can just separate exercises with commas! Here is an example:
 
@@ -192,6 +196,20 @@ Maybe you want to see what files are what problems. One way to do that is hook i
 
 Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
 
+\subsection{Dynamic figure path}
+Exercisebank automatically allows you to \dac{input} and \dac{includegraphics} from
+the same as exercise is in. E.g. if you have a declared the option
+\begin{dispListing}
+\exercisebanksetup{exercise directory=exercises}
+\end{dispListing}
+ and you have a file \texttt{exercises/somedir/myexercise.tex}, you can put a figure in \texttt{exercises/somedir/} or make a directory with the same name as the file \texttt{exercises/somedir/myexercise/}. Then if you put a figure  \texttt{exercises/somedir/myfig.png} or \texttt{exercises/somedir/myexercise/myfig.png} you can just do
+\begin{dispListing}
+  \includegraphics{myfig}
+\end{dispListing}
+
+You can change the root dir by doing \\
+\dac{exercisebanksetup}\brackets{\refKey{figure root directory}=figures}. See the \refKey{figure root directory} key for more info.
+
 That covers the basics. Enjoy
 \begin{marker}
 \dac{begin}\{problem\},\dac{end}\{problem\},\\
@@ -220,8 +238,12 @@ Turns on the solutions, so they are shown.
 Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 \end{docEnvironment}
 \filbreak\subsection{Making sets}
+\begin{docCommand}{spritesets}{\marg{setlist}}\addcontentsline{toc}{subsubsection}{\refCom{spritesets}}
+
+ This is a command that is used by sprite to determine what sets are shown in sprite. If this is not given, sprite uses all sets given in \dac{makset}
+\end{docCommand}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}\addcontentsline{toc}{subsubsection}{\refCom{makeset}}
-\updated{v0.1.1\\2018/04/13 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
@@ -241,17 +263,17 @@ exercise, explaining short what the exercise is about. It's only visible when us
  \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
 \end{docCommand}
 \begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{exclude}}
-\updated{v0.1.2\\2018/04/17 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
 As you can see in the intro section of the documentation, this is for excluding partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{select}}
-\updated{v0.1.2\\2018/04/17 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
-\defnew{v0.1.1\\2018/04/13 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
 You can use this in \dac{makeset} to execute commands between problems.
 E.g. to insert a new page in between two problems when using nohead:
 \begin{dispListing}
@@ -319,8 +341,22 @@ You can do a lot of configurations on this package, and probably
 \keyDef{solution header}{string}{see below}{
 \dac{large}\{\dac{textbf}{\dac{@tr}{Solution\}:}}
 }
-\keyDef{exercise directory}{string}{./}{
+\keyDef{exercise directory}{dir}{./}{
 This key is used for setting the default exercise directory.
+}
+\keyDef{figure root directory}{dir}{\meta{exercise directory}}{
+Exercisebank automatically allows you to \dac{input}{} and \dac{includegraphics}{} from
+the same folder folder that your exercise is in, as well as a folder with the
+same name as the exercise file. This is elaborated in the intro section.
+However, you might want to put the figures inside a different directory.
+For example if you have one directory containing your problems called \texttt{exercises/},
+set with \refKey{exercise directory}, and a file containing the exercise:
+ \texttt{exercises/faradaysLaw/ACGenerate.tex}.
+Then by default figures in the directories \texttt{exercises/faradaysLaw/} and
+\texttt{exercises/faradaysLaw/ACGenerate/} can be included by just doing \dac{includegraphics}.
+And if you want to change the root of this directory to be \texttt{figures}, such that
+exercisebank looks for figures in \texttt{figures/faradaysLaw/} and \texttt{figures/faradaysLaw/ACGenerate/}
+You would use this option in the setup: \dac{exercisebanksetup}\{figure root directory=figures\}
 }
 \begin{dispListing}
  \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
@@ -341,7 +377,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Triggers}
 \begin{docCommand}{Trigger}{\marg{Any Macro}}\addcontentsline{toc}{subsubsection}{\refCom{Trigger}}
-\updated{v0.1.1\\2018/04/13 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
  See \refCom{At}\\
  Available triggers:\\
 \dac{Trigger}\dac{BeginPartproblem}:\\ Triggers before a partproblem is inserted\\
@@ -366,21 +402,21 @@ This is to annoy the user enough to get his attention about the requirements of 
 This is the directory, relative to the file you included the package,
 where the package should be looking for exercises. Default is the same directory as your main file (the one you build).
 \end{docCommand}
-This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
-\begin{docCommand}{At}{\marg{AnyMacro}}
-\updated{v0.1.2\\2018/04/17 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
-\begin{dispListing}
- \At\BeginSomething{DoSomething}
- Which is triggered with
- \Trigger\BeginSomething, this evaluates to DoSomething
-\end{dispListing}
-\end{docCommand}
 \begin{docCommand}{isin}{\marg{haystack}\marg{needle}\marg{True}\marg{False}}\addcontentsline{toc}{subsubsection}{\refCom{isin}}
 
  \meta{haystack} is a comma separated list of integers\\
  \meta{needle} is an integer\\
  Executes \meta{True} if \meta{needle} is found in \meta{haystack}
  else executes \meta{False}
+\end{docCommand}
+This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
+\begin{docCommand}{At}{\marg{AnyMacro}}
+\updated{v0.1.3-prerelease\\2018/04/19 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
+\begin{dispListing}
+ \At\BeginSomething{DoSomething}
+ Which is triggered with
+ \Trigger\BeginSomething, this evaluates to DoSomething
+\end{dispListing}
 \end{docCommand}
 \begin{docCommand}{exerciseFile}{}\addcontentsline{toc}{subsubsection}{\refCom{exerciseFile}}
 
@@ -410,6 +446,7 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 \addcontentsline{mac}{macro}{\refCom{setExercisesDir}}{}
 \addcontentsline{mac}{macro}{\refCom{setName}}{}
 \addcontentsline{mac}{macro}{\refCom{sprite}}{}
+\addcontentsline{mac}{macro}{\refCom{spritesets}}{}
 \addcontentsline{mac}{macro}{\refCom{translateExBank}}{}
 
  \macrotable
@@ -452,6 +489,10 @@ v0.1.1&2018/04/13&\begin{itemize}
   v0.1.2&2018/04/17&\begin{itemize}
     \item Fixed bug that \dac{select} and \dac{exclude} not working as expected.
     \item Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}
+  \end{itemize}\\
+  v0.1.3-prerelease&2018/04/19&\begin{itemize}
+    \item Added custom dynamic figure path \refKey{figure root directory}.
+    \item Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.
   \end{itemize}\\
 \end{tabularx}
  \end{document}

@@ -11,15 +11,26 @@
 \input{texpack}
 \exercisebanksetup{exercise directory=../exercises}
 \usepackage{lipsum}
-
-% \makeset[nohead,intro]{1}{\phead,\exclude{secondexercise}{2,3}, firstexercise, \select{thirdexercise}{1,2}}
-% \makeset[nohead,intro]{1}{\phead,\exclude{secondexercise}{2,3},secondexercise}
-\makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
-
-% \makeset[intro,nohead]{2}{\phead,\select{thirdexercise}{1,2,3},\exclude{secondexercise}{2,3},\exec{\newpage}\phead,\select{firstexercise}{1}}
-% \makeset[intro]{2}{\exclude{secondexercise}{1}}
+\ShowNumbers
+\def\hello{Hello}
+% Testing all makeset functions
+\makeset[nohead,intro]{11}{%
+\phead,
+\exclude{secondexercise}{2,3},
+\pbreak,
+\phead,firstexercise,
+\select{thirdexercise}{1,2},
+\exec{\hello WORLD}}
+% Different function tests
+% \makeset[nohead,intro]{11}{\phead,\exclude{secondexercise}{2,3},secondexercise}
+% \makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
+% \makeset[nohead,intro]{11}{thirdexercise}
+% \makeset[nohead,intro]{11}{\phead}
+\makeset[nohead,intro]{12}{\phead,thirdexercise, secondexercise, firstexercise}
+\At\StartBuildset{
+BEFORE THE SET
+}
 \begin{document}
 \buildset{11}
 % \sprite
-% A
 \end{document}

@@ -30,3 +30,12 @@
 \select
 \exclude
 \ShowNumbers
+:@@VERSION:@@DATE
+\makeset
+\select
+\exclude
+\exec
+\pbreak
+\phead
+\At
+\Trigger
