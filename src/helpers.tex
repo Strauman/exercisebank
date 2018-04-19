@@ -1,0 +1,64 @@
+%!TEX root = main.tex
+\makeatletter
+\edef\@isTrue{1}
+\edef\@isFalse{0}
+% This file contains the definition of the \isin macro
+%:§ref
+%:=\isin{haystack}{needle}{True}{False}
+%: \meta{haystack} is a comma separated list of integers\\
+%: \meta{needle} is an integer\\
+%: Executes \meta{True} if \meta{needle} is found in \meta{haystack}
+%: else executes \meta{False}
+%:-
+% #1: haystack
+% #2: needle
+% #3: action if found in list
+% #4: action if not found in list
+\gdef\isin#1#2#3#4{
+ \def\needle{#2}
+ \def\haystack{#1}
+ \def\isFalse{0}
+ \let\isInList = \isFalse
+ \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric!}{}\bye\stop}
+ \IfInteger{\haystack}{
+  \ifnum\haystack=\needle\relax
+   #3
+  \else
+   #4
+  \fi
+ }{
+  \foreach \pp in #1{
+    \ifnum\pp=\needle\relax%
+     \gdef\isInList{1}
+     #3
+    \fi
+   }
+  \if\isInList\isFalse
+   #4
+  \fi
+ }
+}
+
+
+%\strif: Compare two strings
+%\strif\stringA\stringB%
+%TRUE
+%\else
+%FALSE
+%\fi
+\gdef\strif#1#2{%
+ \ifnum\pdfstrcmp{#1}{#2}=\z@\relax%
+}
+% Get macroname of macro
+\let\ea = \expandafter
+\begingroup\lccode`\|=`\\
+\lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
+\gdef\exbank@macroname#1{\expandafter\removebs\string#1}
+\gdef\@noneofone#1{}
+\gdef\@noneoftwo#1#2{}
+
+\@ifundefined{exbank@quiet}{
+ \global\let\@dlog\@latex@warning
+}{
+ \global\let\@dlog\@noneofone
+}

@@ -1,0 +1,23 @@
+%!TEX root = main.tex
+%% Makes figures available within scope of exercise folder.
+%% e.g. the exercise in exercises/ohmslaw/cone.tex only
+%% have to write \input{cylfig} instead of \input{figs/ohmslaw/cone/cylfig}
+\makeatletter
+\xdef\figuresPath{\@figrootDir/}
+\gdef\fileInputPath{}
+\gdef\fileInputBase{}
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{\fileInputBase}{\fileInputPath}}
+\At\PathControl{
+  \makeatletter
+  \xdef\figuresPath{\@figrootDir/}
+  % Parse file and add \@figrootDir/path/to/directoryWithSameNameAsExerciseFile/
+  % and \@figrootDir/path/to/ to the input stream
+  \edef\exfile{\exerciseFile}
+  \expandafter\filename@parse{\exfile}
+  \xdef\fileInputPath{\figuresPath\filename@area}
+  \xdef\fileInputBase{\figuresPath\filename@area\filename@base/}
+  \graphicspath{{\fileInputBase}{\fileInputPath}}
+  \@ifundefined{input@path}{\xdef\input@path{{\fileInputBase}{\fileInputPath}}}{}
+  \makeatother
+}

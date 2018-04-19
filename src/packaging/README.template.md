@@ -23,11 +23,12 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 ### `src/`:
 - [`at.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/at.tex) contains definitions of the `\At` and `\Trigger` command
 - [`envcontrol.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/envcontrol.tex) contains everything to do with controlling environments except from "outsourcing" stuff with `\At` and `\Trigger`: Namely deciding whether or not a problem, intro and/or solution should displayed (which is done in `setbuilder.tex`)
+- [`helpers.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/helper.tex) contains the definition of the `\strif` and `\isin` macro
 - [`i18n.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/i18n.tex) contains everything to do with translation logic.
-- [`isin.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/isin.tex) contains the definition of the `\isin` macro
 - [`main.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/main.tex) is the main file for building during development
 - [`packageoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packageoptions.tex) contains all the macros that are intended for user configuration
 - [`packages.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packages.tex) contains all the external packages used.
+- [`pathcontrol.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pathcontrol.tex) contains the logic that makes figures available within scope of exercise folder.
 - [`pplabel.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pplabel.tex)  contains definition of custom labeling and referring of problems.
 - [`preamble.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/preamble.tex) contains the preamble logic. Mostly including other files.
 - [`problemstyle.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/problemstyle.tex)  contains `\At`-commands that are responsible for formatting exercise headers and exercise-related styles.
