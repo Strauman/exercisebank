@@ -8,24 +8,18 @@
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
 \gdef\emptyList{0}
-
-\begingroup\lccode`\|=`\\
-\lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
-\newcommand{\macroname}[1]{\expandafter\removebs\string#1}
 %
 \gdef\ifppMode#1{
-  \def\mname{\macroname{#1}}
+  \def\mname{\exbank@macroname{#1}}
   \strif\mname\ppMode
 }
 \gdef\isppMode#1#2{
-  \edef\mname{\macroname{#1}}
-  \strif{\macroname{#1}}{\ppMode}\relax#2\fi
+  \edef\mname{\exbank@macroname{#1}}
+  \strif{\exbank@macroname{#1}}{\ppMode}\relax#2\fi
 }
-\gdef\@noneofone#1{}
-\gdef\@noneOfTwo#1#2{}
 % \ppMode is what list mode we're in. Either it's \pm@Exclude or \pm@Select
 \gdef\@ifppMode#1{%
-\ifnum\pdfstrcmp{\macroname{#1}}{\ppMode}=\z@%
+\ifnum\pdfstrcmp{\exbank@macroname{#1}}{\ppMode}=\z@%
 \expandafter\@firstofone%
 \else%
 \expandafter\@noneofone%
@@ -49,7 +43,6 @@
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
     }
   \fi
-  % \inspw\DisplayProblem
 }
 
 %% Makeset arg handler
@@ -138,7 +131,10 @@
 %:-
 %:§makingSets
 %% Sets the variables \ppList and \exerciseFile based on the current set
-\newcommand{\redef}[3][{-1}]{
+\gdef\exbank@setEnv@normal#1{
+\exbank@setEnv{#1}{normal}
+}
+\newcommand{\exbank@setEnv}[3][{-1}]{
   \if\@spriteMode\isFalse%
     \gdef\ppList{#1}
     \gdef\exerciseFile{#2}
@@ -147,11 +143,11 @@
     \gdef\ppList{\emptyList}
     \gdef\exerciseFile{#2}
     \gdef\ppMode{\pm@Normal}
-\fi
+  \fi
 
 }
 %% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
-%% as optional arguments to redef. The last is set as ppMode (exclude/select/mix)
+%% as optional arguments to exbank@setEnv. The last is set as ppMode (exclude/select/mix)
 %:=\exclude{exerciseFileName}{Comma separated numbers}
 %:As you can see in the intro section of the documentation, this is for excluding partproblems
 %:To be used in \refCom{makeset}
@@ -172,10 +168,12 @@
 %% Commands that can be sent to makeset
 %% Problem header
 \gdef\exbank@def@makeset@command#1#2{%
-\gdef#1{\if\@spriteMode\isFalse?\expandafter\unexpanded{#2}\else?\relax\fi}
+  \edef\macroname{\exbank@macroname{#1}}%
+  \xdef#1{?{@\macroname}}%
+  \ea\gdef\csname @\macroname\endcsname{#2}%
 }
 \let\exbank@isFirstProblem\isTrue
-\exbank@def@makeset@command{\phead}{%
+\exbank@def@makeset@command{\phead}{
   \if\exbank@isFirstProblem\isTrue%
     \let\exbank@isFirstProblem\isFalse%
   \else%
@@ -190,12 +188,12 @@
 %:E.g. to insert a new page in between two problems when using nohead:
 %:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
 %:-
-\gdef\exec#1{\if\@spriteMode\isFalse?\unexpanded{#1}\else?\relax\fi}
+\xdef\exec#1{:{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \newcommand\buildset[2][]{
   \def\oarg{#1}
-  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@latex@warning{Counting intros}}
+  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
   %% Setting the global setName
 %:=\setName
@@ -223,46 +221,68 @@
   \if\@spriteMode\isFalse
     \Trigger\StartBuildset
   \fi
-  %% Loop through list
+  % ---- BEGIN setlist divider ----%
+  % The following code distinguish between the different things that can be sent to \makeset.
+  % At time of writing that is:
+  % \select, \exclude, \exec, or makeset@commands: \pbreak and \phead
+  % \select and \exclude expands to [#2]{#1}{select|exclude} i.e. \exclude{file}{1,2,3} -> [1,2,3]{file}{exclude}
+  % and are se to exbank@setEnv for parsing. The last expanded "argument" is the \@ppmode
+  % or exclude / select eg [1,3]{some,ex}{select}
+  % makesetcommands are expanded to ?{@somecommand}, where @somecommand is to be executed.
+  % e.g. \phead -> ?{@phead} and the code runs \@phead at appropriate time.
+  % For \exec, it expands to :{#1}, and the code runs #1 at appropriate time.
+  % e.g. \exec{\textbf{HELLO}} -> :{\textbf{HELLO}}.
+  % So if the first character of the current item in the list is a ? or :
+  % then execute makeset@command or exec respectively.
+  % However, if it's a [, then \select or \exclude is invoked and send this to exbank@setEnv with the args.
+  % else it's a normal filename and should be sent as \exbank@setEnv{THEFILENAME}{normal}, where normal
+  % tells the rest of the program that all exercises should be included.
+  %
+  % Is it a makeset@command?
+  \gdef\@delegateFileInfo{\@ifnextchar?\@execute@makeset@command\@is@exec}
+  % Is it an exec command?
+  \def\@is@exec{\@ifnextchar:\@execute@exec\@is@file}
+  % Is it a \select/\exclude or is it just a filename?
+  \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}
+  \gdef\X@exb@setEnv##1{%
+    \def\continueLoop{\isTrue}%
+    \@dlog{Processing normal file "\exerciseFileInfo.tex"}%
+    \exbank@setEnv@normal{\exerciseFileInfo}\bgroup\nullfont%
+  }
+  \gdef\exb@setEnv@withOptargs{%
+    \def\continueLoop{\isTrue}\ea\exbank@setEnv\exerciseFileInfo\bgroup\nullfont%
+  }
+
+  \gdef\@execute@makeset@command ?##1{%
+    \edef\inner{\@firstofone##1}
+    \@dlog{Executing macro \@backslashchar\@gobble##1}
+    \csname \inner\endcsname
+    #1\def\continueLoop{\isFalse}\ea\bgroup
+  }
+  \def\@execute@exec:#1{#1\bgroup}
+%% Loop through list
   \foreach \exerciseFileInfo in \setlist{
     \def\continueLoop{\isTrue}
-    % \inspw\exerciseFileInfo
-    %% ppList is 0 if it's not a list
+    %% ppList is \emptyList (0) if it's not a list
     \gdef\ppList{\emptyList}
     %% Counter used for iterating over partproblems
     %% (Cant' use partproblemcounter since some of them might be excluded)
     \setcounter{metacounter}{0}
     %% Checking whether we have optional args
     %% I.e. one of the arguments are sent via \exclude
-    %% And then send it to \redef
-    \StrLeft{\exerciseFileInfo}{1}[\firstchar]%
-    \if[\firstchar%
-      %If \exerciseFileInfo starts with a [, then optional arguments
-      %that are to be sent to \redef. That is from \exclude or \select
-      \ea\redef\exerciseFileInfo\relax
-      \def\continueLoop{\isTrue}
-    \else\if?\firstchar% if it starts with a ?, then it's a macro to be executed
-        % Execute given macro only if not spritemode
-        \if\@spriteMode\isFalse%
-          \expandafter\@secondoftwo\exerciseFileInfo%
-        \fi%
-      \def\continueLoop{\isFalse}
-    \else
-        \redef{\exerciseFileInfo}{normal}
-        \def\continueLoop{\isTrue}
-    \fi\fi
+    %% And then send it to \exbank@setEnv
+    %If \exerciseFileInfo starts with a [, then optional arguments
+    %that are to be sent to \exbank@setEnv. That is from \exclude or \select
+    \ea\@delegateFileInfo\exerciseFileInfo\egroup
     \Trigger\InputExercise
     \if\continueLoop\isTrue
 
-    %% TRIGGER EVERTYHING
+%% TRIGGER EVERTYHING
+  \Trigger\PathControl
 %:$triggers.=\Trigger\InputExercise:\\ Triggers before a file is included\\\
-
 %:$triggers.=\Trigger\BeginProblem:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
-
 %:$triggers.=\Trigger\EndProblem:\\ Triggers right after problem is included if [nohead] \emph{not} given\\
-
 %:$triggers.=\Trigger\BeginBuildset:\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
-
 %:$triggers.=\Trigger\EndBuildset:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
 
     \if\nohead\isFalse

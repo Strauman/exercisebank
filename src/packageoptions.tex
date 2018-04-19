@@ -19,9 +19,11 @@ default/.style = {
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
+  figure root directory=\@exercisesDir,
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
+figure root directory/.estore in = \@figrootDir, %<- excepted from opt-syntax
 % Unexpanded macros
 problem header/.store in = \exbank@opt@problemHeader,
 part problem header/.store in = \exbank@opt@partProblemHeader,
@@ -70,8 +72,22 @@ switches/.cd,
 %:\keyDef{solution header}{string}{see below}{
 %:\large{\textbf{\@tr{Solution}:}}
 %:}
-%:\keyDef{exercise directory}{string}{./}{
+%:\keyDef{exercise directory}{dir}{./}{
 %:This key is used for setting the default exercise directory.
+%:}
+%:\keyDef{figure root directory}{dir}{\meta{exercise directory}}{
+%:Exercisebank automatically allows you to \input{} and \includegraphics{} from
+%:the same folder folder that your exercise is in, as well as a folder with the
+%:same name as the exercise file. This is elaborated in the intro section.
+%:However, you might want to put the figures inside a different directory.
+%:For example if you have one directory containing your problems called \!texttt{exercises/},
+%:set with \refKey{exercise directory}, and a file containing the exercise:
+%: \!texttt{exercises/faradaysLaw/ACGenerate.tex}.
+%:Then by default figures in the directories \!texttt{exercises/faradaysLaw/} and
+%:\!texttt{exercises/faradaysLaw/ACGenerate/} can be included by just doing \includegraphics.
+%:And if you want to change the root of this directory to be \!texttt{figures}, such that
+%:exercisebank looks for figures in \!texttt{figures/faradaysLaw/} and \!texttt{figures/faradaysLaw/ACGenerate/}
+%:You would use this option in the setup: \exercisebanksetup{figure root directory=figures}
 %:}
 %:! \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
 %:-
