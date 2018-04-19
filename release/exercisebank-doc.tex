@@ -1,5 +1,5 @@
-%% exercisebank v0.1.3b70 - 2018/04/19
-%% The LaTeX package exercisebank - version v0.1.3 (2018/04/19) build 70
+%% exercisebank v0.1.3-prereleaseb70 - 2018/04/19
+%% The LaTeX package exercisebank - version v0.1.3-prerelease (2018/04/19) build 70
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -66,7 +66,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.3{\\[-0.5em]\footnotesize(build 70)}}}
+\title{{exercisebank - manual\\ v0.1.3-prerelease{\\[-0.5em]\footnotesize(build 70)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -243,7 +243,7 @@ Sometimes you'd want to introcude your exercises and tell a little bit about it.
  This is a command that is used by sprite to determine what sets are shown in sprite. If this is not given, sprite uses all sets given in \dac{makset}
 \end{docCommand}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}\addcontentsline{toc}{subsubsection}{\refCom{makeset}}
-\updated{v0.1.3\\2018/04/19 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
@@ -263,17 +263,17 @@ exercise, explaining short what the exercise is about. It's only visible when us
  \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
 \end{docCommand}
 \begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{exclude}}
-\updated{v0.1.3\\2018/04/19 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
 As you can see in the intro section of the documentation, this is for excluding partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{select}}
-\updated{v0.1.3\\2018/04/19 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
-\updated{v0.1.3\\2018/04/19 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
 You can use this in \dac{makeset} to execute commands between problems.
 E.g. to insert a new page in between two problems when using nohead:
 \begin{dispListing}
@@ -377,7 +377,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Triggers}
 \begin{docCommand}{Trigger}{\marg{Any Macro}}\addcontentsline{toc}{subsubsection}{\refCom{Trigger}}
-\updated{v0.1.3\\2018/04/19 }
+\updated{v0.1.3-prerelease\\2018/04/19 }
  See \refCom{At}\\
  Available triggers:\\
 \dac{Trigger}\dac{BeginPartproblem}:\\ Triggers before a partproblem is inserted\\
@@ -411,7 +411,7 @@ where the package should be looking for exercises. Default is the same directory
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
-\updated{v0.1.3\\2018/04/19 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
+\updated{v0.1.3-prerelease\\2018/04/19 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
 \begin{dispListing}
  \At\BeginSomething{DoSomething}
  Which is triggered with
@@ -490,7 +490,7 @@ v0.1.1&2018/04/13&\begin{itemize}
     \item Fixed bug that \dac{select} and \dac{exclude} not working as expected.
     \item Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}
   \end{itemize}\\
-  v0.1.3&2018/04/19&\begin{itemize}
+  v0.1.3-prerelease&2018/04/19&\begin{itemize}
     \item Added custom dynamic figure path \refKey{figure root directory}.
     \item Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.
   \end{itemize}\\
