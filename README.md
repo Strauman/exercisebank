@@ -5,7 +5,7 @@ This is the documentation for version v0.1.3-prerelease, and might not be the sa
 
 # Versions
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
-GitHub at version: v0.1.3-prerelease (2018/04/19) build 68
+GitHub at version: v0.1.3-prerelease (2018/04/19) build 69
 
 CTAN at version: v0.1.1 (2018/04/13) build 62
 
