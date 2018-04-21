@@ -1,5 +1,5 @@
-%% exercisebank v0.1.3-prereleaseb70 - 2018/04/19
-%% The LaTeX package exercisebank - version v0.1.3-prerelease (2018/04/19) build 70
+%% exercisebank v0.1.3b71 - 2018/04/21
+%% The LaTeX package exercisebank - version v0.1.3 (2018/04/21) build 71
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -44,14 +44,52 @@
     drop fuzzy shadow,#1}
   \def\l@macro#1#2{#1\hfill\newline}
 \newcommand\macrotable{\hypersetup{linkcolor=black}\@starttoc{mac}\hypersetup{linkcolor=Definition}}
+
+% --- CHANGELOG TABLE --- %
+\newcommand*\l@version[2]{%
+  \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty
+    \addvspace{1.0em \@plus\p@}%
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode \bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{}\par
+    \endgroup
+  \fi}
+  \newcommand*\l@change[2]{%
+    \ifnum \c@tocdepth >\z@
+      \addpenalty\@secpenalty
+      \addvspace{0.5em \@plus\p@}%
+      \setlength\@tempdima{1.5em}%
+      \begingroup
+        \parindent 1.5em \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        --\ #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{#2}\par
+      \endgroup
+    \fi}
+
+\newcommand\chlogtable{\begin{NoHyper}\@starttoc{chlog}\hypersetup{final}\end{NoHyper}}
+\def\newversion#1{\addcontentsline{chlog}{version}{#1}}
+\newcommand\change[2][]{\addtocontents{chlog}{\protect\contentsline{change}{#2}{#1}{section.\thepage}}}
+% --- /CHANGELOG TABLE --- %
+
 \let\oldTOC\tableofcontents
 \renewcommand\tableofcontents{\hypersetup{linkcolor=black}\oldTOC\hypersetup{linkcolor=Definition}}
 \reversemarginpar
 \def\updated#1{\tcbdocmarginnote{\bfseries{\color{blue}U}#1}}
 \def\defnew#1{\tcbdocmarginnote{\bfseries{\color{green}N}#1}}
+
 \makeatother
 \let\dac\docAuxCommand
 \long\def\keyDef#1#2#3#4{\begin{docKey}{#1}{=\meta{#2}}{\meta{default}=#3}#4\end{docKey}}
+\long\def\optDef#1#2{\begin{docKey*}{#1}{}{}#2\end{docKey*}}
 \tcbset{documentation listing style=mydocumentation}
 % Magenta HREF style
 \let\oldhref\href
@@ -66,7 +104,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.3-prerelease{\\[-0.5em]\footnotesize(build 70)}}}
+\title{{exercisebank - manual\\ v0.1.3{\\[-0.5em]\footnotesize(build 71)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -243,7 +281,7 @@ Sometimes you'd want to introcude your exercises and tell a little bit about it.
  This is a command that is used by sprite to determine what sets are shown in sprite. If this is not given, sprite uses all sets given in \dac{makset}
 \end{docCommand}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}\addcontentsline{toc}{subsubsection}{\refCom{makeset}}
-\updated{v0.1.3-prerelease\\2018/04/19 }
+\updated{v0.1.3\\2018/04/20 }
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
@@ -263,17 +301,17 @@ exercise, explaining short what the exercise is about. It's only visible when us
  \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
 \end{docCommand}
 \begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{exclude}}
-\updated{v0.1.3-prerelease\\2018/04/19 }
+\updated{v0.1.3\\2018/04/20 }
 As you can see in the intro section of the documentation, this is for excluding partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{select}}
-\updated{v0.1.3-prerelease\\2018/04/19 }
+\updated{v0.1.3\\2018/04/20 }
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
-\updated{v0.1.3-prerelease\\2018/04/19 }
+\updated{v0.1.3\\2018/04/20 }
 You can use this in \dac{makeset} to execute commands between problems.
 E.g. to insert a new page in between two problems when using nohead:
 \begin{dispListing}
@@ -377,14 +415,14 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Triggers}
 \begin{docCommand}{Trigger}{\marg{Any Macro}}\addcontentsline{toc}{subsubsection}{\refCom{Trigger}}
-\updated{v0.1.3-prerelease\\2018/04/19 }
+\updated{v0.1.3\\2018/04/20 }
  See \refCom{At}\\
  Available triggers:\\
 \dac{Trigger}\dac{BeginPartproblem}:\\ Triggers before a partproblem is inserted\\
 \dac{Trigger}\dac{VeryBeginPartproblem}:\\ Triggers right after \dac{BeginPartproblem}. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \dac{At}\dac{VeryBeginPartproblem}\\
 \dac{Trigger}\dac{InputExercise}:\\ Triggers before a file is included\\\
 \dac{Trigger}\dac{BeginProblem}:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
-\dac{Trigger}\dac{EndProblem}:\\ Triggers right after problem is included if [nohead] \dac{emph}\{not\} given\\
+\dac{Trigger}\dac{EndProblem}:\\ Triggers right after problem is included if [nohead] \emph{not} given\\
 \dac{Trigger}\dac{BeginBuildset}:\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
 \dac{Trigger}\dac{EndBuildset}:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
 
@@ -411,7 +449,7 @@ where the package should be looking for exercises. Default is the same directory
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
-\updated{v0.1.3-prerelease\\2018/04/19 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
+\updated{v0.1.3\\2018/04/20 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
 \begin{dispListing}
  \At\BeginSomething{DoSomething}
  Which is triggered with
@@ -454,45 +492,39 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 
 \section{Changelog}
 %!TEX root = exercisebank-doc.tex
-\begin{tabularx}{\textwidth}{llX}
-  Version&Date&Change\\
-  v0.0.2b11&2018/04/02&Updated documentation syntax.\\
-  v0.0.3b38&2018/04/03&\nobreak\begin{itemize}
-    \item Updated triggers doc
-    \item added trigger \dac{VeryBeginPartproblem}
-  \end{itemize}\\
-  v0.0.3b40&2018/04/03&\begin{itemize}
-    \item Added examples that uses the \dac{At} command.
-      Making front page and other snacks
-  \end{itemize}\\
-  v0.0.4b44&2018/04/03&\begin{itemize}
-    \item Changed design of part problems. (Looks much better now!)
-  \end{itemize}\\
-  v0.0.5b46&2018/04/03&\begin{itemize}
-    \item Fixed partproblems and solutions to fit on pages using \dac{filbreak}.
-  \end{itemize}\\
-  v0.1.0&2018/04/08&\begin{itemize}
-    \item \begin{marker}Backward incompability from v0.0.5:Removed default exercise directory! \end{marker} Use \dac{exercisebanksetup}\brackets{exercise directory=exercises} if you used the package before 2018/04/08!
-    \item Fixed title of documentation to match actual package.
-    \item Fixed weird paragraph styling when displaying solutions
-    \item Added a few package options. More to come!
-  \end{itemize}\\
-\end{tabularx}
-\clearpage
-\begin{tabularx}{\textwidth}{llX}
-v0.1.1&2018/04/13&\begin{itemize}
-  \item Added \dac{exec}, which allows the user to execute macros between problems
-  \item Bug fix: \dac{At} would cause crash due to latexmk multiple builds
-  \item Bug fix: \dac{sprite} wouldn't build correctly
-  \item Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}
-\end{itemize}\\
-  v0.1.2&2018/04/17&\begin{itemize}
-    \item Fixed bug that \dac{select} and \dac{exclude} not working as expected.
-    \item Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}
-  \end{itemize}\\
-  v0.1.3-prerelease&2018/04/19&\begin{itemize}
-    \item Added custom dynamic figure path \refKey{figure root directory}.
-    \item Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.
-  \end{itemize}\\
-\end{tabularx}
+\newversion{v0.0.2b11 2018/04/02}
+  \change{Updated documentation syntax.}
+\newversion{v0.0.3b38 2018/04/03}\nobreak
+    \change{ Updated triggers doc}
+    \change{ added trigger \dac{VeryBeginPartproblem}}
+
+\newversion{v0.0.3b40 2018/04/03}
+    \change{ Added examples that uses the \dac{At} command.}
+    \change{ Making front page and other snacks}
+
+\newversion{v0.0.4b44 2018/04/03}
+    \change{ Changed design of part problems. (Looks much better now!)}
+
+\newversion{v0.0.5b46 2018/04/03}
+    \change{ Fixed partproblems and solutions to fit on pages using \dac{filbreak}.}
+
+\newversion{v0.1.0 2018/04/08}
+    \change{ Fixed title of documentation to match actual package.}
+    \change{ Fixed weird paragraph styling when displaying solutions}
+    \change{ Added a few package options. More to come!}
+
+\newversion{v0.1.1 2018/04/13}
+  \change{ Added \dac{exec}, which allows the user to execute macros between problems}
+  \change{ Bug fix: \dac{At} would cause crash due to latexmk multiple builds}
+  \change{ Bug fix: \dac{sprite} wouldn't build correctly}
+  \change{ Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}}
+
+\newversion{v0.1.2 2018/04/17}
+    \change{ Fixed bug that \dac{select} and \dac{exclude} not working as expected.}
+    \change{ Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}}
+
+\newversion{v0.1.3 2018/04/20}
+    \change{ Added custom dynamic figure path \refKey{figure root directory}.}
+    \change{ Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.}
+\chlogtable
  \end{document}
