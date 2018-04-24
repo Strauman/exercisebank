@@ -1,5 +1,5 @@
-%% exercisebank v0.1.3b71 - 2018/04/21
-%% The LaTeX package exercisebank - version v0.1.3 (2018/04/21) build 71
+%% exercisebank v0.1.4+edgeb72 - 2018/04/24
+%% The LaTeX package exercisebank - version v0.1.4+edge (2018/04/24) build 72
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -86,8 +86,11 @@
 \def\updated#1{\tcbdocmarginnote{\bfseries{\color{blue}U}#1}}
 \def\defnew#1{\tcbdocmarginnote{\bfseries{\color{green}N}#1}}
 
-\makeatother
 \let\dac\docAuxCommand
+\def\mdac#1{\docAuxCommand{\expandafter\@gobble\string#1}}
+
+\makeatother
+
 \long\def\keyDef#1#2#3#4{\begin{docKey}{#1}{=\meta{#2}}{\meta{default}=#3}#4\end{docKey}}
 \long\def\optDef#1#2{\begin{docKey*}{#1}{}{}#2\end{docKey*}}
 \tcbset{documentation listing style=mydocumentation}
@@ -104,7 +107,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.3{\\[-0.5em]\footnotesize(build 71)}}}
+\title{{exercisebank - manual\\ v0.1.4+edge{\\[-0.5em]\footnotesize(build 72)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -261,6 +264,10 @@ That covers the basics. Enjoy
 \addcontentsline{toc}{subsubsection}{\refEnv{solution}}
 
 
+\begin{docCommand}{DisplaySolutions}{}\addcontentsline{toc}{subsubsection}{\refCom{DisplaySolutions}}
+
+Turns on the solutions, so they are shown.
+\end{docCommand}
 \begin{docEnvironment}{problem}{}
 Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
 \end{docEnvironment}
@@ -268,10 +275,6 @@ Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside t
  Things inside here is only visible if \refCom{DisplaySolutions} are given before \dac{begin}\{document\}
  \begin{marker}\dac{end}\{solution\} has to be on it's own line without any leading spaces!\end{marker}
 \end{docEnvironment}
-\begin{docCommand}{DisplaySolutions}{}\addcontentsline{toc}{subsubsection}{\refCom{DisplaySolutions}}
-
-Turns on the solutions, so they are shown.
-\end{docCommand}
 \begin{docEnvironment}{intro}{}
 Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 \end{docEnvironment}
@@ -495,36 +498,39 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 \newversion{v0.0.2b11 2018/04/02}
   \change{Updated documentation syntax.}
 \newversion{v0.0.3b38 2018/04/03}\nobreak
-    \change{ Updated triggers doc}
-    \change{ added trigger \dac{VeryBeginPartproblem}}
+    \change{Updated triggers doc}
+    \change{added trigger \dac{VeryBeginPartproblem}}
 
 \newversion{v0.0.3b40 2018/04/03}
-    \change{ Added examples that uses the \dac{At} command.}
-    \change{ Making front page and other snacks}
+    \change{Added examples that uses the \dac{At} command.}
+    \change{Making front page and other snacks}
 
 \newversion{v0.0.4b44 2018/04/03}
-    \change{ Changed design of part problems. (Looks much better now!)}
+    \change{Changed design of part problems. (Looks much better now!)}
 
 \newversion{v0.0.5b46 2018/04/03}
-    \change{ Fixed partproblems and solutions to fit on pages using \dac{filbreak}.}
+    \change{Fixed partproblems and solutions to fit on pages using \dac{filbreak}.}
 
 \newversion{v0.1.0 2018/04/08}
-    \change{ Fixed title of documentation to match actual package.}
-    \change{ Fixed weird paragraph styling when displaying solutions}
-    \change{ Added a few package options. More to come!}
+    \change{Fixed title of documentation to match actual package.}
+    \change{Fixed weird paragraph styling when displaying solutions}
+    \change{Added a few package options. More to come!}
 
 \newversion{v0.1.1 2018/04/13}
-  \change{ Added \dac{exec}, which allows the user to execute macros between problems}
-  \change{ Bug fix: \dac{At} would cause crash due to latexmk multiple builds}
-  \change{ Bug fix: \dac{sprite} wouldn't build correctly}
-  \change{ Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}}
+  \change{Added \dac{exec}, which allows the user to execute macros between problems}
+  \change{Bug fix: \dac{At} would cause crash due to latexmk multiple builds}
+  \change{Bug fix: \dac{sprite} wouldn't build correctly}
+  \change{Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}}
 
 \newversion{v0.1.2 2018/04/17}
-    \change{ Fixed bug that \dac{select} and \dac{exclude} not working as expected.}
-    \change{ Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}}
+    \change{Fixed bug that \dac{select} and \dac{exclude} not working as expected.}
+    \change{Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}}
 
 \newversion{v0.1.3 2018/04/20}
-    \change{ Added custom dynamic figure path \refKey{figure root directory}.}
-    \change{ Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.}
+    \change{Added custom dynamic figure path \refKey{figure root directory}.}
+    \change{Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.}
+\newversion{ 2018/04/24}
+    \change{Introduced solutions only: \dac{SolutionsOnly}, but it needs fixing before it's added to API}
+    \change{Fixed paragraph tightening when displaying solutions}
 \chlogtable
  \end{document}

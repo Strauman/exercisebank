@@ -34,15 +34,15 @@
 \let\T@\isTrue
 \let\F@\isFalse
 \At\DecideProblemDisplay{%
-  \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
-    \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
-  \else
-    \isin{\ppList}{\themetacounter}{
-      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
-    }{
-      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
-    }
-  \fi
+    \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
+      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
+    \else
+      \isin{\ppList}{\themetacounter}{
+        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+      }{
+        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
+      }
+    \fi  
 }
 
 %% Makeset arg handler

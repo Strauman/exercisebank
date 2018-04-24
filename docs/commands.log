@@ -39,3 +39,5 @@
 \phead
 \At
 \Trigger
+:@@VERSION:@@DATE
+\SolutionsOnly

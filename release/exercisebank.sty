@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.1.3 (2018/04/21) - build 71
+%% The LaTeX package exercisebank - version v0.1.4+edge (2018/04/24) - build 72
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/21 v0.1.3 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/04/24 v0.1.4+edge Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\PackageWarningNoLine{exercisebank-v0.1.3}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\PackageWarningNoLine{exercisebank-v0.1.4+edge}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -67,6 +67,10 @@
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
+\gdef\@DisplaySolutions{\@isFalse}
+\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\gdef\@SolutionsOnly{\@isFalse}
+\gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}}
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
 default/.style = {  part problems = On,
   tighten paragraphs = True,
@@ -94,7 +98,30 @@ switches/.cd,
 \newcommand\exercisebanksetup[1]{  \pgfkeys{/exbanksetup, #1}%
 }
 \exercisebanksetup{default}
-\def\tighten@paragraph{\if\exbank@opt@tightenparagraphs\@isTrue\relax\filbreak\else\relax\fi}
+\AtBeginDocument{\xdef\tpd{\the\prevdepth}}
+\gdef\tighten@paragraph{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+  \if\@SolutionsOnly\@isFalse
+    \if\@DisplaySolutions\@isFalse
+      \filbreak%
+    \fi
+  \fi
+\fi%
+}
+\gdef\tighten@paragraph@solutions{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+  \if\@SolutionsOnly\@isFalse
+    \if\@DisplaySolutions\@isTrue
+      \filbreak%
+    \fi
+  \fi
+\fi%
+}
+\gdef\tighten@paragraph@always{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+\filbreak%
+\fi%
+}
 \pgfkeys{ /exbanki18n/.is family, /exbanki18n,
   default/.style = {Problem = Problem, Solution = Solution},
   Problem/.estore in = \@tr@Problem,
@@ -189,12 +216,23 @@ switches/.cd,
 \At\EndSolution{		\end{itemize}
 	\end{addmargin}
 }
+\At\EndProblem{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+  \if\@SolutionsOnly\@isFalse%
+    \if\@DisplaySolutions\@isTrue%
+      \penalty-300%
+    \fi%
+  \fi%
+\fi%
+}
+\@ifundefined{figure}{}{\edef\figure{\unexpanded{\tighten@paragraph@always}\unexpanded\expandafter{\figure}}
+}
+\@ifundefined{endfigure}{}{\g@addto@macro\endfigure{\tighten@paragraph@always}
+}
 \gdef\isFalse{0}
 \gdef\isTrue{1}
 \gdef\DisplayProblem{\isTrue}
 \gdef\@displayMetaCounter{\isFalse}
-\gdef\@DisplaySolutions{\isFalse}
-\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \AtBeginDocument{  \if\@DisplaySolutions\isFalse
     \@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
   \fi
@@ -205,6 +243,8 @@ switches/.cd,
     \def\ProcessCutFile{}
   \else
     \if\@displayMetaCounter\isTrue\relax{\Large\themetacounter}\fi
+    \if\@SolutionsOnly\@isTrue\relax%
+    \def\ProcessCutFile{}\fi%
     #1
   \fi
 }
@@ -212,7 +252,8 @@ switches/.cd,
   \stepcounter{metacounter}
   \Trigger\DecideProblemDisplay
   \begingroup
-     \showhideproblem{        \if\exbank@opt@partProblems\isTrue
+     \showhideproblem{%
+        \if\exbank@opt@partProblems\isTrue
             \Trigger\BeginPartproblem
             \Trigger\VeryBeginPartproblem
         \else
@@ -220,9 +261,10 @@ switches/.cd,
             \Trigger\VeryBeginProblem
         \fi
 }
-}{    \if\DisplayProblem\isFalse\else
+}{    \if\DisplayProblem\@isFalse\relax\else
       \if\exbank@opt@partProblems\isTrue
         \Trigger\EndPartproblem
+        \tighten@paragraph
       \else
         \Trigger\EndProblem
       \fi
@@ -244,9 +286,11 @@ switches/.cd,
   \fi
 }{\if\DisplaySolution\isTrue
 \Trigger\EndSolution
+\tighten@paragraph@solutions
+\vspace*{0.5em}
 \fi
-\Trigger\EndSolutionHard
 \endgroup
+\Trigger\EndSolutionHard%
 }
 \generalcomment{intro}{  \if\@countIntros\isTrue
     \stepcounter{metacounter}
@@ -258,13 +302,16 @@ switches/.cd,
         {\exbank@opt@partProblemHeader}
       \fi
     \fi
-    \showhideproblem{\Trigger\BeginIntro}
+    \showhideproblem{%
+      \tighten@paragraph%
+      \Trigger\BeginIntro%
+}
   \fi
 }{  \if\@countIntros\isTrue
     \Trigger\EndIntro
     \endgroup
   \fi
-  \vspace*{1em}\tighten@paragraph
+  \vspace*{1em}
 }
 \def\squeeze{  \newlength{\marginw}
   \setlength{\marginw}{1.5cm}
@@ -320,13 +367,13 @@ switches/.cd,
 \let\T@\isTrue
 \let\F@\isFalse
 \At\DecideProblemDisplay{%
-  \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
-    \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
-  \else
-    \isin{\ppList}{\themetacounter}{      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
-}{      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
+    \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
+      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
+    \else
+      \isin{\ppList}{\themetacounter}{        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+}{        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
-  \fi
+    \fi  
 }
 \pgfkeys{ /makeset/.is family, /makeset,
  default/.style = {noheadarg=\isFalse, introarg=\isFalse},
@@ -468,14 +515,14 @@ switches/.cd,
 \newcommand\refcounter[1]{\edef\@currentlabel{#1}%
 }
 \DeclareRobustCommand{\pplabel}[1]{	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
-	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
+	\refcounter{\alph{partproblemcounter}}\label{pp:\exerciseFile:#1}
 }
 \let\pptag = \pplabel
 \newcommand\pppref[1]{%
 (\ref{pp:\exerciseFile:#1})\relax%
 }
 \newcommand\ppref[1]{%
-\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
+(\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1})\relax%
 }
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
