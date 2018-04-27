@@ -42,7 +42,7 @@
       }{
         \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
       }
-    \fi  
+    \fi
 }
 
 %% Makeset arg handler
@@ -188,7 +188,7 @@
 %:E.g. to insert a new page in between two problems when using nohead:
 %:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
 %:-
-\xdef\exec#1{:{#1}}
+\gdef\exec#1{:{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \newcommand\buildset[2][]{

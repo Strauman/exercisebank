@@ -1,4 +1,5 @@
 %!TEX root = main.tex
+\makeatletter
 % This file contains definition of custom labeling and referring.
 %% Reference problems
 %:§makingSets
@@ -16,7 +17,7 @@
 
 \let\pptag = \pplabel
 \newcommand\pppref[1]{%
-(\ref{pp:\exerciseFile:#1})\relax%
+(\ea\@alph\ref{pp:\exerciseFile:#1})\relax%
 }
 %:=\ppref{label}
 %:Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
