@@ -34,15 +34,15 @@
 \let\T@\isTrue
 \let\F@\isFalse
 \At\DecideProblemDisplay{%
-  \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
-    \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
-  \else
-    \isin{\ppList}{\themetacounter}{
-      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
-    }{
-      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
-    }
-  \fi
+    \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
+      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
+    \else
+      \isin{\ppList}{\themetacounter}{
+        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+      }{
+        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
+      }
+    \fi
 }
 
 %% Makeset arg handler
@@ -74,6 +74,7 @@
 %: \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
 %:! \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
 %:-
+\global\let\exlist@protect\noexpand
 \newcommand\makeset[3][]{
   \pgfkeys{/makeset, default, #1}%
   % Is intro sent?
@@ -84,7 +85,7 @@
   \if\noheadarg\isTrue%
     \ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
   \fi
-  \ea\gdef\csname setlist@#2\endcsname{#3}
+  \ea\gdef\csname setlist@#2\endcsname{\exlist@protect{#3}}
   \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
   % \g@addto@macro\@listOfSets{\csname setlist@#2\endcsname,}
   \g@addto@macro\@listOfSets{,#2}
@@ -102,22 +103,25 @@
 %: \!begin{marker}If \sprite is used, it should be the only command in \begin{document}\end{document}\!end{marker}
 %:-
 \newcommand\sprite[1][4]{
-\exercisebanksetup{part problem header={\Large\textbf{\thepartproblemcounter}}}
+% \exercisebanksetup{part problem header={\Large\textbf{\thepartproblemcounter}}}
 \squeeze
 \gdef\@spriteMode{\isTrue}
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
 \pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
 \ifnum\pdfstrcmp{\exbank@spriteSets}{\emptyList}=\z@\relax%
-  \edef\@thelist{\ea\@secondoftwo\@listOfSets}
-  \foreach \set in \@thelist{
+  \edef\sprite@setlist{\ea\@secondoftwo\@listOfSets}
+  %readlist with star removes whitespaces in the items
+  \readlist*\list@sprite@setlist\sprite@setlist
+  \foreachitem\set\in\list@sprite@setlist{
     \edef\theset{{\set}}
     \if\theset\empty\relax\else%
     \buildset{\set}%
     \fi%
   }
 \else
-  \edef\@thelist{\exbank@spriteSets}
-  \foreach \set in \@thelist{
+  \edef\sprite@setlist{\exbank@spriteSets}
+  \readlist*\list@sprite@setlist\sprite@setlist
+  \foreachitem\set\in\list@sprite@setlist{
     \edef\theset{{\set}}
     \if\theset\empty\relax\else%
     \buildex{\set}%
@@ -183,12 +187,31 @@
   \Trigger\VeryBeginProblem%
 }
 \exbank@def@makeset@command{\pbreak}{\clearpage}
+%:=\DeclareExerciseCommand{\dac{command}}{actions}
+%:This can be used later in makesets. E.g.
+%:\DelcareExerciseCommand{\pbreak}\brackets{\clearpage} will make
+%:\pbreak behave like \clearpage in the set:
+%:!\makeset[nohead]{%
+%:! \phead,
+%:! myExercise,
+%:! \pbreak,
+%:! myExerciseOnNewPage%
+%:!}
+%:-
+\let\DeclareExerciseCommand\exbank@def@makeset@command
 %:=\exec{macros}
 %:You can use this in \makeset to execute commands between problems.
 %:E.g. to insert a new page in between two problems when using nohead:
 %:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
 %:-
-\xdef\exec#1{:{#1}}
+%---- Protectors: ----%
+%% \ex@protect:
+%% \def\hello{\exec{\textbf{world}}} ~> :\noexpand{\textbf{world}}
+%% Then when it's tested
+%% \let\ex@protect\unexpanded
+%% \edef\hello{\hello} ~> :\textbf{world}
+\global\let\ex@protect\noexpand
+\gdef\exec#1{:\ex@protect{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \newcommand\buildset[2][]{
@@ -217,7 +240,9 @@
   }{}
   %% Sets the current setlist from the variable
   %% generated in makeset
-  \edef\setlist{\csname setlist@#2\endcsname}
+  \let\exlist@protect\unexpanded
+  \edef\exbank@setlist{\csname setlist@#2\endcsname}
+  \let\exlist@protect\noexpand
   \if\@spriteMode\isFalse
     \Trigger\StartBuildset
   \fi
@@ -259,9 +284,12 @@
     \csname \inner\endcsname
     #1\def\continueLoop{\isFalse}\ea\bgroup
   }
-  \def\@execute@exec:#1{#1\bgroup}
+  \def\@execute@exec:{%
+    \def\continueLoop{\isFalse}\@dlog{Executing custom command}\bgroup
+  }
 %% Loop through list
-  \foreach \exerciseFileInfo in \setlist{
+  \readlist*\setlist\exbank@setlist
+  \foreachitem\exerciseFileInfo\in\setlist{
     \def\continueLoop{\isTrue}
     %% ppList is \emptyList (0) if it's not a list
     \gdef\ppList{\emptyList}
@@ -273,9 +301,12 @@
     %% And then send it to \exbank@setEnv
     %If \exerciseFileInfo starts with a [, then optional arguments
     %that are to be sent to \exbank@setEnv. That is from \exclude or \select
+    \let\ex@protect\unexpanded
+    \edef\exerciseFileInfo{\exerciseFileInfo}
     \ea\@delegateFileInfo\exerciseFileInfo\egroup
     \Trigger\InputExercise
     \if\continueLoop\isTrue
+    \let\ex@protect\noexpand
 
 %% TRIGGER EVERTYHING
   \Trigger\PathControl

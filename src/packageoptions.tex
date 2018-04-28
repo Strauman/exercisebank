@@ -8,7 +8,18 @@
 %:=\ShowNumbers
 %: Shows the numbers in fron of the part problems and intros that should be used with
 %: \exclude and \select
+%:-
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
+%:§env
+%:=\DisplaySolutions
+%:Turns on the solutions, so they are shown.
+%:-
+\gdef\@DisplaySolutions{\@isFalse}
+\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\gdef\@SolutionsOnly{\@isFalse}
+\gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
+%:§config
+%:-
 % ---- \exercisebanksetup ----- %
 \pgfkeys{
 /exbanksetup/.is family, /exbanksetup,
@@ -47,7 +58,32 @@ switches/.cd,
   \pgfkeys{/exbanksetup, #1}%
 }
 \exercisebanksetup{default}
-\def\tighten@paragraph{\if\exbank@opt@tightenparagraphs\@isTrue\relax\filbreak\else\relax\fi}
+\AtBeginDocument{\xdef\tpd{\the\prevdepth}}
+\gdef\tighten@paragraph{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+  \if\@SolutionsOnly\@isFalse
+    \if\@DisplaySolutions\@isFalse
+      \filbreak%
+    \fi
+  \fi
+\fi%
+}
+\gdef\tighten@paragraph@solutions{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+  \if\@SolutionsOnly\@isFalse
+    \if\@DisplaySolutions\@isTrue
+      \filbreak%
+    \fi
+  \fi
+\fi%
+}
+\gdef\tighten@paragraph@always{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+\filbreak%
+\fi%
+}
+
+
 %: Here is a list of the different keys and their meaning
 %:\keyDef{part problems}{On/Off}{On}{
 %: This is whether or not to do part problems. E.g. 1a), 1b) etc.

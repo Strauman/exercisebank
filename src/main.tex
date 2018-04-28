@@ -8,19 +8,22 @@
   % \@latex@warning{COMPILING EXBANK MAIN}
   \@latex@warning{COMPILING EXBANK MAIN}
 \usepackage[english]{babel}
-\input{texpack}
+\input{exbankpack}
 \exercisebanksetup{exercise directory=../exercises}
 \usepackage{lipsum}
 \ShowNumbers
-\def\hello{Hello}
+\def\hello{\textbf{Hello}}
+\def\asdf#1{\@latex@warning{Called hello}#1}
 % Testing all makeset functions
 \makeset[nohead,intro]{11}{%
 \phead,
 \exclude{secondexercise}{2,3},
 \pbreak,
-\phead,firstexercise,
-\select{thirdexercise}{1,2},
-\exec{\hello WORLD}}
+\phead,
+\exec{\textbf{hello}},
+firstexercise,
+\select{thirdexercise}{1,2}%
+}
 % Different function tests
 % \makeset[nohead,intro]{11}{\phead,\exclude{secondexercise}{2,3},secondexercise}
 % \makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
@@ -30,7 +33,8 @@
 \At\StartBuildset{
 BEFORE THE SET
 }
+
 \begin{document}
-\buildset{11}
-% \sprite
+% \buildset{11}
+\sprite
 \end{document}

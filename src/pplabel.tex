@@ -1,4 +1,5 @@
-%!TEX root = ../main.tex
+%!TEX root = main.tex
+\makeatletter
 % This file contains definition of custom labeling and referring.
 %% Reference problems
 %:§makingSets
@@ -11,18 +12,18 @@
 %:-
 \DeclareRobustCommand{\pplabel}[1]{
 	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
-	\refcounter{\thepartproblemcounter}\label{pp:\exerciseFile:#1}
+	\refcounter{\alph{partproblemcounter}}\label{pp:\exerciseFile:#1}
 }
 
 \let\pptag = \pplabel
 \newcommand\pppref[1]{%
-(\ref{pp:\exerciseFile:#1})\relax%
+(\ea\@alph\ref{pp:\exerciseFile:#1})\relax%
 }
 %:=\ppref{label}
 %:Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1c)
 %:-
 \newcommand\ppref[1]{%
-\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1}\relax%
+(\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1})\relax%
 }
 %:=\pref{label}
 %: Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1

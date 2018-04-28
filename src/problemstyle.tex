@@ -46,6 +46,10 @@
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
 	\bgroup
+	% If we should display the meta counter, then
+	\if\@displayMetaCounter\isTrue\relax%
+		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}
+	\fi
 	\begin{addmargin}{\ppMargin}
 		\begin{itemize}
 			\item[\exbank@opt@partProblemHeader]

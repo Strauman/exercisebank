@@ -5,16 +5,29 @@
 % displayed
 
 \makeatletter
-
+% \At\EndProblem{\tighten@paragraph@solutions\tighten@paragraph}
+\At\EndProblem{%
+\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+  \if\@SolutionsOnly\@isFalse%
+    \if\@DisplaySolutions\@isTrue%
+      \penalty-300%
+    \fi%
+  \fi%
+\fi%
+}
+\@ifundefined{figure}{}{
+\edef\figure{\unexpanded{\tighten@paragraph@always}\unexpanded\expandafter{\figure}}
+}
+\@ifundefined{endfigure}{}{
+\g@addto@macro\endfigure{\tighten@paragraph@always}
+}
 \gdef\isFalse{0}
 \gdef\isTrue{1}
 \gdef\DisplayProblem{\isTrue}
 \gdef\@displayMetaCounter{\isFalse}
 
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
-\gdef\@DisplaySolutions{\isFalse}
 %%NB: DOC for \DisplaySolutions are moved down
-\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \AtBeginDocument{
   \if\@DisplaySolutions\isFalse
     \@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
@@ -28,10 +41,12 @@
   \if\DisplayProblem\isFalse
     \def\ProcessCutFile{}
   \else
-    \if\@displayMetaCounter\isTrue\relax{\Large\themetacounter}\fi
+    \if\@SolutionsOnly\@isTrue\relax%
+    \def\ProcessCutFile{}\fi%
     #1
   \fi
 }
+% \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
 
 %:§env
 %:=\\begin{problem}
@@ -47,7 +62,7 @@
   %% the problem is included or not.
   \Trigger\DecideProblemDisplay
   \begingroup
-     \showhideproblem{
+     \showhideproblem{%
         % If the user haven't turned off part problems
         \if\exbank@opt@partProblems\isTrue
             \Trigger\BeginPartproblem
@@ -58,23 +73,20 @@
         \fi
       }
   }{
-    \if\DisplayProblem\isFalse\else
+    \if\DisplayProblem\@isFalse\relax\else
       \if\exbank@opt@partProblems\isTrue
         \Trigger\EndPartproblem
+        \tighten@paragraph
       \else
         \Trigger\EndProblem
       \fi
     \fi
   \endgroup
 }
-
 %:§env
 %:=\\begin{solution}
 %: Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
 %: \!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
-%:-
-%:=\DisplaySolutions
-%:Turns on the solutions, so they are shown.
 %:-
 %% Solutions
 \generalcomment{solution}
@@ -99,10 +111,13 @@
 % \input{\CommentCutFile}
 \if\DisplaySolution\isTrue
 \Trigger\EndSolution
+\tighten@paragraph@solutions
+\vspace*{0.5em}
 \fi
-
-\Trigger\EndSolutionHard
 \endgroup
+
+\Trigger\EndSolutionHard%
+% \egroup
 }
 %% Problem introductions
 %:§env
@@ -117,18 +132,23 @@
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
     \begingroup
+    \if\@displayMetaCounter\isTrue\relax%
+    {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
+    \fi
     \if\@spriteMode\isTrue
       \if\introarg\isTrue
         \stepcounter{partproblemcounter}
-        {\exbank@opt@partProblemHeader}
       \fi
     \fi
-    \showhideproblem{\Trigger\BeginIntro}
+    \showhideproblem{%
+      \tighten@paragraph%
+      \Trigger\BeginIntro%
+    }
   \fi
 }{
   \if\@countIntros\isTrue
     \Trigger\EndIntro
     \endgroup
   \fi
-  \vspace*{1em}\tighten@paragraph
+  \vspace*{1em}
 }
