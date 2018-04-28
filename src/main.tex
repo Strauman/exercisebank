@@ -13,14 +13,17 @@
 \usepackage{lipsum}
 \ShowNumbers
 \def\hello{\textbf{Hello}}
+\def\asdf#1{\@latex@warning{Called hello}#1}
 % Testing all makeset functions
 \makeset[nohead,intro]{11}{%
 \phead,
 \exclude{secondexercise}{2,3},
 \pbreak,
-\phead,firstexercise,
-\select{thirdexercise}{1,2},
-\exec{\textbf{Hello}}
+\phead,
+\exec{\textbf{hello}},
+firstexercise,
+\select{thirdexercise}{1,2}%
+}
 % Different function tests
 % \makeset[nohead,intro]{11}{\phead,\exclude{secondexercise}{2,3},secondexercise}
 % \makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
