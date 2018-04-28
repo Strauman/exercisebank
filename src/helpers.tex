@@ -62,3 +62,20 @@
 }{
  \global\let\@dlog\@noneofone
 }
+
+\newcommand\ex@before[2]{
+\edef #1{\unexpanded{#2}\unexpanded\expandafter{#1}}
+}
+% Put stuff at left margin
+% \exb@lmargin{content}{marginSize}
+\newcommand{\exb@lmargin}[2]{\strut\vadjust{\exb@domark{#1}{#2}}}
+
+\newcommand{\exb@domark}[2]{%
+  \hbox to #2{
+    \vbox to 0pt{
+      \kern-\dp\strutbox
+      \smash{\llap{#1}}
+      \vss
+    }%
+  }
+}

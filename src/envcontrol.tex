@@ -41,7 +41,6 @@
   \if\DisplayProblem\isFalse
     \def\ProcessCutFile{}
   \else
-    \if\@displayMetaCounter\isTrue\relax{\Large\themetacounter}\fi
     \if\@SolutionsOnly\@isTrue\relax%
     \def\ProcessCutFile{}\fi%
     #1
@@ -133,10 +132,12 @@
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
     \begingroup
+    \if\@displayMetaCounter\isTrue\relax%
+    {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
+    \fi
     \if\@spriteMode\isTrue
       \if\introarg\isTrue
         \stepcounter{partproblemcounter}
-        {\exbank@opt@partProblemHeader}
       \fi
     \fi
     \showhideproblem{%

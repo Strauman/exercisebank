@@ -28,3 +28,4 @@ docs/
 !docs/changelog.tex
 !docs/commands.log
 src/main.pdf
+*.orig
