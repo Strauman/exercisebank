@@ -39,7 +39,7 @@
 \phead
 \At
 \Trigger
-:@@VERSION:@@DATE
+:v0.1.4:2018/04/28
 \DeclareExerciseCommand
 \exec
 \makeset
