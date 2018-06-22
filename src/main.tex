@@ -11,19 +11,24 @@
 \input{exbankpack}
 \exercisebanksetup{exercise directory=../exercises}
 \usepackage{lipsum}
-\ShowNumbers
+% \ShowNumbers
 \def\hello{\textbf{Hello}}
 \def\asdf#1{\@latex@warning{Called hello}#1}
 % Testing all makeset functions
-\makeset[nohead,intro]{11}{%
-\phead,
-\exclude{secondexercise}{2,3},
-\pbreak,
-\phead,
-\exec{\textbf{hello}},
+% \makeset[nohead,intro]{11}{%
+% \phead,
+% \exclude{secondexercise}{2,3},
+% \pbreak,
+% \phead,
+% \exec{\textbf{hello}},
+% firstexercise,
+% \select{thirdexercise}{1,2}%
+% }
+\makeset{11}{secondexercise,
 firstexercise,
-\select{thirdexercise}{1,2}%
+thirdexercise%
 }
+\DisplaySolutions
 % Different function tests
 % \makeset[nohead,intro]{11}{\phead,\exclude{secondexercise}{2,3},secondexercise}
 % \makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
@@ -35,6 +40,6 @@ BEFORE THE SET
 }
 
 \begin{document}
-% \buildset{11}
-\sprite
+\buildset{11}
+% \sprite
 \end{document}

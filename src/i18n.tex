@@ -23,9 +23,9 @@
 \translateExBank{}
 
 %
-\gdef\@tr#1{
+\gdef\@tr#1{%
 \@ifundefined{@tr@#1}{#1}{%
   \csname @tr@#1\endcsname%
-}
+}%
 }
 \makeatother
