@@ -76,6 +76,7 @@
 %:-
 \global\let\exlist@protect\noexpand
 \newcommand\makeset[3][]{
+  \xdef\thissetid{#2}
   \pgfkeys{/makeset, default, #1}%
   % Is intro sent?
   \if\introarg\isTrue%
