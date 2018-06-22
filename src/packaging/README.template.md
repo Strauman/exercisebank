@@ -23,7 +23,7 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 ### `src/`:
 - [`at.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/at.tex) contains definitions of the `\At` and `\Trigger` command
 - [`envcontrol.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/envcontrol.tex) contains everything to do with controlling environments except from "outsourcing" stuff with `\At` and `\Trigger`: Namely deciding whether or not a problem, intro and/or solution should displayed (which is done in `setbuilder.tex`)
-- [`helpers.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/helper.tex) contains the definition of the `\strif` and `\isin` macro
+- [`helpers.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/helpers.tex) contains the definition of the `\strif` and `\isin` macro
 - [`i18n.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/i18n.tex) contains everything to do with translation logic.
 - [`main.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/main.tex) is the main file for building during development
 - [`packageoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packageoptions.tex) contains all the macros that are intended for user configuration
