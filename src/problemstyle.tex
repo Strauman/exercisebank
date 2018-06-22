@@ -25,15 +25,18 @@
 %:=\ppMargin
 %: Part problem: how far away from the text should the part problem labels be
 \newlength{\ppMargin}
+\newlength{\solutionMarginLeft}
+\newlength{\solutionMarginAbove}
 %:-
 
 \edef\defaultLeftMargin{\the\dimexpr1in+\hoffset}
 
-\newlength{\solutionMarginLeft}
+
 
 \setlength{\pMarginLeft}{-2em}
 \setlength{\ppMargin}{-0.5em}
 \setlength{\solutionMarginLeft}{\ppMargin}
+\setlength{\solutionMarginAbove}{1em}
 \setlength{\pMarginBelow}{1em}
 \setlength{\pMarginAbove}{\baselineskip}
 
@@ -68,7 +71,8 @@
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
 	\vspace*{\pMarginAbove}%
-		\hskip\pMarginLeft{\exbank@opt@problemHeader}%
+		\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi%
+    {\exbank@opt@problemHeader}%
 	\vspace*{\pMarginBelow}%
 }
 \At\EndProblem{%
@@ -78,15 +82,16 @@
 	\stepcounter{partproblemcounter}%%
 	\bgroup%
 	% If we should display the meta counter, then%
-	\if\@displayMetaCounter\isTrue\relax%%
+	\if\@displayMetaCounter\@isTrue\relax%%
 		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
 	\fi%
-	\par\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}\ignorespaces%
+  \if\exbank@opt@doMargins\@isTrue\relax
+  \par\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}\ignorespaces\else{\exbank@opt@partProblemHeader}\fi%
 }%
 \At\EndPartproblem{%
 	\egroup\tighten@paragraph%
 	\vspace*{\pMarginBelow}%
 }
 
-\At\BeginSolution{\hfill\break\vspace*{1em}{\exbank@opt@solutionHeader}}
+\At\BeginSolution{\hfill\break\vspace*{\solutionMarginAbove}{\exbank@opt@solutionHeader}}
 \At\EndSolution{}

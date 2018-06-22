@@ -31,6 +31,7 @@ default/.style = {
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
+  use margins=True,
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
@@ -42,6 +43,7 @@ solution header/.store in = \exbank@opt@solutionHeader,
 % Bools
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
+use margins/.style={switches/#1/.get = \exbank@opt@doMargins},
 % True/False
 switches/.cd,
 % True
@@ -107,6 +109,7 @@ switches/.cd,
 %:}
 %:\keyDef{solution header}{string}{see below}{
 %:\large{\textbf{\@tr{Solution}:}}
+%:\!@tr is the translation macro
 %:}
 %:\keyDef{exercise directory}{dir}{./}{
 %:This key is used for setting the default exercise directory.
@@ -126,4 +129,8 @@ switches/.cd,
 %:You would use this option in the setup: \exercisebanksetup{figure root directory=figures}
 %:}
 %:! \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
+%:\keyDef{use margins}{True/False}{True}{
+%: Whether or not to put the part problem labels and the problem headers outside the
+%: normal margins.
+%:}
 %:-
