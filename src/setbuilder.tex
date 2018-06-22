@@ -217,7 +217,7 @@
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \gdef\exb@setpgf#1{%
-\edef\keystring{{/makeset,#1}}%
+\edef\keystring{{/makeset,default,#1}}%
 \ea\pgfkeys\keystring}
 
 \newcommand\buildset[2][]{
@@ -242,6 +242,7 @@
   % Set keys for this set in case user set some keys
   \ifcsname setkeys@\setName\endcsname
   \xdef\skeys{\csname setkeys@#2\endcsname}
+  % \xdef\skeys{default, \skeys}
   \exb@setpgf\skeys%
   \fi%
   %% Warnins if the set doesn't exist
