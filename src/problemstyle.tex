@@ -2,23 +2,56 @@
 % This file contains \At-commands that are responsible for formatting
 % exercise headers and exercise-related styles.
 \makeatletter
-\newlength{\ppLeading}
+%:§margs
+%:Note that these are all \!emph{\!\textbf{lengths}}
+%:and should be used as e.g.
+%:!\setlength{\pMarginBelow}
+%:-
+%:=\pMarginBelow
+%:Distance below Problem \# header
 \newlength{\pMarginBelow}
+%:=\pMarginAbove
+%:Distance above Problem \# header
 \newlength{\pMarginAbove}
+%:=\pMarginLeft
+%: Problem header: distance from the default left margin
 \newlength{\pMarginLeft}
+%:=\ppMarginBelow
+%: Part problem: distance from the end of the part problem to the next item
 \newlength{\ppMarginBelow}
+%:=\ppMarginAbove
+%: Part problem: distance above the start of the part problem to the previous item
 \newlength{\ppMarginAbove}
+%:=\ppMargin
+%: Part problem: how far away from the text should the part problem labels be
 \newlength{\ppMargin}
-\newlength{\ppPullback}
+%:-
 
-\setlength{\ppLeading}{4em}
+\edef\defaultLeftMargin{\the\dimexpr1in+\hoffset}
+
+\newlength{\solutionMarginLeft}
+
+\setlength{\pMarginLeft}{-2em}
+\setlength{\ppMargin}{-0.5em}
+\setlength{\solutionMarginLeft}{\ppMargin}
 \setlength{\pMarginBelow}{1em}
 \setlength{\pMarginAbove}{1em}
-\setlength{\pMarginLeft}{-1.5em}
+
 \setlength{\ppMarginBelow}{2em}
 \setlength{\ppMarginAbove}{2em}
-\setlength{\ppMargin}{2em}
-\setlength{\ppPullback}{3.5em}
+
+
+\setlength\parindent{0pt}
+
+\newcommand{\@atMargin}[2]{\strut\vadjust{\@domark{#1}{#2}}}
+
+\newcommand{\@domark}[2]{%
+    \hskip#2\relax\vbox to 0pt{
+      \kern-\dp\strutbox
+      \smash{\llap{#1}}
+      \vss
+    }%
+}
 
 \def\solMargin{\dimexpr \ppMargin\relax}
 \def\vsSize{1em}
@@ -35,40 +68,25 @@
 	\stepcounter{problemcounter}
 	\setcounter{partproblemcounter}{0}
 	\vspace*{\pMarginAbove}
-	\begin{addmargin}{\pMarginLeft}
-		{\exbank@opt@problemHeader}
-	\end{addmargin}
+		\hskip\pMarginLeft{\exbank@opt@problemHeader}
 	\vspace*{\pMarginBelow}
 }
 \At\EndProblem{
 \tighten@paragraph
 }
 \At\VeryBeginPartproblem{%
-	\stepcounter{partproblemcounter}%
-	\bgroup
-	% If we should display the meta counter, then
-	\if\@displayMetaCounter\isTrue\relax%
-		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}
-	\fi
-	\begin{addmargin}{\ppMargin}
-		\begin{itemize}
-			\item[\exbank@opt@partProblemHeader]
+	\stepcounter{partproblemcounter}%%
+	\bgroup%
+	% If we should display the meta counter, then%
+	\if\@displayMetaCounter\isTrue\relax%%
+		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
+	\fi%
+	\par\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}\ignorespaces%
 }
 \At\EndPartproblem{
-		\end{itemize}
-	\end{addmargin}
 	\egroup\tighten@paragraph
 	\vspace*{\pMarginBelow}%
 }
 
-\At\BeginSolution{
-	% \@pens\@lowpenalty
-	\vspace*{1em}
-	\begin{addmargin}{\solMargin}
-		\begin{itemize}
-			\item[\exbank@opt@solutionHeader]
-}
-\At\EndSolution{
-		\end{itemize}
-	\end{addmargin}
-}
+\At\BeginSolution{\hfill\break\vspace*{1em}{\exbank@opt@solutionHeader}}
+\At\EndSolution{}
