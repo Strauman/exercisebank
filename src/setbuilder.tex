@@ -77,6 +77,7 @@
 \global\let\exlist@protect\noexpand
 \newcommand\makeset[3][]{
   \xdef\thissetid{#2}
+  \ea\xdef\csname setkeys@\thissetid\endcsname{#1}
   \pgfkeys{/makeset, default, #1}%
   % Is intro sent?
   \if\introarg\isTrue%
@@ -215,6 +216,10 @@
 \gdef\exec#1{:\ex@protect{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
+\gdef\exb@setpgf#1{%
+\edef\keystring{{/makeset,#1}}%
+\ea\pgfkeys\keystring}
+
 \newcommand\buildset[2][]{
   \def\oarg{#1}
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}
@@ -234,6 +239,11 @@
 %:-
 
   \xdef\setName{#2}
+  % Set keys for this set in case user set some keys
+  \ifcsname setkeys@\setName\endcsname
+  \xdef\skeys{\csname setkeys@#2\endcsname}
+  \exb@setpgf\skeys%
+  \fi%
   %% Warnins if the set doesn't exist
   \@ifundefined{setlist@#2}{
     \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
