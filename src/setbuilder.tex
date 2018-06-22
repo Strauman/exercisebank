@@ -313,12 +313,12 @@
     %% And then send it to \exbank@setEnv
     %If \exerciseFileInfo starts with a [, then optional arguments
     %that are to be sent to \exbank@setEnv. That is from \exclude or \select
-    \let\ex@protect\unexpanded
-    \edef\exerciseFileInfo{\exerciseFileInfo}
-    \ea\@delegateFileInfo\exerciseFileInfo\egroup
-    \Trigger\InputExercise
-    \if\continueLoop\isTrue
-    \let\ex@protect\noexpand
+    \let\ex@protect\unexpanded%
+    \edef\exerciseFileInfo{\exerciseFileInfo}%
+    \ea\@delegateFileInfo\exerciseFileInfo\egroup%
+    \Trigger\InputExercise%
+    \if\continueLoop\isTrue%
+    \let\ex@protect\noexpand%
 
 %% TRIGGER EVERTYHING
   \Trigger\PathControl

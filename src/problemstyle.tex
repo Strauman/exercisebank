@@ -35,10 +35,10 @@
 \setlength{\ppMargin}{-0.5em}
 \setlength{\solutionMarginLeft}{\ppMargin}
 \setlength{\pMarginBelow}{1em}
-\setlength{\pMarginAbove}{1em}
+\setlength{\pMarginAbove}{\baselineskip}
 
-\setlength{\ppMarginBelow}{2em}
-\setlength{\ppMarginAbove}{2em}
+\setlength{\ppMarginBelow}{\baselineskip}
+\setlength{\ppMarginAbove}{0em}
 
 
 \setlength\parindent{0pt}
@@ -64,15 +64,15 @@
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
 
-\At\VeryBeginProblem{
-	\stepcounter{problemcounter}
-	\setcounter{partproblemcounter}{0}
-	\vspace*{\pMarginAbove}
-		\hskip\pMarginLeft{\exbank@opt@problemHeader}
-	\vspace*{\pMarginBelow}
+\At\VeryBeginProblem{%
+	\stepcounter{problemcounter}%
+	\setcounter{partproblemcounter}{0}%
+	\vspace*{\pMarginAbove}%
+		\hskip\pMarginLeft{\exbank@opt@problemHeader}%
+	\vspace*{\pMarginBelow}%
 }
-\At\EndProblem{
-\tighten@paragraph
+\At\EndProblem{%
+\tighten@paragraph%
 }
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%%
@@ -82,9 +82,9 @@
 		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
 	\fi%
 	\par\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}\ignorespaces%
-}
-\At\EndPartproblem{
-	\egroup\tighten@paragraph
+}%
+\At\EndPartproblem{%
+	\egroup\tighten@paragraph%
 	\vspace*{\pMarginBelow}%
 }
 
