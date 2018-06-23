@@ -91,8 +91,11 @@ The \dac{phead} command makes a problem header. You can pass them as much as you
 \end{dispListing}
 
 \subsection{Solutions}
-The last thing to cover then is solutions. In your exercise files you just use the solution environment
+The last thing to cover then is solutions. In your exercise files you just use the solution environment \emph{below} the \refEnv{problem} environment:
 \begin{dispListing}
+\begin{problem}
+Some problem
+\end{problem}
 \begin{solution}
 Solution goes here
 \end{solution}
@@ -117,7 +120,7 @@ Maybe you want to see what files are what problems. One way to do that is hook i
   }
 \end{dispListing}
 
-Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
+Note that the \dac{At}\dac{BeginProblem} is executed \emph{before} the headers.
 
 \subsection{Dynamic figure path}
 Exercisebank automatically allows you to \dac{input} and \dac{includegraphics} from

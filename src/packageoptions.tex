@@ -108,8 +108,8 @@ switches/.cd,
 %: \large\textbf{(\theproblemcounter\alph{partproblemcounter})}
 %:}
 %:\keyDef{solution header}{string}{see below}{
-%:\large{\textbf{\@tr{Solution}:}}
-%:\!@tr is the translation macro
+%:\large{\textbf{\@tr\brackets{Solution:}}}
+%:\@tr is the translation macro
 %:}
 %:\keyDef{exercise directory}{dir}{./}{
 %:This key is used for setting the default exercise directory.
@@ -126,9 +126,14 @@ switches/.cd,
 %:\!texttt{exercises/faradaysLaw/ACGenerate/} can be included by just doing \includegraphics.
 %:And if you want to change the root of this directory to be \!texttt{figures}, such that
 %:exercisebank looks for figures in \!texttt{figures/faradaysLaw/} and \!texttt{figures/faradaysLaw/ACGenerate/}
-%:You would use this option in the setup: \exercisebanksetup{figure root directory=figures}
+%:You would use this option in the setup:\\
+%:\exercisebanksetup{figure root directory=figures}
 %:}
-%:! \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
+%:!\exercisebanksetup{
+%:! exercise directory=exercises,
+%:! part problems=Off,
+%:! solution header={\textbf{SOL:}}
+%:!}
 %:\keyDef{use margins}{True/False}{True}{
 %: Whether or not to put the part problem labels and the problem headers outside the
 %: normal margins.
