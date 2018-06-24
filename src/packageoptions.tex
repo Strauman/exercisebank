@@ -31,7 +31,7 @@ default/.style = {
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
-  style margins=True,
+  style margins=On,
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
@@ -43,14 +43,13 @@ solution header/.store in = \exbank@opt@solutionHeader,
 % Bools
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
-use margins/.style={switches/#1/.get = \exbank@opt@doMargins},
 style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
 % True/False
 switches/.cd,
 % True
   On/.initial = \@isTrue,
   on/.initial = \@isTrue,
-  T/.initial =  \@isTrue
+  T/.initial =  \@isTrue,
 % False
   Off/.initial = \@isFalse,
   off/.initial = \@isFalse,
