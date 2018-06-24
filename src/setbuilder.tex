@@ -220,10 +220,10 @@
 \edef\keystring{{/makeset,default,#1}}%
 \ea\pgfkeys\keystring}
 
-\newcommand\buildset[2][]{
-  \def\oarg{#1}
-  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}
-  \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
+\newcommand\buildset[2][]{%
+  \def\oarg{#1}%
+  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}%
+  \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
   %% Setting the global setName
 %:=\setName
 %:This variable prints out the name of your set that you sent to \buildset.
@@ -237,27 +237,26 @@
 %:! \buildset{2}{myexercise}
 %:!\end{document}
 %:-
-
-  \xdef\setName{#2}
+  \xdef\setName{#2}%
   % Set keys for this set in case user set some keys
-  \ifcsname setkeys@\setName\endcsname
-  \xdef\skeys{\csname setkeys@#2\endcsname}
+  \ifcsname setkeys@\setName\endcsname%
+  \xdef\skeys{\csname setkeys@#2\endcsname}%
   % \xdef\skeys{default, \skeys}
   \exb@setpgf\skeys%
   \fi%
   %% Warnins if the set doesn't exist
-  \@ifundefined{setlist@#2}{
+  \@ifundefined{setlist@#2}{%
     \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
     \stop\bye
   }{}
   %% Sets the current setlist from the variable
   %% generated in makeset
-  \let\exlist@protect\unexpanded
-  \edef\exbank@setlist{\csname setlist@#2\endcsname}
-  \let\exlist@protect\noexpand
-  \if\@spriteMode\isFalse
-    \Trigger\StartBuildset
-  \fi
+  \let\exlist@protect\unexpanded%
+  \edef\exbank@setlist{\csname setlist@#2\endcsname}%
+  \let\exlist@protect\noexpand%
+  \if\@spriteMode\isFalse%
+    \Trigger\StartBuildset%
+  \fi%
   % ---- BEGIN setlist divider ----%
   % The following code distinguish between the different things that can be sent to \makeset.
   % At time of writing that is:
@@ -276,11 +275,11 @@
   % tells the rest of the program that all exercises should be included.
   %
   % Is it a makeset@command?
-  \gdef\@delegateFileInfo{\@ifnextchar?\@execute@makeset@command\@is@exec}
-  % Is it an exec command?
-  \def\@is@exec{\@ifnextchar:\@execute@exec\@is@file}
-  % Is it a \select/\exclude or is it just a filename?
-  \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}
+  \gdef\@delegateFileInfo{\@ifnextchar?\@execute@makeset@command\@is@exec}%
+  % Is it an exec command?%
+  \def\@is@exec{\@ifnextchar:\@execute@exec\@is@file}%
+  % Is it a \select/\exclude or is it just a filename?%
+  \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}%
   \gdef\X@exb@setEnv##1{%
     \def\continueLoop{\isTrue}%
     \@dlog{Processing normal file "\exerciseFileInfo.tex"}%
@@ -291,23 +290,23 @@
   }
 
   \gdef\@execute@makeset@command ?##1{%
-    \edef\inner{\@firstofone##1}
-    \@dlog{Executing macro \@backslashchar\@gobble##1}
-    \csname \inner\endcsname
-    #1\def\continueLoop{\isFalse}\ea\bgroup
+    \edef\inner{\@firstofone##1}%
+    \@dlog{Executing macro \@backslashchar\@gobble##1}%
+    \csname \inner\endcsname%
+    #1\def\continueLoop{\isFalse}\ea\bgroup%
   }
   \def\@execute@exec:{%
-    \def\continueLoop{\isFalse}\@dlog{Executing custom command}\bgroup
+    \def\continueLoop{\isFalse}\@dlog{Executing custom command}\bgroup%
   }
 %% Loop through list
-  \readlist*\setlist\exbank@setlist
-  \foreachitem\exerciseFileInfo\in\setlist{
-    \def\continueLoop{\isTrue}
+  \readlist*\setlist\exbank@setlist%
+  \foreachitem\exerciseFileInfo\in\setlist{%
+    \def\continueLoop{\isTrue}%
     %% ppList is \emptyList (0) if it's not a list
-    \gdef\ppList{\emptyList}
+    \gdef\ppList{\emptyList}%
     %% Counter used for iterating over partproblems
     %% (Cant' use partproblemcounter since some of them might be excluded)
-    \setcounter{metacounter}{0}
+    \setcounter{metacounter}{0}%
     %% Checking whether we have optional args
     %% I.e. one of the arguments are sent via \exclude
     %% And then send it to \exbank@setEnv
@@ -319,43 +318,39 @@
     \Trigger\InputExercise%
     \if\continueLoop\isTrue%
     \let\ex@protect\noexpand%
-
 %% TRIGGER EVERTYHING
-  \Trigger\PathControl
+  \Trigger\PathControl%
 %:$triggers.=\Trigger\InputExercise:\\ Triggers before a file is included\\\
 %:$triggers.=\Trigger\BeginProblem:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
 %:$triggers.=\Trigger\EndProblem:\\ Triggers right after problem is included if [nohead] \emph{not} given\\
 %:$triggers.=\Trigger\BeginBuildset:\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
 %:$triggers.=\Trigger\EndBuildset:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
-
-    \if\nohead\isFalse
-      \if\@spriteMode\isFalse
-        \Trigger\BeginProblem
-      \fi
-    \fi
+    \if\nohead\isFalse%
+      \if\@spriteMode\isFalse%
+        \Trigger\BeginProblem%
+      \fi%
+    \fi%
     %% \VeryBeginProblem is only for stuff that
     %% is intended to be a part of the problem
     %% e.g. problem header is using this.
-    \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
-    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
-
+    \if\nohead\isFalse\Trigger\VeryBeginProblem\fi%
+    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi%
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
-    \IfFileExists{\@exercisesDir/\exerciseFile}{
-      \incl{\@exercisesDir/\exerciseFile}
-      \if\@spriteMode\isTrue
+    \IfFileExists{\@exercisesDir/\exerciseFile}{%
+      \incl{\@exercisesDir/\exerciseFile}%
+      \if\@spriteMode\isTrue%
         \setcounter{partproblemcounter}{0}%
       \fi
     }{
       \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
       \stop\bye
     }
-
     %% More triggers
-    \if\nohead\isFalse\Trigger\EndProblem\fi
+    \if\nohead\isFalse\Trigger\EndProblem\fi%
     \fi%<- End \continueLoop
   }
-  \if\@spriteMode\isFalse
-    \Trigger\EndBuildset
+  \if\@spriteMode\isFalse%
+    \Trigger\EndBuildset%
   \fi
 }

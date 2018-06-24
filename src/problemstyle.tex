@@ -37,7 +37,7 @@
 \setlength{\ppMargin}{-0.5em}
 \setlength{\solutionMarginLeft}{\ppMargin}
 \setlength{\solutionMarginAbove}{1em}
-\setlength{\pMarginBelow}{1em}
+\setlength{\pMarginBelow}{0em}
 \setlength{\pMarginAbove}{\baselineskip}
 
 \setlength{\ppMarginBelow}{\baselineskip}
@@ -71,9 +71,8 @@
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
 	\vspace*{\pMarginAbove}%
-		\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi%
-    {\exbank@opt@problemHeader}%
-	\vspace*{\pMarginBelow}%
+  \strut\vadjust{\vbox to 0pt{\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
+	\vspace*{\the\dimexpr\baselineskip+\pMarginBelow}%
 }
 \At\EndProblem{%
 \tighten@paragraph%
