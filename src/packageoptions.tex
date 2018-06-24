@@ -31,7 +31,7 @@ default/.style = {
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
-  use margins=True,
+  style margins=True,
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
@@ -44,6 +44,7 @@ solution header/.store in = \exbank@opt@solutionHeader,
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
 use margins/.style={switches/#1/.get = \exbank@opt@doMargins},
+style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
 % True/False
 switches/.cd,
 % True

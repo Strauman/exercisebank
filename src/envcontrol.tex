@@ -135,8 +135,8 @@
     \if\@displayMetaCounter\isTrue\relax%
     {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
     \fi
-    \if\@spriteMode\isTrue
-      \if\introarg\isTrue
+    \if\@spriteMode\@isTrue
+      \if\introarg\@isTrue
         \stepcounter{partproblemcounter}
       \fi
     \fi
@@ -149,6 +149,6 @@
   \if\@countIntros\isTrue
     \Trigger\EndIntro
     \endgroup
-  \fi
-  \vspace*{1em}
+  \fi\par
+% \newline
 }
