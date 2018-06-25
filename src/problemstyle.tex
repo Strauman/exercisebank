@@ -37,7 +37,7 @@
 
 
 \setlength{\pMarginLeft}{-2em}
-\setlength{\ppMargin}{-0.5em}
+\setlength{\ppMargin}{0.5em}
 \setlength{\solutionMarginLeft}{\ppMargin}
 \setlength{\solutionMarginAbove}{1em}
 \setlength{\pMarginBelow}{0em}
@@ -51,24 +51,6 @@
 \newbox\ppmarkbox
 \newlength\markskip
 \setlength\markskip{4\baselineskip}
-
-\setbox\ppmarkbox\hbox{%
-\vrule\@height.7\markskip
-        \@depth.3\markskip%
-        \@width\z@}%
-\def\markstrut{\relax\ifmmode\copy\ppmarkbox\else\unhcopy\ppmarkbox\fi}
-
-
-\newcommand{\@atMargin}[2]{\markstrut\vadjust{\@domark{#1}{#2}}}
-
-\newcommand{\@domark}[2]{%
-    \hskip#2\relax\vbox to 0pt{%
-      \kern-\dp\ppmarkbox\relax%
-      \smash{\llap{#1}}%
-      \vss%
-    }%
-% \vskip\the\dimexpr-\markskip\relax%
-}
 
 \def\solMargin{\dimexpr \ppMargin\relax}
 \def\vsSize{1em}
@@ -98,10 +80,8 @@
 	\if\@displayMetaCounter\@isTrue\relax%%
 		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
 	\fi%
-
 \if\exbank@opt@doMargins\@isTrue\relax%
-\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}%
-\ignorespaces%
+\leavevmode\smash{\llap{{\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
 \else{\exbank@opt@partProblemHeader}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%
