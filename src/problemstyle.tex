@@ -49,13 +49,13 @@
 
 \setlength\parindent{0pt}
 
-\newcommand{\@atMargin}[2]{\strut\vadjust{\@domark{#1}{#2}}}
+\newcommand{\@atMargin}[2]{\rule[-4em]{0pt}{0em}\vadjust{\@domark{#1}{#2}}}
 
 \newcommand{\@domark}[2]{%
-    \hskip#2\relax\vbox to 0pt{
-      \kern-\dp\strutbox
-      \smash{\llap{#1}}
-      \vss
+    \hskip#2\relax\vbox to 0pt{%
+      \kern\the\dimexpr-4em\relax%
+      \smash{\llap{#1}}%
+      \vss%
     }%
 }
 
@@ -87,9 +87,12 @@
 	\if\@displayMetaCounter\@isTrue\relax%%
 		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
 	\fi%
-  \if\exbank@opt@doMargins\@isTrue\relax
-  \par\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}\ignorespaces\else{\exbank@opt@partProblemHeader}\fi%
-}%
+
+\if\exbank@opt@doMargins\@isTrue\relax%
+\@atMargin{{\exbank@opt@partProblemHeader}}{\ppMargin}%
+\ignorespaces%
+\else{\exbank@opt@partProblemHeader}\fi%
+\ignorespaces}%
 \At\EndPartproblem{%
 	\egroup\tighten@paragraph\par%
 	\vspace*{\pMarginBelow}%
