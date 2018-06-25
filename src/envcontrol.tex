@@ -125,6 +125,13 @@
 %:Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 %\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
 %:-
+\def\intromargin#1{%
+\if\exbank@opt@doMargins\@isTrue%
+\global\let\endintromargin=\endlist%
+\list{}{\leftmargin#1}\item[]%
+\else%
+\global\let\endintromargin=\relax\fi%
+}
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)
@@ -144,11 +151,11 @@
       \tighten@paragraph%
       \Trigger\BeginIntro%
     }
-  \fi
+  \fi\begin{intromargin}{-1em}
 }{
   \if\@countIntros\isTrue
     \Trigger\EndIntro
     \endgroup
-  \fi\par
+  \fi\par\end{intromargin}
 % \newline
 }
