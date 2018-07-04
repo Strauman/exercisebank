@@ -353,4 +353,18 @@
   \if\@spriteMode\isFalse%
     \Trigger\EndBuildset%
   \fi
+  \setcounter{problemcounter}{0}%
+  \setcounter{partproblemcounter}{0}%
+  \clearpage%
+}
+%:=\buildsets{list}
+%:This command will generate multiple sets:
+%:!\buildsets{set,set2,set3}
+%:-
+\newcommand\buildsets[1]{%
+	\xdef\csvlist{#1}%
+	\readlist*\items\csvlist%
+	\foreachitem\set\in\items{%
+		\buildset{\set}%
+	}
 }
