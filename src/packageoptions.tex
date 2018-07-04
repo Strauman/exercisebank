@@ -32,6 +32,7 @@ default/.style = {
   exercise directory=.,
   figure root directory=\@exercisesDir,
   style margins=On,
+  problem needs space=0.2\paperheight,
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
@@ -40,6 +41,7 @@ figure root directory/.estore in = \@figrootDir, %<- excepted from opt-syntax
 problem header/.store in = \exbank@opt@problemHeader,
 part problem header/.store in = \exbank@opt@partProblemHeader,
 solution header/.store in = \exbank@opt@solutionHeader,
+problem needs space/.store in = \exbank@opt@problemneedspace,
 % Bools
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},

@@ -64,6 +64,10 @@
 \newcounter{partproblemcounter}
 
 \At\VeryBeginProblem{%
+	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+	\needspace{\exbank@opt@problemneedspace}%
+	\vskip-2\baselineskip\relax%
+	\fi%
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
 	\vspace*{\pMarginAbove}%
@@ -85,8 +89,9 @@
 \else{\exbank@opt@partProblemHeader}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%
-	\egroup\tighten@paragraph\par%
+	\egroup%
 	\vspace*{\pMarginBelow}%
+	\tighten@paragraph\par%
 }
 
 \At\BeginSolution{\hfill\break\vspace*{\solutionMarginAbove}{\exbank@opt@solutionHeader}}
