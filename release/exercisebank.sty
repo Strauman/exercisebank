@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.1.4+edge (2018/04/24) - build 72
+%% The LaTeX package exercisebank - version v0.2.0 (2018/07/21) - build 75
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/04/24 v0.1.4+edge Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/07/21 v0.2.0 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\PackageWarningNoLine{exercisebank-v0.1.4+edge}{This package is in the alpha stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exerciseBank. Thank you!}
+\PackageWarningNoLine{exercisebank-v0.2.0}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -30,6 +30,9 @@
 \usepackage{calc}
 \usepackage{pgfpages}
 \usepackage{geometry}
+\usepackage{listofitems}
+\usepackage{trimspaces}
+\usepackage{needspace}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\isin#1#2#3#4{ \def\needle{#2}
@@ -64,36 +67,54 @@
 \@ifundefined{exbank@quiet}{ \global\let\@dlog\@latex@warning
 }{ \global\let\@dlog\@noneofone
 }
+\newcommand\ex@before[2]{\edef #1{\unexpanded{#2}\unexpanded\expandafter{#1}}
+}
+\newcommand{\exb@lmargin}[2]{\strut\vadjust{\exb@domark{#1}{#2}}}
+\newcommand{\exb@domark}[2]{%
+  \hbox to #2{    \vbox to 0pt{      \kern-\dp\strutbox
+      \smash{\llap{#1}}
+      \vss
+}%
+}
+}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
 \gdef\@DisplaySolutions{\@isFalse}
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \gdef\@SolutionsOnly{\@isFalse}
-\gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}}
+\gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
 default/.style = {  part problems = On,
   tighten paragraphs = True,
-  problem header={\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter},
+  problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
+  style margins=On,
+  problem needs space=0.2\paperheight
 },
 exercise directory/.estore in = \@exercisesDir, %
 figure root directory/.estore in = \@figrootDir, %
+front page/.estore in = \exb@frontpage,
+front page=\@isFalse,
 problem header/.store in = \exbank@opt@problemHeader,
 part problem header/.store in = \exbank@opt@partProblemHeader,
 solution header/.store in = \exbank@opt@solutionHeader,
+problem needs space/.store in = \exbank@opt@problemneedspace,
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
+style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
 switches/.cd,
   On/.initial = \@isTrue,
   on/.initial = \@isTrue,
-  T/.initial =  \@isTrue
+  T/.initial =  \@isTrue,
+  True/.initial =  \@isTrue,
   Off/.initial = \@isFalse,
   off/.initial = \@isFalse,
   F/.initial = \@isFalse,
+  False/.initial = \@isFalse,
 }
 \newcommand\exercisebanksetup[1]{  \pgfkeys{/exbanksetup, #1}%
 }
@@ -101,11 +122,7 @@ switches/.cd,
 \AtBeginDocument{\xdef\tpd{\the\prevdepth}}
 \gdef\tighten@paragraph{%
 \if\exbank@opt@tightenparagraphs\@isTrue\relax%
-  \if\@SolutionsOnly\@isFalse
-    \if\@DisplaySolutions\@isFalse
       \filbreak%
-    \fi
-  \fi
 \fi%
 }
 \gdef\tighten@paragraph@solutions{%
@@ -130,8 +147,10 @@ switches/.cd,
 \newcommand{\translateExBank}[1]{  \pgfkeys{/exbanki18n, default, #1}%
 }
 \translateExBank{}
-\gdef\@tr#1{\@ifundefined{@tr@#1}{#1}{  \csname @tr@#1\endcsname
-}
+\gdef\@tr#1{%
+\@ifundefined{@tr@#1}{#1}{%
+  \csname @tr@#1\endcsname%
+}%
 }
 \let\ea = \expandafter
 \begingroup\lccode`\|=`\\
@@ -164,58 +183,66 @@ switches/.cd,
   \@dlog{\fileInputBase}
   \@ifundefined{input@path}{\gdef\input@path{{\fileInputBase}{\fileInputPath}}}{}
 }
-\newlength{\ppLeading}
 \newlength{\pMarginBelow}
 \newlength{\pMarginAbove}
 \newlength{\pMarginLeft}
 \newlength{\ppMarginBelow}
 \newlength{\ppMarginAbove}
 \newlength{\ppMargin}
-\newlength{\ppPullback}
-\setlength{\ppLeading}{4em}
-\setlength{\pMarginBelow}{1em}
-\setlength{\pMarginAbove}{1em}
-\setlength{\pMarginLeft}{-1.5em}
-\setlength{\ppMarginBelow}{2em}
-\setlength{\ppMarginAbove}{2em}
-\setlength{\ppMargin}{2em}
-\setlength{\ppPullback}{3.5em}
+\newlength{\introMargin}
+\newlength{\solutionMarginLeft}
+\newlength{\solutionMarginAbove}
+\edef\defaultLeftMargin{\the\dimexpr1in+\hoffset}
+\setlength{\ppMargin}{0.5em}
+\setlength{\pMarginLeft}{-\ppMargin-2.5em}
+\setlength{\solutionMarginLeft}{\ppMargin}
+\setlength{\solutionMarginAbove}{1em}
+\setlength{\pMarginBelow}{0em}
+\setlength{\pMarginAbove}{\baselineskip}
+\setlength{\introMargin}{-1.5em}
+\setlength{\ppMarginBelow}{\baselineskip}
+\setlength{\ppMarginAbove}{0em}
+\setlength\parindent{0pt}
+\newbox\ppmarkbox
+\newlength\markskip
+\setlength\markskip{4\baselineskip}
 \def\solMargin{\dimexpr\ppMargin\relax}
 \def\vsSize{1em}
 \def\vs{\vspace{\vsSize}}
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
-\At\VeryBeginProblem{	\stepcounter{problemcounter}
-	\setcounter{partproblemcounter}{0}
-	\vspace*{\pMarginAbove}
-	\begin{addmargin}{\pMarginLeft}
-		{\exbank@opt@problemHeader}
-	\end{addmargin}
-	\vspace*{\pMarginBelow}
+\At\VeryBeginProblem{%
+	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+	\needspace{\exbank@opt@problemneedspace}%
+	\vskip-2\baselineskip\relax%
+	\fi%
+	\stepcounter{problemcounter}%
+	\setcounter{partproblemcounter}{0}%
+	\vspace*{\pMarginAbove}%
+  \strut\vadjust{\vbox to 0pt{\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
+	\vspace*{\the\dimexpr\baselineskip+\pMarginBelow}%
 }
-\At\EndProblem{\tighten@paragraph
+\At\EndProblem{%
+\tighten@paragraph%
 }
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
-	\bgroup
-	\begin{addmargin}{\ppMargin}
-		\begin{itemize}
-			\item[\exbank@opt@partProblemHeader]
-}
-\At\EndPartproblem{		\end{itemize}
-	\end{addmargin}
-	\egroup\tighten@paragraph
+	\bgroup%
+	\if\@displayMetaCounter\@isTrue\relax%
+		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
+	\fi%
+\if\exbank@opt@doMargins\@isTrue\relax%
+\leavevmode\smash{\llap{{\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
+\else{\exbank@opt@partProblemHeader}\fi%
+\ignorespaces}%
+\At\EndPartproblem{%
+	\egroup%
 	\vspace*{\pMarginBelow}%
+	\tighten@paragraph\par%
 }
-\At\BeginSolution{	\vspace*{1em}
-	\begin{addmargin}{\solMargin}
-		\begin{itemize}
-			\item[\exbank@opt@solutionHeader]
-}
-\At\EndSolution{		\end{itemize}
-	\end{addmargin}
-}
+\At\BeginSolution{\hfill\break\vspace*{\solutionMarginAbove}{\exbank@opt@solutionHeader}}
+\At\EndSolution{}
 \At\EndProblem{%
 \if\exbank@opt@tightenparagraphs\@isTrue\relax%
   \if\@SolutionsOnly\@isFalse%
@@ -242,7 +269,6 @@ switches/.cd,
   \if\DisplayProblem\isFalse
     \def\ProcessCutFile{}
   \else
-    \if\@displayMetaCounter\isTrue\relax{\Large\themetacounter}\fi
     \if\@SolutionsOnly\@isTrue\relax%
     \def\ProcessCutFile{}\fi%
     #1
@@ -292,26 +318,35 @@ switches/.cd,
 \endgroup
 \Trigger\EndSolutionHard%
 }
+\def\intromargin#1{%
+\if\exbank@opt@doMargins\@isTrue%
+\gdef\endintromargin{\endlist\endgroup}%
+\begingroup\list{}{\leftmargin#1}\item[]%
+\else%
+\relax\global\let\endintromargin=\relax\fi%
+}
 \generalcomment{intro}{  \if\@countIntros\isTrue
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
     \begingroup
-    \if\@spriteMode\isTrue
-      \if\introarg\isTrue
+    \if\@displayMetaCounter\isTrue\relax%
+    {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
+    \fi
+    \if\@spriteMode\@isTrue
+      \if\introarg\@isTrue
         \stepcounter{partproblemcounter}
-        {\exbank@opt@partProblemHeader}
       \fi
     \fi
     \showhideproblem{%
       \tighten@paragraph%
       \Trigger\BeginIntro%
 }
-  \fi
+  \fi%
+  \intromargin{-1em}
 }{  \if\@countIntros\isTrue
     \Trigger\EndIntro
     \endgroup
-  \fi
-  \vspace*{1em}
+  \fi\par\endintromargin
 }
 \def\squeeze{  \newlength{\marginw}
   \setlength{\marginw}{1.5cm}
@@ -373,7 +408,7 @@ switches/.cd,
       \isin{\ppList}{\themetacounter}{        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
 }{        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
-    \fi  
+    \fi
 }
 \pgfkeys{ /makeset/.is family, /makeset,
  default/.style = {noheadarg=\isFalse, introarg=\isFalse},
@@ -387,7 +422,10 @@ switches/.cd,
 \gdef\exbank@spriteSets{\emptyList}
 \long\gdef\spritesets#1{  \gdef\exbank@spriteSets{#1}
 }
-\newcommand\makeset[3][]{  \pgfkeys{/makeset, default, #1}%
+\global\let\exlist@protect\noexpand
+\newcommand\makeset[3][]{  \xdef\thissetid{#2}
+  \ea\xdef\csname setkeys@\thissetid\endcsname{#1}
+  \pgfkeys{/makeset, default, #1}%
   \if\introarg\isTrue%
     \gdef\introarg{\isTrue}
     \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
@@ -395,26 +433,27 @@ switches/.cd,
   \if\noheadarg\isTrue%
     \ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
   \fi
-  \ea\gdef\csname setlist@#2\endcsname{#3}
+  \ea\gdef\csname setlist@#2\endcsname{\exlist@protect{#3}}
   \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
   \g@addto@macro\@listOfSets{,#2}
 }
 \long\gdef\about#1{}
-\newcommand\sprite[1][4]{\exercisebanksetup{part problem header={\Large\textbf{\thepartproblemcounter}}}
-\squeeze
+\newcommand\sprite[1][4]{\squeeze
 \gdef\@spriteMode{\isTrue}
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
 \pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
 \ifnum\pdfstrcmp{\exbank@spriteSets}{\emptyList}=\z@\relax%
-  \edef\@thelist{\ea\@secondoftwo\@listOfSets}
-  \foreach\set in \@thelist{    \edef\theset{{\set}}
+  \edef\sprite@setlist{\ea\@secondoftwo\@listOfSets}
+  \readlist*\list@sprite@setlist\sprite@setlist
+  \foreachitem\set\in\list@sprite@setlist{    \edef\theset{{\set}}
     \if\theset\empty\relax\else%
     \buildset{\set}%
     \fi%
 }
 \else
-  \edef\@thelist{\exbank@spriteSets}
-  \foreach\set in \@thelist{    \edef\theset{{\set}}
+  \edef\sprite@setlist{\exbank@spriteSets}
+  \readlist*\list@sprite@setlist\sprite@setlist
+  \foreachitem\set\in\list@sprite@setlist{    \edef\theset{{\set}}
     \if\theset\empty\relax\else%
     \buildex{\set}%
     \fi%
@@ -453,22 +492,36 @@ switches/.cd,
   \Trigger\VeryBeginProblem%
 }
 \exbank@def@makeset@command{\pbreak}{\clearpage}
-\xdef\exec#1{:{#1}}
+\let\DeclareExerciseCommand\exbank@def@makeset@command
+\global\let\ex@protect\noexpand
+\gdef\exec#1{:\ex@protect{#1}}
 \gdef\@countIntros{\isFalse}
-\newcommand\buildset[2][]{  \def\oarg{#1}
-  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}
-  \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}
-  \xdef\setName{#2}
-  \@ifundefined{setlist@#2}{    \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}?}
+\gdef\exb@setpgf#1{%
+\edef\keystring{{/makeset,default,#1}}%
+\ea\pgfkeys\keystring}
+\newcommand\buildset[2][]{%
+  \def\oarg{#1}%
+  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}%
+  \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
+  \xdef\setName{#2}%
+  \ifcsname setkeys@\setName\endcsname%
+  \xdef\skeys{\csname setkeys@#2\endcsname}%
+  \exb@setpgf\skeys%
+  \fi%
+  \@ifundefined{setlist@#2}{%
+    \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}?}
     \stop\bye
 }{}
-  \edef\setlist{\csname setlist@#2\endcsname}
-  \if\@spriteMode\isFalse
-    \Trigger\StartBuildset
-  \fi
-  \gdef\@delegateFileInfo{\@ifnextchar?\@execute@makeset@command\@is@exec}
-  \def\@is@exec{\@ifnextchar:\@execute@exec\@is@file}
-  \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}
+  \let\exlist@protect\unexpanded%
+  \edef\exbank@setlist{\csname setlist@#2\endcsname}%
+  \let\exlist@protect\noexpand%
+  \if\@spriteMode\isFalse%
+    \if\exb@frontpage\@isFalse\else\input{\exb@frontpage}\fi
+    \Trigger\StartBuildset%
+  \fi%
+  \gdef\@delegateFileInfo{\@ifnextchar?\@execute@makeset@command\@is@exec}%
+  \def\@is@exec{\@ifnextchar:\@execute@exec\@is@file}%
+  \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}%
   \gdef\X@exb@setEnv##1{%
     \def\continueLoop{\isTrue}%
     \@dlog{Processing normal file "\exerciseFileInfo.tex"}%
@@ -478,39 +531,57 @@ switches/.cd,
     \def\continueLoop{\isTrue}\ea\exbank@setEnv\exerciseFileInfo\bgroup\nullfont%
 }
   \gdef\@execute@makeset@command ?##1{%
-    \edef\inner{\@firstofone##1}
-    \@dlog{Executing macro \@backslashchar\@gobble##1}
-    \csname\inner\endcsname
-    #1\def\continueLoop{\isFalse}\ea\bgroup
+    \edef\inner{\@firstofone##1}%
+    \@dlog{Executing macro \@backslashchar\@gobble##1}%
+    \csname\inner\endcsname%
+    #1\def\continueLoop{\isFalse}\ea\bgroup%
 }
-  \def\@execute@exec:#1{#1\bgroup}
-  \foreach\exerciseFileInfo in \setlist{    \def\continueLoop{\isTrue}
-    \gdef\ppList{\emptyList}
-    \setcounter{metacounter}{0}
-    \ea\@delegateFileInfo\exerciseFileInfo\egroup
-    \Trigger\InputExercise
-    \if\continueLoop\isTrue
-  \Trigger\PathControl
-    \if\nohead\isFalse
-      \if\@spriteMode\isFalse
-        \Trigger\BeginProblem
-      \fi
-    \fi
-    \if\nohead\isFalse\Trigger\VeryBeginProblem\fi
-    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi
-    \IfFileExists{\@exercisesDir/\exerciseFile}{      \incl{\@exercisesDir/\exerciseFile}
-      \if\@spriteMode\isTrue
+  \def\@execute@exec:{%
+    \def\continueLoop{\isFalse}\@dlog{Executing custom command}\bgroup%
+}
+  \readlist*\setlist\exbank@setlist%
+  \foreachitem\exerciseFileInfo\in\setlist{%
+    \def\continueLoop{\isTrue}%
+    \gdef\ppList{\emptyList}%
+    \setcounter{metacounter}{0}%
+    \let\ex@protect\unexpanded%
+    \edef\exerciseFileInfo{\exerciseFileInfo}%
+    \ea\@delegateFileInfo\exerciseFileInfo\egroup%
+    \Trigger\InputExercise%
+    \if\continueLoop\isTrue%
+    \let\ex@protect\noexpand%
+  \Trigger\PathControl%
+    \if\nohead\isFalse%
+      \if\@spriteMode\isFalse%
+        \Trigger\BeginProblem%
+      \fi%
+    \fi%
+    \if\nohead\isFalse\Trigger\VeryBeginProblem\fi%
+    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi%
+    \IfFileExists{\@exercisesDir/\exerciseFile}{%
+      \incl{\@exercisesDir/\exerciseFile}%
+      \if\@spriteMode\isTrue%
         \setcounter{partproblemcounter}{0}%
       \fi
 }{      \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
       \stop\bye
 }
-    \if\nohead\isFalse\Trigger\EndProblem\fi
+    \if\nohead\isFalse\Trigger\EndProblem\fi%
     \fi%
 }
-  \if\@spriteMode\isFalse
-    \Trigger\EndBuildset
+  \if\@spriteMode\isFalse%
+    \Trigger\EndBuildset%
   \fi
+  \setcounter{problemcounter}{0}%
+  \setcounter{partproblemcounter}{0}%
+  \clearpage%
+}
+\newcommand\buildsets[1]{%
+	\xdef\csvlist{#1}%
+	\readlist*\items\csvlist%
+	\foreachitem\set\in\items{%
+		\buildset{\set}%
+}
 }
 \newcommand\refcounter[1]{\edef\@currentlabel{#1}%
 }
@@ -519,7 +590,7 @@ switches/.cd,
 }
 \let\pptag = \pplabel
 \newcommand\pppref[1]{%
-(\ref{pp:\exerciseFile:#1})\relax%
+(\ea\@alph\ref{pp:\exerciseFile:#1})\relax%
 }
 \newcommand\ppref[1]{%
 (\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1})\relax%

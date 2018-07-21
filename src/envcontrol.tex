@@ -127,10 +127,10 @@
 %:-
 \def\intromargin#1{%
 \if\exbank@opt@doMargins\@isTrue%
-\global\let\endintromargin=\endlist%
-\list{}{\leftmargin#1}\item[]%
+\gdef\endintromargin{\endlist\endgroup}%
+\begingroup\list{}{\leftmargin#1}\item[]%
 \else%
-\global\let\endintromargin=\relax\fi%
+\relax\global\let\endintromargin=\relax\fi%
 }
 \generalcomment{intro}{
   %% Decide wether to treat intro as problem in
@@ -151,11 +151,12 @@
       \tighten@paragraph%
       \Trigger\BeginIntro%
     }
-  \fi\begin{intromargin}{-1em}
+  \fi%
+  \intromargin{-1em}
 }{
   \if\@countIntros\isTrue
     \Trigger\EndIntro
     \endgroup
-  \fi\par\end{intromargin}
+  \fi\par\endintromargin
 % \newline
 }

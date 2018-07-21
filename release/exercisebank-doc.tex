@@ -1,5 +1,5 @@
-%% exercisebank v0.1.4+edgeb72 - 2018/04/24
-%% The LaTeX package exercisebank - version v0.1.4+edge (2018/04/24) build 72
+%% exercisebank v0.2.0b75 - 2018/07/21
+%% The LaTeX package exercisebank - version v0.2.0 (2018/07/21) build 75
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -13,10 +13,11 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README.txt
-\documentclass{article}
+\documentclass[a4paper]{article}
 \usepackage[all]{tcolorbox}
 \usepackage{needspace}
 \usepackage{tabularx}
+\usepackage{geometry}
 \makeatletter
 \def\input@path{{../../docs/}}
 \lstdefinestyle{mydocumentation}{style=tcbdocumentation,
@@ -44,7 +45,7 @@
     drop fuzzy shadow,#1}
   \def\l@macro#1#2{#1\hfill\newline}
 \newcommand\macrotable{\hypersetup{linkcolor=black}\@starttoc{mac}\hypersetup{linkcolor=Definition}}
-
+\newcommand\gh[1]{\href{#1}{https://github.com/#1}}
 % --- CHANGELOG TABLE --- %
 \newcommand*\l@version[2]{%
   \ifnum \c@tocdepth >\z@
@@ -61,19 +62,10 @@
     \endgroup
   \fi}
   \newcommand*\l@change[2]{%
-    \ifnum \c@tocdepth >\z@
-      \addpenalty\@secpenalty
-      \addvspace{0.5em \@plus\p@}%
-      \setlength\@tempdima{1.5em}%
-      \begingroup
-        \parindent 1.5em \rightskip \@pnumwidth
-        \parfillskip -\@pnumwidth
-        \leavevmode
-        \advance\leftskip\@tempdima
-        \hskip -\leftskip
-        --\ #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{#2}\par
-      \endgroup
-    \fi}
+    \addvspace{0.5em \@plus\p@}%
+    \leftskip1em--\hspace{0.5em}\begin{minipage}{0.5\textwidth}#1\end{minipage}\hfill%
+    \begin{minipage}{0.3\textwidth}#2\end{minipage}\par%
+  }
 
 \newcommand\chlogtable{\begin{NoHyper}\@starttoc{chlog}\hypersetup{final}\end{NoHyper}}
 \def\newversion#1{\addcontentsline{chlog}{version}{#1}}
@@ -107,12 +99,12 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.1.4+edge{\\[-0.5em]\footnotesize(build 72)}}}
+\title{{exercisebank - manual\\ v0.2.0{\\[-0.5em]\footnotesize(build 75)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
  
-If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
+If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at\\\url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
 
 \tableofcontents
 \clearpage
@@ -209,8 +201,11 @@ The \dac{phead} command makes a problem header. You can pass them as much as you
 \end{dispListing}
 
 \subsection{Solutions}
-The last thing to cover then is solutions. In your exercise files you just use the solution environment
+The last thing to cover then is solutions. In your exercise files you just use the solution environment \emph{below} the \refEnv{problem} environment:
 \begin{dispListing}
+\begin{problem}
+Some problem
+\end{problem}
 \begin{solution}
 Solution goes here
 \end{solution}
@@ -220,7 +215,13 @@ your main file to display them.
 
 \subsection{Using \dac{At}}
 \subsubsection{Making your own front page for a set}
-To create your own front page for each set, you'd use\\ \dac{At}\dac{StartBuildset}\brackets{\meta{FrontPageContents}}. Anyhing you send in to \dac{At}\dac{StartBuildset} will be executed before the first problem starts:
+
+To create your own front page for each set, you could use the \refKey{front page} key:
+\begin{dispListing}
+  \exercisebanksetu{front page={path/to/file.tex}}
+\end{dispListing}\\
+
+To illustrate how the \dac{At} command works, you could use the following command to execute macros \dac{At}\dac{StartBuildset}\brackets{\meta{FrontPageContents}}. Anything you send in to \dac{At}\dac{StartBuildset} will be executed before the first problem starts:
 \begin{dispListing}
   \At\StartBuildset{
     \input{myFrontpage}
@@ -235,7 +236,7 @@ Maybe you want to see what files are what problems. One way to do that is hook i
   }
 \end{dispListing}
 
-Note that the \dac{At}{BeginProblem} is executed \emph{before} the headers.
+Note that the \dac{At}\dac{BeginProblem} is executed \emph{before} the headers.
 
 \subsection{Dynamic figure path}
 Exercisebank automatically allows you to \dac{input} and \dac{includegraphics} from
@@ -284,7 +285,7 @@ Sometimes you'd want to introcude your exercises and tell a little bit about it.
  This is a command that is used by sprite to determine what sets are shown in sprite. If this is not given, sprite uses all sets given in \dac{makset}
 \end{docCommand}
 \begin{docCommand}{makeset}{\oarg{intro,nohead}\marg{filable}}\addcontentsline{toc}{subsubsection}{\refCom{makeset}}
-\updated{v0.1.3\\2018/04/20 }
+\updated{v0.2.0\\2018/07/21 }
  This command is the one you use to make a set! Later you use \dac{buildset} to build the sets you make. The \meta{filable} argument is either the name of the file relative to the \dac{setExercisesDir}-path (default is nothing, so it's in the root path), or you could use the \dac{select} or \dac{exclude} to  respectively cherry pick or exclude exercises. (See their docs).\\
  \oarg{intro} this counts the intro environment as a part problem, so that you can \dac{select} or \dac{exclude} the intro\\
  \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \dac{phead} to insert the problem header where you want it
@@ -304,17 +305,31 @@ exercise, explaining short what the exercise is about. It's only visible when us
  \begin{marker}If \dac{sprite} is used, it should be the only command in \dac{begin}\{document\}\dac{end}\{document\}\end{marker}
 \end{docCommand}
 \begin{docCommand}{exclude}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{exclude}}
-\updated{v0.1.3\\2018/04/20 }
+\updated{v0.2.0\\2018/07/21 }
 As you can see in the intro section of the documentation, this is for excluding partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{select}{\marg{exerciseFileName}\marg{Comma separated numbers}}\addcontentsline{toc}{subsubsection}{\refCom{select}}
-\updated{v0.1.3\\2018/04/20 }
+\updated{v0.2.0\\2018/07/21 }
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
+\begin{docCommand}{DeclareExerciseCommand}{\marg{\dac{command}}\marg{actions}}\addcontentsline{toc}{subsubsection}{\refCom{DeclareExerciseCommand}}
+\defnew{v0.2.0\\2018/07/21 }
+This can be used later in makesets. E.g.
+\dac{DelcareExerciseCommand}\{\dac{pbreak}\}\brackets{\dac{clearpage}} will make
+\dac{pbreak} behave like \dac{clearpage} in the set:
+\begin{dispListing}
+\makeset[nohead]{%
+ \phead,
+ myExercise,
+ \pbreak,
+ myExerciseOnNewPage%
+}
+\end{dispListing}
+\end{docCommand}
 \begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
-\updated{v0.1.3\\2018/04/20 }
+\updated{v0.2.0\\2018/07/21 }
 You can use this in \dac{makeset} to execute commands between problems.
 E.g. to insert a new page in between two problems when using nohead:
 \begin{dispListing}
@@ -336,12 +351,19 @@ The following example prints "Exercise set number 1" and "Exercise set number 2"
 \end{document}
 \end{dispListing}
 \end{docCommand}
+\begin{docCommand}{buildsets}{\marg{list}}\addcontentsline{toc}{subsubsection}{\refCom{buildsets}}
+\defnew{v0.2.0\\2018/07/21 }
+This command will generate multiple sets:
+\begin{dispListing}
+\buildsets{set,set2,set3}
+\end{dispListing}
+\end{docCommand}
 \begin{docCommand}{pplabel}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pplabel}}
 
 Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{label\}}
 \end{docCommand}
 \begin{docCommand}{ppref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{ppref}}
-
+\updated{v0.2.0\\2018/07/21 }
 Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
 \end{docCommand}
 \begin{docCommand}{pref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pref}}
@@ -352,12 +374,12 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 You can do a lot of configurations on this package, and probably
  even more to come in later versions!
 \begin{docCommand}{ShowNumbers}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowNumbers}}
-\defnew{v0.1.2\\2018/04/17 }
+\updated{v0.2.0\\2018/07/21 }
  Shows the numbers in fron of the part problems and intros that should be used with
  \dac{exclude} and \dac{select}
 \end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{[key/values]}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
-\defnew{v0.1.0\\2018/04/08 }
+\updated{v0.2.0\\2018/07/21 }
  Here is a list of the different keys and their meaning
 \keyDef{part problems}{On/Off}{On}{
  This is whether or not to do part problems. E.g. 1a), 1b) etc.
@@ -380,7 +402,8 @@ You can do a lot of configurations on this package, and probably
  \dac{large}\dac{textbf}\{(\dac{theproblemcounter}\dac{alph}{partproblemcounter\})}
 }
 \keyDef{solution header}{string}{see below}{
-\dac{large}\{\dac{textbf}{\dac{@tr}{Solution\}:}}
+\dac{large}\{\dac{textbf}{\dac{@tr}\brackets{Solution:\}}}
+\dac{@tr} is the translation macro
 }
 \keyDef{exercise directory}{dir}{./}{
 This key is used for setting the default exercise directory.
@@ -397,11 +420,27 @@ Then by default figures in the directories \texttt{exercises/faradaysLaw/} and
 \texttt{exercises/faradaysLaw/ACGenerate/} can be included by just doing \dac{includegraphics}.
 And if you want to change the root of this directory to be \texttt{figures}, such that
 exercisebank looks for figures in \texttt{figures/faradaysLaw/} and \texttt{figures/faradaysLaw/ACGenerate/}
-You would use this option in the setup: \dac{exercisebanksetup}\{figure root directory=figures\}
+You would use this option in the setup:\\
+\dac{exercisebanksetup}\{figure root directory=figures\}
 }
 \begin{dispListing}
- \exercisebanksetup{exercise directory=exercises,part problems=Off,solution header={\textbf{SOL:}}}
+\exercisebanksetup{
+ exercise directory=exercises,
+ part problems=Off,
+ solution header={\textbf{SOL:}}
+}
 \end{dispListing}
+\keyDef{use margins}{True/False}{True}{
+ Whether or not to put the part problem labels and the problem headers outside the
+ normal margins.
+}
+\keyDef{front page}{file}{}{
+Path to a front page that will be loaded at every \dac{buildset}
+Where to load the front page. The commands \refCom{setName} is available.
+}
+\keyDef{style margins}{yes/no}{yes}{
+Whether or not to put problem headers and part problem headers out in the margins.
+}
 \end{docCommand}
 \filbreak\subsection{Internationalization}
 \begin{docCommand}{translateExBank}{\marg{Translation key/vals}}\addcontentsline{toc}{subsubsection}{\refCom{translateExBank}}
@@ -466,20 +505,63 @@ This is a `read-only' macro that contains the name of the current exerciseFile
 \filbreak\subsection{Counters}
 \docCounter{problemcounter}-counter holds the current problem number and
 \docCounter{partproblemcounter}-counter holds the current partproblem \emph{number}.
+\filbreak\subsection{Lengths and margins}
+Note that these are all \emph{\!\dac{textbf}\{lengths\}}
+and should be used as e.g.
+\begin{dispListing}
+\setlength{\pMarginBelow}
+\end{dispListing}
+\begin{docCommand}{pMarginBelow}{}\addcontentsline{toc}{subsubsection}{\refCom{pMarginBelow}}
+
+Distance below Problem \# header
+\end{docCommand}
+\begin{docCommand}{pMarginAbove}{}\addcontentsline{toc}{subsubsection}{\refCom{pMarginAbove}}
+
+Distance above Problem \# header
+\end{docCommand}
+\begin{docCommand}{pMarginLeft}{}\addcontentsline{toc}{subsubsection}{\refCom{pMarginLeft}}
+
+ Problem header: distance from the default left margin
+\end{docCommand}
+\begin{docCommand}{ppMarginBelow}{}\addcontentsline{toc}{subsubsection}{\refCom{ppMarginBelow}}
+
+ Part problem: distance from the end of the part problem to the next item
+\end{docCommand}
+\begin{docCommand}{ppMarginAbove}{}\addcontentsline{toc}{subsubsection}{\refCom{ppMarginAbove}}
+
+ Part problem: distance above the start of the part problem to the previous item
+\end{docCommand}
+\begin{docCommand}{ppMargin}{}\addcontentsline{toc}{subsubsection}{\refCom{ppMargin}}
+
+ Part problem: how far away from the text the part problem labels are.
+\end{docCommand}
+\begin{docCommand}{introMargin}{}\addcontentsline{toc}{subsubsection}{\refCom{introMargin}}
+
+ The offset of margins for intros
+\end{docCommand}
 \filbreak\subsection{Macro definitions}
 
  \addcontentsline{mac}{macro}{\refCom{At}}{}
+\addcontentsline{mac}{macro}{\refCom{DeclareExerciseCommand}}{}
 \addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
 \addcontentsline{mac}{macro}{\refCom{Trigger}}{}
 \addcontentsline{mac}{macro}{\refCom{about}}{}
+\addcontentsline{mac}{macro}{\refCom{buildsets}}{}
 \addcontentsline{mac}{macro}{\refCom{exclude}}{}
 \addcontentsline{mac}{macro}{\refCom{exec}}{}
 \addcontentsline{mac}{macro}{\refCom{exerciseFile}}{}
 \addcontentsline{mac}{macro}{\refCom{exercisebanksetup}}{}
+\addcontentsline{mac}{macro}{\refCom{introMargin}}{}
 \addcontentsline{mac}{macro}{\refCom{isin}}{}
 \addcontentsline{mac}{macro}{\refCom{makeset}}{}
 \addcontentsline{mac}{macro}{\refCom{ownLineNoSpacesGotIt}}{}
+\addcontentsline{mac}{macro}{\refCom{pMarginAbove}}{}
+\addcontentsline{mac}{macro}{\refCom{pMarginBelow}}{}
+\addcontentsline{mac}{macro}{\refCom{pMarginLeft}}{}
+\addcontentsline{mac}{macro}{\refCom{ppMargin}}{}
+\addcontentsline{mac}{macro}{\refCom{ppMarginAbove}}{}
+\addcontentsline{mac}{macro}{\refCom{ppMarginBelow}}{}
 \addcontentsline{mac}{macro}{\refCom{pplabel}}{}
 \addcontentsline{mac}{macro}{\refCom{ppref}}{}
 \addcontentsline{mac}{macro}{\refCom{pref}}{}
@@ -493,6 +575,7 @@ This is a `read-only' macro that contains the name of the current exerciseFile
  \macrotable
 
 
+% \newgeometry{lmargin=0.7cm}
 \section{Changelog}
 %!TEX root = exercisebank-doc.tex
 \newversion{v0.0.2b11 2018/04/02}
@@ -502,7 +585,7 @@ This is a `read-only' macro that contains the name of the current exerciseFile
     \change{added trigger \dac{VeryBeginPartproblem}}
 
 \newversion{v0.0.3b40 2018/04/03}
-    \change{Added examples that uses the \dac{At} command.}
+    \change{Added examples that uses the \refCom{At} command.}
     \change{Making front page and other snacks}
 
 \newversion{v0.0.4b44 2018/04/03}
@@ -517,20 +600,32 @@ This is a `read-only' macro that contains the name of the current exerciseFile
     \change{Added a few package options. More to come!}
 
 \newversion{v0.1.1 2018/04/13}
-  \change{Added \dac{exec}, which allows the user to execute macros between problems}
-  \change{Bug fix: \dac{At} would cause crash due to latexmk multiple builds}
-  \change{Bug fix: \dac{sprite} wouldn't build correctly}
-  \change{Bug fix: misc bugs involving \dac{makeset}, \dac{buildset}, nohead and \dac{phead}}
+  \change{Added \refCom{exec}, which allows the user to execute macros between problems}
+  \change{Bug fix: \refCom{At} would cause crash due to latexmk multiple builds}
+  \change{Bug fix: \refCom{sprite} wouldn't build correctly}
+  \change{Bug fix: misc bugs involving \refCom{makeset}, \refCom{buildset}, nohead and \refCom{phead}}
 
 \newversion{v0.1.2 2018/04/17}
-    \change{Fixed bug that \dac{select} and \dac{exclude} not working as expected.}
-    \change{Added \dac{ShowNumbers} for displaying numbers related to use in \dac{select} and \dac{exclude}}
+    \change{Fixed bug that \refCom{select} and \refCom{exclude} not working as expected.}
+    \change{Added \refCom{ShowNumbers} for displaying numbers related to use in \refCom{select} and \refCom{exclude}}
 
 \newversion{v0.1.3 2018/04/20}
     \change{Added custom dynamic figure path \refKey{figure root directory}.}
-    \change{Fixed bugs related to \dac{phead} and the commands used in \dac{makeset}-lists.}
-\newversion{ 2018/04/24}
-    \change{Introduced solutions only: \dac{SolutionsOnly}, but it needs fixing before it's added to API}
+    \change{Fixed bugs related to \refCom*{phead} and the commands used in \refCom{makeset}-lists.}
+\newversion{V0.1.4 2018/04/28}
+    % \change{Introduced solutions only: \refCom{SolutionsOnly}}
+    \change{Updated margins a lot!}
+    \change{Fixed sneaky space in translation}
     \change{Fixed paragraph tightening when displaying solutions}
+    \change{Introduced \refCom{DeclareExerciseCommand}}
+    \change{Fixed bug with \refCom{exec}}
+    \change{Iteration over items now uses a more lighweight approach.}
+    \change{For commands that takes `lists' as arguments (\refCom{makeset}, \refCom{select} and \refCom{exclude}), the last item of the list can be terminated with new line or spaces without problems.}
+    \change{For commands that takes `lists' as arguments, the entries in the list are now trimmed whitespaces on both sides.}
+\newversion{v0.2.0 2018/07/21}
+    \change{Fixed bug where \refCom{ppref} did not reference letter in part problem.}
+    \change{Introducing \refCom{buildsets}-command for building more than one set at a time.}
+    \change{Ability to add front page with the \refKey{front page} setup-key.}
+    \change{You can now remove the forced margin setup with \refKey{style margins}.}
 \chlogtable
  \end{document}

@@ -255,6 +255,7 @@
   \edef\exbank@setlist{\csname setlist@#2\endcsname}%
   \let\exlist@protect\noexpand%
   \if\@spriteMode\isFalse%
+    \if\exb@frontpage\@isFalse\else\input{\exb@frontpage}\fi
     \Trigger\StartBuildset%
   \fi%
   % ---- BEGIN setlist divider ----%

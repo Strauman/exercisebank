@@ -26,17 +26,19 @@
 default/.style = {
   part problems = On,
   tighten paragraphs = True,
-  problem header={\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter},
+  problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
   style margins=On,
-  problem needs space=0.2\paperheight,
+  problem needs space=0.2\paperheight
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
 figure root directory/.estore in = \@figrootDir, %<- excepted from opt-syntax
+front page/.estore in = \exb@frontpage,
+front page=\@isFalse,
 % Unexpanded macros
 problem header/.store in = \exbank@opt@problemHeader,
 part problem header/.store in = \exbank@opt@partProblemHeader,
@@ -52,10 +54,12 @@ switches/.cd,
   On/.initial = \@isTrue,
   on/.initial = \@isTrue,
   T/.initial =  \@isTrue,
+  True/.initial =  \@isTrue,
 % False
   Off/.initial = \@isFalse,
   off/.initial = \@isFalse,
   F/.initial = \@isFalse,
+  False/.initial = \@isFalse,
 }
 %:=\exercisebanksetup{[key/values]}
 \newcommand\exercisebanksetup[1]{
@@ -65,11 +69,11 @@ switches/.cd,
 \AtBeginDocument{\xdef\tpd{\the\prevdepth}}
 \gdef\tighten@paragraph{%
 \if\exbank@opt@tightenparagraphs\@isTrue\relax%
-  \if\@SolutionsOnly\@isFalse
-    \if\@DisplaySolutions\@isFalse
+  % \if\@SolutionsOnly\@isFalse
+    % \if\@DisplaySolutions\@isFalse
       \filbreak%
-    \fi
-  \fi
+    % \fi
+  % \fi
 \fi%
 }
 \gdef\tighten@paragraph@solutions{%
@@ -139,5 +143,12 @@ switches/.cd,
 %:\keyDef{use margins}{True/False}{True}{
 %: Whether or not to put the part problem labels and the problem headers outside the
 %: normal margins.
+%:}
+%:\keyDef{front page}{file}{}{
+%:Path to a front page that will be loaded at every \buildset
+%:Where to load the front page. The commands \refCom{setName} is available.
+%:}
+%:\keyDef{style margins}{yes/no}{yes}{
+%:Whether or not to put problem headers and part problem headers out in the margins.
 %:}
 %:-

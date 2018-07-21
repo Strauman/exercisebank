@@ -39,7 +39,7 @@
 \phead
 \At
 \Trigger
-:@@VERSION:@@DATE
+:v0.2.0:2018/07/21
 \DeclareExerciseCommand
 \exec
 \makeset
@@ -47,3 +47,5 @@
 \exclude
 \ShowNumbers
 \ppref
+\exercisebanksetup
+\buildsets
