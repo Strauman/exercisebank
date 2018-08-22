@@ -7,7 +7,9 @@
 \let\ea = \expandafter
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
-\gdef\emptyList{0}
+\gdef\exb@emptyList{0}
+\let\emptyList\exb@emptyList
+\let\exb@tagList\exb@emptyList
 %
 \gdef\ifppMode#1{
   \def\mname{\exbank@macroname{#1}}
@@ -35,7 +37,11 @@
 \let\F@\isFalse
 \At\DecideProblemDisplay{%
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
+    \ifnum\pdfstrcmp{\exb@tagList}{\exb@emptyList}=\z@\relax%
+      \isin{\exb@currentTag}{\exb@tagList}{\xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}}{\xdef\DisplayProblem{\F@}}
+    \else%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
+    \fi
     \else
       \isin{\ppList}{\themetacounter}{
         \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}

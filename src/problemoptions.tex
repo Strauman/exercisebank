@@ -1,0 +1,10 @@
+%!TEX root = main.tex
+\newif\ifexb@opthides
+\pgfkeys{
+/exbank/problems/.cd,
+default/.style={hide=false},
+% print/.code={Hello there! #1},
+hide/.is if={exb@opthides}
+% print/.code={\@dlog{#1}}
+}
+\def\nextproblem{\pgfqkeys{/exbank/problems}}

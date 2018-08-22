@@ -38,12 +38,17 @@
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
 \gdef\showhideproblem#1{%
-  \if\DisplayProblem\isFalse
+  \ifexb@opthides%
     \def\ProcessCutFile{}
   \else
-    \if\@SolutionsOnly\@isTrue\relax%
-    \def\ProcessCutFile{}\fi%
-    #1
+    \if\DisplayProblem\isFalse
+        \def\ProcessCutFile{}
+    \else
+      \if\@SolutionsOnly\@isTrue\relax%
+        \def\ProcessCutFile{}
+      \fi%
+        #1%
+    \fi
   \fi
 }
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
@@ -74,15 +79,16 @@
       }
   }{
     \if\DisplayProblem\@isFalse\relax\else
-      \if\exbank@opt@partProblems\isTrue
+      \if\exbank@opt@partProblems\isTrue\ifexb@opthides\else
         \Trigger\EndPartproblem
-        \tighten@paragraph
-      \else
+        \tighten@paragraph\fi
+      \else\if
         \Trigger\EndProblem
       \fi
     \fi
   \endgroup
 }
+\g@addto@macro\AfterproblemComment{\nextproblem{default}}
 %:§env
 %:=\\begin{solution}
 %: Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
