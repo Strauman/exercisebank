@@ -22,10 +22,11 @@
 %:!  This problem is easy
 %:!\end{problem}
 %: And you could now build, say, only easy problems using
-%:\buildtags{hard}{SETNAME}, where SETNAME is chosen by a
+%:\buildtags{hard}\{SETNAME\}, where SETNAME is chosen by a
 %:\makeset command.
 %:-
 \newif\ifexb@opthides
+\providecommand\exb@currentTag{}
 \pgfkeys{
 /exbank/problems/.cd,
 default/.style={hide=false,tag=\relax},

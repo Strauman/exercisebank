@@ -49,3 +49,6 @@
 \ppref
 \exercisebanksetup
 \buildsets
+:@@VERSION:@@DATE
+\nextproblem
+\buildtags
