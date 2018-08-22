@@ -19,16 +19,16 @@
  \def\haystack{#1}
  \def\isFalse{0}
  \let\isInList = \isFalse
- \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric!}{}\bye\stop}
+ % \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric!}{}\bye\stop}
  \IfInteger{\haystack}{
-  \ifnum\haystack=\needle\relax
+  \ifnum\pdfstrcmp{\haystack}{\needle}=\z@\relax
    #3
   \else
    #4
   \fi
  }{
   \foreach \pp in #1{
-    \ifnum\pp=\needle\relax%
+    \ifnum\pdfstrcmp{\pp}{\needle}=\z@\relax%
      \gdef\isInList{1}
      #3
     \fi
@@ -38,7 +38,23 @@
   \fi
  }
 }
-
+\newif\ifexb@isInList
+\gdef\exb@isin#1#2#3#4{
+  \global\exb@isInListfalse
+  \xdef\needle{#1}
+  \xdef\haystack{#2}
+  \def\whenfalse{#4}
+  \def\whentrue{#3}
+  \readlist*\items\haystack%
+  \foreachitem\itm\in\items{
+    \ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
+  \global\exb@isInListtrue%
+  #3\fi
+  }
+  \ifexb@isInList\else%
+  #4
+  \fi%
+}
 
 %\strif: Compare two strings
 %\strif\stringA\stringB%

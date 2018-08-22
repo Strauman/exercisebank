@@ -7,7 +7,9 @@
 \let\ea = \expandafter
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
-\gdef\emptyList{0}
+\gdef\exb@emptyList{0}
+\let\emptyList\exb@emptyList
+\let\exb@tagList\exb@emptyListg
 %
 \gdef\ifppMode#1{
   \def\mname{\exbank@macroname{#1}}
@@ -33,6 +35,10 @@
 \let\ipm\@ifppMode
 \let\T@\isTrue
 \let\F@\isFalse
+% \ifnum\pdfstrcmp{\exb@tagList}{\exb@emptyList}=\z@\relax
+%   \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}\else%
+%   \isin{\exb@currentTag}{\exb@tagList}{}{\xdef\DisplayProblem{\F@}}%
+% \fi
 \At\DecideProblemDisplay{%
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
@@ -43,6 +49,10 @@
         \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
       }
     \fi
+% \def\DisplayProblem{0}
+\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
+\exb@isin{\exb@currentTag}{\exb@tagList}{}{\global\exb@opthidestrue}
+\fi
 }
 
 %% Makeset arg handler
@@ -366,6 +376,20 @@
 	\xdef\csvlist{#1}%
 	\readlist*\items\csvlist%
 	\foreachitem\set\in\items{%
+		\buildset{\set}%
+	}
+}
+%:=\buildtags{tagslist}{setslist}
+%:This command will generate multiple sets:
+%:!\buildsets{tag,tag2,tag3}{set,set2,set3}
+%:-
+\newcommand\buildtags[2]{%
+  \xdef\csvtags{#1}%
+	\xdef\csvsets{#2}%
+	\readlist*\tagsItems\csvtags%
+  \readlist*\setsItems\csvsets%
+	\foreachitem\set\in\setsItems{%
+    \xdef\exb@tagList{\csvtags}
 		\buildset{\set}%
 	}
 }
