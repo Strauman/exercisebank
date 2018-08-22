@@ -16,6 +16,7 @@
 \def\asdf#1{\@latex@warning{Called hello}#1}
 % Testing all makeset functions
 \makeset{11}{secondexercise}
+
 % \makeset[nohead,intro]{11}{%
 % \phead,
 % \exclude{secondexercise}{2,3},
@@ -41,6 +42,7 @@
 % }
 
 \begin{document}
-\buildset{11}
+\buildtags{Y,N}{11}
+% \buildset{11}
 % \sprite
 \end{document}

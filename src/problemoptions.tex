@@ -1,10 +1,37 @@
 %!TEX root = main.tex
+%:§problemopts
+%:=\nextproblem
+%:Prior to a problem environment in an exercise file you can pass options
+%:using the \nextproblem command. If you e.g. wanted to hide one regardless
+%:of what set it is you'd do
+%:!\nextproblem{hide}
+%:!\begin{problem}
+%:!  This problem will be hidden because of the \nextproblem command
+%:!\end{problem}
+%:you can also tag problems using this:
+%:!\nextproblem{tag=hard}
+%:!\begin{problem}
+%:!  This problem is hard
+%:!\end{problem}
+%:!\nextproblem{tag=hard}
+%:!\begin{problem}
+%:!  This problem is also hard
+%:!\end{problem}
+%:!\nextproblem{tag=easy}
+%:!\begin{problem}
+%:!  This problem is easy
+%:!\end{problem}
+%: And you could now build, say, only easy problems using
+%:\buildtags{hard}{SETNAME}, where SETNAME is chosen by a
+%:\makeset command.
+%:-
 \newif\ifexb@opthides
 \pgfkeys{
 /exbank/problems/.cd,
-default/.style={hide=false},
+default/.style={hide=false,tag=\relax},
 % print/.code={Hello there! #1},
-hide/.is if={exb@opthides}
+hide/.is if={exb@opthides},
+tag/.estore in=\exb@currentTag,
 % print/.code={\@dlog{#1}}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}

@@ -38,6 +38,7 @@
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
 \gdef\showhideproblem#1{%
+\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
   \ifexb@opthides%
     \def\ProcessCutFile{}
   \else
@@ -49,7 +50,7 @@
       \fi%
         #1%
     \fi
-  \fi
+  \fi\fi
 }
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
 
