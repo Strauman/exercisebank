@@ -8,8 +8,8 @@
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
 \gdef\exb@emptyList{0}
-\let\emptyList\exb@emptyList
-\let\exb@tagList\exb@emptyListg
+\global\let\emptyList\exb@emptyList
+\global\let\exb@tagList\exb@emptyList
 %
 \gdef\ifppMode#1{
   \def\mname{\exbank@macroname{#1}}
@@ -43,7 +43,7 @@
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
     \else
-      \isin{\ppList}{\themetacounter}{
+      \exb@isin{\themetacounter}{\ppList}{
         \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
       }{
         \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
@@ -51,7 +51,7 @@
     \fi
 % \def\DisplayProblem{0}
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
-\exb@isin{\exb@currentTag}{\exb@tagList}{}{\global\exb@opthidestrue}
+\exb@isin{\exb@currentTag}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
 \fi
 }
 

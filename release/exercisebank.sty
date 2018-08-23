@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.0 (2018/07/21) - build 75
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/23) - build 76
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/07/21 v0.2.0 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/08/23 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\PackageWarningNoLine{exercisebank-v0.2.0}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -54,6 +54,21 @@
    #4
   \fi
 }
+}
+\newif\ifexb@isInList
+\gdef\exb@isin#1#2#3#4{  \global\exb@isInListfalse
+  \xdef\needle{#1}
+  \xdef\haystack{#2}
+  \def\whenfalse{#4}
+  \def\whentrue{#3}
+  \readlist*\items\haystack%
+  \foreachitem\itm\in\items{    \ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
+  \global\exb@isInListtrue%
+  #3\fi
+}
+  \ifexb@isInList\else%
+  #4
+  \fi%
 }
 \gdef\strif#1#2{%
  \ifnum\pdfstrcmp{#1}{#2}=\z@\relax%
@@ -237,12 +252,19 @@ switches/.cd,
 \else{\exbank@opt@partProblemHeader}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%
-	\egroup%
 	\vspace*{\pMarginBelow}%
 	\tighten@paragraph\par%
 }
 \At\BeginSolution{\hfill\break\vspace*{\solutionMarginAbove}{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
+\newif\ifexb@opthides
+\providecommand\exb@currentTag{}
+\pgfkeys{/exbank/problems/.cd,
+default/.style={hide=false,tag=\relax},
+hide/.is if={exb@opthides},
+tag/.estore in=\exb@currentTag,
+}
+\def\nextproblem{\pgfqkeys{/exbank/problems}}
 \At\EndProblem{%
 \if\exbank@opt@tightenparagraphs\@isTrue\relax%
   \if\@SolutionsOnly\@isFalse%
@@ -265,19 +287,30 @@ switches/.cd,
   \fi
 }
 \global\let\do@ProcessCutFile = \ProcessCutFile
+\newif\ifexb@isdisplaying
+\gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
+\ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-  \if\DisplayProblem\isFalse
+\exb@ifshowproblem{#1}{\def\ProcessCutFile{}}
+}
+\gdef\showhideproblem@old#1{%
+\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
+  \ifexb@opthides%
     \def\ProcessCutFile{}
   \else
-    \if\@SolutionsOnly\@isTrue\relax%
-    \def\ProcessCutFile{}\fi%
-    #1
-  \fi
+    \if\DisplayProblem\isFalse
+        \def\ProcessCutFile{}
+    \else
+      \if\@SolutionsOnly\@isTrue\relax%
+        \def\ProcessCutFile{}
+      \fi%
+        #1%
+    \fi
+  \fi\fi
 }
 \generalcomment{problem}{  \edef\DisplaySolution{\@DisplaySolutions}
   \stepcounter{metacounter}
   \Trigger\DecideProblemDisplay
-  \begingroup
      \showhideproblem{%
         \if\exbank@opt@partProblems\isTrue
             \Trigger\BeginPartproblem
@@ -287,16 +320,15 @@ switches/.cd,
             \Trigger\VeryBeginProblem
         \fi
 }
-}{    \if\DisplayProblem\@isFalse\relax\else
-      \if\exbank@opt@partProblems\isTrue
+}{    \if\DisplayProblem\@isTrue\relax
+      \if\exbank@opt@partProblems\@isTrue\relax%
         \Trigger\EndPartproblem
-        \tighten@paragraph
+        \tighten@paragraph\fi%
       \else
         \Trigger\EndProblem
-      \fi
     \fi
-  \endgroup
 }
+\g@addto@macro\AfterproblemComment{\nextproblem{default}}
 \generalcomment{solution}
 {\Trigger\AtBeginSolutionHard
 \begingroup
@@ -381,7 +413,9 @@ switches/.cd,
 \let\ea = \expandafter
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
-\gdef\emptyList{0}
+\gdef\exb@emptyList{0}
+\global\let\emptyList\exb@emptyList
+\global\let\exb@tagList\exb@emptyList
 \gdef\ifppMode#1{  \def\mname{\exbank@macroname{#1}}
   \strif\mname\ppMode
 }
@@ -405,10 +439,13 @@ switches/.cd,
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
     \else
-      \isin{\ppList}{\themetacounter}{        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+      \exb@isin{\themetacounter}{\ppList}{        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
 }{        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
     \fi
+\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
+\exb@isin{\exb@currentTag}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
+\fi
 }
 \pgfkeys{ /makeset/.is family, /makeset,
  default/.style = {noheadarg=\isFalse, introarg=\isFalse},
@@ -580,6 +617,16 @@ switches/.cd,
 	\xdef\csvlist{#1}%
 	\readlist*\items\csvlist%
 	\foreachitem\set\in\items{%
+		\buildset{\set}%
+}
+}
+\newcommand\buildtags[2]{%
+  \xdef\csvtags{#1}%
+	\xdef\csvsets{#2}%
+	\readlist*\tagsItems\csvtags%
+  \readlist*\setsItems\csvsets%
+	\foreachitem\set\in\setsItems{%
+    \xdef\exb@tagList{\csvtags}
 		\buildset{\set}%
 }
 }

@@ -1,5 +1,5 @@
-%% exercisebank v0.2.0b75 - 2018/07/21
-%% The LaTeX package exercisebank - version v0.2.0 (2018/07/21) build 75
+%% exercisebank v0.2.1-prereleaseb76 - 2018/08/23
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/23) build 76
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -99,12 +99,12 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.0{\\[-0.5em]\footnotesize(build 75)}}}
+\title{{exercisebank - manual\\ v0.2.1-prerelease{\\[-0.5em]\footnotesize(build 76)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
  
-If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at\\\url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
+If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
 
 \tableofcontents
 \clearpage
@@ -314,7 +314,7 @@ To be used in \refCom{makeset}
 As you can see in the intro section of the documentation, this is for cherry picking partproblems
 To be used in \refCom{makeset}
 \end{docCommand}
-\begin{docCommand}{DeclareExerciseCommand}{\marg{\dac{command}}\marg{actions}}\addcontentsline{toc}{subsubsection}{\refCom{DeclareExerciseCommand}}
+\begin{docCommand}{DeclareExerciseCommand}{\marg{command}\marg{actions}}\addcontentsline{toc}{subsubsection}{\refCom{DeclareExerciseCommand}}
 \defnew{v0.2.0\\2018/07/21 }
 This can be used later in makesets. E.g.
 \dac{DelcareExerciseCommand}\{\dac{pbreak}\}\brackets{\dac{clearpage}} will make
@@ -356,6 +356,13 @@ The following example prints "Exercise set number 1" and "Exercise set number 2"
 This command will generate multiple sets:
 \begin{dispListing}
 \buildsets{set,set2,set3}
+\end{dispListing}
+\end{docCommand}
+\begin{docCommand}{buildtags}{\marg{tagslist}\marg{setslist}}\addcontentsline{toc}{subsubsection}{\refCom{buildtags}}
+\defnew{v0.2.1-prerelease\\2018/08/23 }
+This command will generate multiple sets:
+\begin{dispListing}
+\buildsets{tag,tag2,tag3}{set,set2,set3}
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{pplabel}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pplabel}}
@@ -455,6 +462,37 @@ The Norwegian translation would then be done with
 \translateExBank{Problem=Oppgave, Solution=Løsning}
 \end{dispListing}
 \end{docCommand}
+\filbreak\subsection{Problem options and tagging}
+\begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
+\defnew{v0.2.1-prerelease\\2018/08/23 }
+Prior to a problem environment in an exercise file you can pass options
+using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
+of what set it is you'd do
+\begin{dispListing}
+\nextproblem{hide}
+\begin{problem}
+  This problem will be hidden because of the \nextproblem command
+\end{problem}
+\end{dispListing}
+you can also tag problems using this:
+\begin{dispListing}
+\nextproblem{tag=hard}
+\begin{problem}
+  This problem is hard
+\end{problem}
+\nextproblem{tag=hard}
+\begin{problem}
+  This problem is also hard
+\end{problem}
+\nextproblem{tag=easy}
+\begin{problem}
+  This problem is easy
+\end{problem}
+\end{dispListing}
+ And you could now build, say, only easy problems using
+\dac{buildtags}\{hard\}\{SETNAME\}, where SETNAME is chosen by a
+\dac{makeset} command.
+\end{docCommand}
 \filbreak\subsection{Triggers}
 \begin{docCommand}{Trigger}{\marg{Any Macro}}\addcontentsline{toc}{subsubsection}{\refCom{Trigger}}
 \updated{v0.1.3\\2018/04/20 }
@@ -548,6 +586,7 @@ Distance above Problem \# header
 \addcontentsline{mac}{macro}{\refCom{Trigger}}{}
 \addcontentsline{mac}{macro}{\refCom{about}}{}
 \addcontentsline{mac}{macro}{\refCom{buildsets}}{}
+\addcontentsline{mac}{macro}{\refCom{buildtags}}{}
 \addcontentsline{mac}{macro}{\refCom{exclude}}{}
 \addcontentsline{mac}{macro}{\refCom{exec}}{}
 \addcontentsline{mac}{macro}{\refCom{exerciseFile}}{}
@@ -555,6 +594,7 @@ Distance above Problem \# header
 \addcontentsline{mac}{macro}{\refCom{introMargin}}{}
 \addcontentsline{mac}{macro}{\refCom{isin}}{}
 \addcontentsline{mac}{macro}{\refCom{makeset}}{}
+\addcontentsline{mac}{macro}{\refCom{nextproblem}}{}
 \addcontentsline{mac}{macro}{\refCom{ownLineNoSpacesGotIt}}{}
 \addcontentsline{mac}{macro}{\refCom{pMarginAbove}}{}
 \addcontentsline{mac}{macro}{\refCom{pMarginBelow}}{}
@@ -627,5 +667,8 @@ Distance above Problem \# header
     \change{Introducing \refCom{buildsets}-command for building more than one set at a time.}
     \change{Ability to add front page with the \refKey{front page} setup-key.}
     \change{You can now remove the forced margin setup with \refKey{style margins}.}
+\newversion{v0.2.1-prerelease 2018/08/23}
+    \change{Added options for individual part problems using the \dac{nextproblem}-command}
+    \change{Added tagging for part problems using using the \dac{nextproblem}-command and \dac{buildtags}-commands.}
 \chlogtable
  \end{document}

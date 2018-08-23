@@ -37,7 +37,13 @@
 %% Problems
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
+\newif\ifexb@isdisplaying
+\gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
+\ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
+\exb@ifshowproblem{#1}{\def\ProcessCutFile{}}
+}
+\gdef\showhideproblem@old#1{%
 \ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
   \ifexb@opthides%
     \def\ProcessCutFile{}
@@ -52,6 +58,7 @@
     \fi
   \fi\fi
 }
+
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
 
 %:§env
@@ -67,7 +74,7 @@
   %% BeginProblemHard is before regardless whether
   %% the problem is included or not.
   \Trigger\DecideProblemDisplay
-  \begingroup
+  % \begingroup
      \showhideproblem{%
         % If the user haven't turned off part problems
         \if\exbank@opt@partProblems\isTrue
@@ -79,15 +86,14 @@
         \fi
       }
   }{
-    \if\DisplayProblem\@isFalse\relax\else
-      \if\exbank@opt@partProblems\isTrue\ifexb@opthides\else
+    \if\DisplayProblem\@isTrue\relax
+      \if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
         \Trigger\EndPartproblem
-        \tighten@paragraph\fi
-      \else\if
+        \tighten@paragraph\fi%\fi
+      \else
         \Trigger\EndProblem
-      \fi
     \fi
-  \endgroup
+  % \endgroup
 }
 \g@addto@macro\AfterproblemComment{\nextproblem{default}}
 %:§env

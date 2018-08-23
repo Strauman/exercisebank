@@ -19,16 +19,16 @@
  \def\haystack{#1}
  \def\isFalse{0}
  \let\isInList = \isFalse
- % \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric!}{}\bye\stop}
+ \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric!}{}\bye\stop}
  \IfInteger{\haystack}{
-  \ifnum\pdfstrcmp{\haystack}{\needle}=\z@\relax
+  \ifnum\haystack=\needle\relax
    #3
   \else
    #4
   \fi
  }{
   \foreach \pp in #1{
-    \ifnum\pdfstrcmp{\pp}{\needle}=\z@\relax%
+    \ifnum\pp=\needle\relax%
      \gdef\isInList{1}
      #3
     \fi
