@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/23) - build 76
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/26) - build 77
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,7 +13,7 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/08/23 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/08/26 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
@@ -414,6 +414,8 @@ tag/.estore in=\exb@currentTag,
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
 \gdef\exb@emptyList{0}
+\newif\ifexb@tagbuildmode
+\global\exb@tagbuildmodefalse
 \global\let\emptyList\exb@emptyList
 \global\let\exb@tagList\exb@emptyList
 \gdef\ifppMode#1{  \def\mname{\exbank@macroname{#1}}
@@ -443,9 +445,11 @@ tag/.estore in=\exb@currentTag,
 }{        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
     \fi
+\@dlog{\exb@currentTag}
+\ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
 \exb@isin{\exb@currentTag}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
-\fi
+\fi\fi
 }
 \pgfkeys{ /makeset/.is family, /makeset,
  default/.style = {noheadarg=\isFalse, introarg=\isFalse},
@@ -621,6 +625,7 @@ tag/.estore in=\exb@currentTag,
 }
 }
 \newcommand\buildtags[2]{%
+  \global\exb@tagbuildmodetrue
   \xdef\csvtags{#1}%
 	\xdef\csvsets{#2}%
 	\readlist*\tagsItems\csvtags%
@@ -629,6 +634,7 @@ tag/.estore in=\exb@currentTag,
     \xdef\exb@tagList{\csvtags}
 		\buildset{\set}%
 }
+  \global\exb@tagbuildmodefalse
 }
 \newcommand\refcounter[1]{\edef\@currentlabel{#1}%
 }
