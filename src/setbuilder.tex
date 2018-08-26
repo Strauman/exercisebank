@@ -8,6 +8,8 @@
 \newcounter{metacounter}
 \setcounter{metacounter}{0}
 \gdef\exb@emptyList{0}
+\newif\ifexb@tagbuildmode
+\global\exb@tagbuildmodefalse
 \global\let\emptyList\exb@emptyList
 \global\let\exb@tagList\exb@emptyList
 %
@@ -50,9 +52,11 @@
       }
     \fi
 % \def\DisplayProblem{0}
+\@dlog{\exb@currentTag}
+\ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
 \exb@isin{\exb@currentTag}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
-\fi
+\fi\fi
 }
 
 %% Makeset arg handler
@@ -385,6 +389,7 @@
 %:!\buildsets{tag,tag2,tag3}{set,set2,set3}
 %:-
 \newcommand\buildtags[2]{%
+  \global\exb@tagbuildmodetrue
   \xdef\csvtags{#1}%
 	\xdef\csvsets{#2}%
 	\readlist*\tagsItems\csvtags%
@@ -393,4 +398,5 @@
     \xdef\exb@tagList{\csvtags}
 		\buildset{\set}%
 	}
+  \global\exb@tagbuildmodefalse
 }
