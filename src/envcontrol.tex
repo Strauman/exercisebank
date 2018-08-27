@@ -41,7 +41,7 @@
 \gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 \ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-\exb@ifshowproblem{#1}{\def\ProcessCutFile{}}
+\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}
 }
 \gdef\showhideproblem@old#1{%
 \ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
@@ -89,11 +89,10 @@
     \if\DisplayProblem\@isTrue\relax
       \if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
         \Trigger\EndPartproblem
-        \tighten@paragraph\fi%\fi
+        \tighten@paragraph\fi
       \else
         \Trigger\EndProblem
     \fi
-  % \endgroup
 }
 \g@addto@macro\AfterproblemComment{\nextproblem{default}}
 %:§env
@@ -115,10 +114,6 @@
     \Trigger\BeginSolution
   \else
     \def\ProcessCutFile{}
-  % \begingroup
-  % \edef\tmp{\def\noexpand\CommentCutFile{answer.tex}}
-  % \tmp
-    % \def\ProcessCutFile{\do@ProcessCutFile}
   \fi
 }{
 % \input{\CommentCutFile}
@@ -151,7 +146,7 @@
   \if\@countIntros\isTrue
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
-    \begingroup
+    % \begingroup
     \if\@displayMetaCounter\isTrue\relax%
     {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
     \fi
@@ -169,7 +164,7 @@
 }{
   \if\@countIntros\isTrue
     \Trigger\EndIntro
-    \endgroup
+    % \endgroup
   \fi\par\endintromargin
 % \newline
 }
