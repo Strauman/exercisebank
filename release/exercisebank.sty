@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/26) - build 77
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/27) - build 79
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,7 +13,7 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/08/26 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/08/27 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
@@ -291,7 +291,7 @@ tag/.estore in=\exb@currentTag,
 \gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 \ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-\exb@ifshowproblem{#1}{\def\ProcessCutFile{}}
+\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}
 }
 \gdef\showhideproblem@old#1{%
 \ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
@@ -323,7 +323,7 @@ tag/.estore in=\exb@currentTag,
 }{    \if\DisplayProblem\@isTrue\relax
       \if\exbank@opt@partProblems\@isTrue\relax%
         \Trigger\EndPartproblem
-        \tighten@paragraph\fi%
+        \tighten@paragraph\fi
       \else
         \Trigger\EndProblem
     \fi
@@ -360,7 +360,6 @@ tag/.estore in=\exb@currentTag,
 \generalcomment{intro}{  \if\@countIntros\isTrue
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
-    \begingroup
     \if\@displayMetaCounter\isTrue\relax%
     {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
     \fi
@@ -377,7 +376,6 @@ tag/.estore in=\exb@currentTag,
   \intromargin{-1em}
 }{  \if\@countIntros\isTrue
     \Trigger\EndIntro
-    \endgroup
   \fi\par\endintromargin
 }
 \def\squeeze{  \newlength{\marginw}
@@ -440,11 +438,10 @@ tag/.estore in=\exb@currentTag,
 \At\DecideProblemDisplay{%
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
-    \else
-      \exb@isin{\themetacounter}{\ppList}{        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
-}{        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
-}
     \fi
+    \exb@isin{\themetacounter}{\ppList}{      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+}{      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
+}
 \@dlog{\exb@currentTag}
 \ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax

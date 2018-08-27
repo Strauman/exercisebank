@@ -1,3 +1,5 @@
+Check out the bleeding edge version in the [releases](https://github.com/Strauman/exercisebank/releases) section. Any testing help is appreciated!
+
 # Updated documentation
 The latest release is stored in this zip: [exercisebank.zip](https://github.com/Strauman/exerciseBank/raw/master/exercisebank.zip)
 You can download the latest documentation here: [release/exercisebank.pdf](https://github.com/Strauman/exerciseBank/raw/master/release/exercisebank.pdf).
