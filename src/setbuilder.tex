@@ -44,13 +44,12 @@
 \At\DecideProblemDisplay{%
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
-    \else
-      \exb@isin{\themetacounter}{\ppList}{
-        \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
-      }{
-        \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
-      }
     \fi
+    \exb@isin{\themetacounter}{\ppList}{
+      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+    }{
+      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
+    }
 % \def\DisplayProblem{0}
 \@dlog{\exb@currentTag}
 \ifexb@tagbuildmode
