@@ -16,6 +16,7 @@
 %:-
 \gdef\@DisplaySolutions{\@isFalse}
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
 %:§config

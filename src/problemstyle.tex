@@ -81,11 +81,12 @@
 	\stepcounter{partproblemcounter}%%
 	\bgroup%
 	% If we should display the meta counter, then%
+	\gdef\exb@prePPHead{}
 	\if\@displayMetaCounter\@isTrue\relax%%
-		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
+		\gdef\exb@prePPHead{{\Large\themetacounter}:}
 	\fi%
 \if\exbank@opt@doMargins\@isTrue\relax%
-\leavevmode\smash{\llap{{\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
+\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
 \else{\exbank@opt@partProblemHeader}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%

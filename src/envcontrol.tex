@@ -147,8 +147,9 @@
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
     % \begingroup
+    \gdef\exb@pre@intro{}
     \if\@displayMetaCounter\isTrue\relax%
-    {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
+    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}\hspace*{-\pMarginLeft}}}}\ignorespaces}
     \fi
     \if\@spriteMode\@isTrue
       \if\introarg\@isTrue
@@ -157,7 +158,7 @@
     \fi
     \showhideproblem{%
       \tighten@paragraph%
-      \Trigger\BeginIntro%
+      \Trigger\BeginIntro\exb@pre@intro%
     }
   \fi%
   \intromargin{-1em}
