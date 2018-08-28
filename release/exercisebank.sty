@@ -96,6 +96,7 @@
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
 \gdef\@DisplaySolutions{\@isFalse}
+\gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}

@@ -227,7 +227,7 @@
 %% \let\ex@protect\unexpanded
 %% \edef\hello{\hello} ~> :\textbf{world}
 \global\let\ex@protect\noexpand
-\gdef\exec#1{:\ex@protect{#1}}
+\long\gdef\exec#1{:\ex@protect{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \gdef\exb@setpgf#1{%
