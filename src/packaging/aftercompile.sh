@@ -30,6 +30,7 @@ function make_example(){
   cd $exampleDir
     echo "Building example"
     cp $pkgSTY ./
+    cp $pkgSTY "$mainDir"
     outHandle "Error in latexmk - example.tex" latexmk -pdf "example.tex" -outdir="./bin" --shell-escape -interaction=nonstopmode -f
     rm "$outfile"
     cp "bin/example.pdf" ./
