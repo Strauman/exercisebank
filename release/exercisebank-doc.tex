@@ -1,5 +1,5 @@
-%% exercisebank v0.2.1b80 - 2018/08/28
-%% The LaTeX package exercisebank - version v0.2.1 (2018/08/28) build 80
+%% exercisebank v0.2.1-prereleaseb81 - 2018/08/28
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/28) build 81
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -50,7 +50,7 @@
 \newcommand\ghURL[1]{\href{https://github.com/#1}{https://github.com/#1}}
 
 \providecommand\thankyous{\relax}
-\def\print@thankyous{\readlist*\lst\thankyous\foreachitem\itm\in\lst{\if\itm\relax\else\item \itm\fi}}
+\def\print@thankyous{\readlist*\lst\thankyous\foreachitem\itm\in\lst{\if\itm\relax\else\item[-] \itm\fi}}
 \providecommand\@thankyous@content{\relax}
 \AtEndDocument{\write\@auxout{\string\gdef\string\thankyous{\@thankyous@content}}}
 \gdef\thankyou#1{\g@addto@macro\@thankyous@content{#1,}}
@@ -114,7 +114,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.1{\\[-0.5em]\footnotesize(build 80)}}}
+\title{{exercisebank - manual\\ v0.2.1-prerelease{\\[-0.5em]\footnotesize(build 81)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -122,7 +122,7 @@
 If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
 If you feel up for it, you can always find the latest development version online, and I always need people to test -- it saves me a lot of time!
 \if\thankyous\relax\else Special thanks to these contributors: \makeatletter\begin{itemize}\print@thankyous\end{itemize}\makeatother\fi
-\if\thankyous\relax\else\footxt{People who helped test and make this package better (github users): \testers}\fi
+\if\testers\relax\else\footxt{People who helped test and make this package better (github users): \testers}\fi
 \tableofcontents
 \clearpage
 \section{Motivation}
@@ -346,7 +346,7 @@ This can be used later in makesets. E.g.
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
-\updated{v0.2.0\\2018/07/21 }
+\updated{v0.2.1-prerelease\\2018/08/28 }
 You can use this in \dac{makeset} to execute commands between problems.
 E.g. to insert a new page in between two problems when using nohead:
 \begin{dispListing}
@@ -376,7 +376,7 @@ This command will generate multiple sets:
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{buildtags}{\marg{tagslist}\marg{setslist}}\addcontentsline{toc}{subsubsection}{\refCom{buildtags}}
-\defnew{v0.2.1\\2018/08/28 }
+\defnew{v0.2.1-prerelease\\2018/08/28 }
 This command will generate multiple sets:
 \begin{dispListing}
 \buildsets{tag,tag2,tag3}{set,set2,set3}
@@ -398,7 +398,7 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 You can do a lot of configurations on this package, and probably
  even more to come in later versions!
 \begin{docCommand}{ShowNumbers}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowNumbers}}
-\updated{v0.2.1\\2018/08/28 }
+\updated{v0.2.1-prerelease\\2018/08/28 }
  Shows the numbers in fron of the part problems and intros that should be used with
  \dac{exclude} and \dac{select}
 \end{docCommand}
@@ -481,7 +481,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\defnew{v0.2.1\\2018/08/28 }
+\defnew{v0.2.1-prerelease\\2018/08/28 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -684,7 +684,7 @@ Distance above Problem \# header
     \change{Introducing \refCom{buildsets}-command for building more than one set at a time.}
     \change{Ability to add front page with the \refKey{front page} setup-key.}
     \change{You can now remove the forced margin setup with \refKey{style margins}.}
-\newversion{v0.2.1 2018/08/28}
+\newversion{v0.2.1-prerelease 2018/08/28}
     \change{Added options for individual part problems using the \dac{nextproblem}-command}
     \change{Added tagging for part problems using using the \dac{nextproblem}-command and \dac{buildtags}-commands.}
     \change{Fixed problems related to \dac{ShowNumbers} not showing correctly.}
@@ -693,7 +693,7 @@ Distance above Problem \# header
 
 
 % Testers and thanks
-% \thankyou{\gh{thorstengrothe} -- \ghURL{thorstengrothe}}
-\tester{\gh{thorstengrothe}}
+\thankyou{\gh{thorstengrothe} -- \ghURL{thorstengrothe} for help with testing and bug-reporting the current version (0.2.1)}
+% \tester{\gh{thorstengrothe}}
 \tester{\gh{tristelune1}}
  \end{document}
