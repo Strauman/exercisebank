@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/27) - build 79
+%% The LaTeX package exercisebank - version v0.2.1 (2018/08/28) - build 80
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/08/27 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/08/28 v0.2.1 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\PackageWarningNoLine{exercisebank-v0.2.1}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -96,8 +96,8 @@
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
 \gdef\@DisplaySolutions{\@isFalse}
-\gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
@@ -245,11 +245,12 @@ switches/.cd,
 \At\VeryBeginPartproblem{%
 	\stepcounter{partproblemcounter}%
 	\bgroup%
+	\gdef\exb@prePPHead{}
 	\if\@displayMetaCounter\@isTrue\relax%
-		\ex@before\exbank@opt@partProblemHeader{{\Large\themetacounter}:}%
+		\gdef\exb@prePPHead{{\Large\themetacounter}:}
 	\fi%
 \if\exbank@opt@doMargins\@isTrue\relax%
-\leavevmode\smash{\llap{{\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
+\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
 \else{\exbank@opt@partProblemHeader}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%
@@ -361,8 +362,9 @@ tag/.estore in=\exb@currentTag,
 \generalcomment{intro}{  \if\@countIntros\isTrue
     \stepcounter{metacounter}
     \Trigger\DecideProblemDisplay
+    \gdef\exb@pre@intro{}
     \if\@displayMetaCounter\isTrue\relax%
-    {\exb@lmargin{{\Large\themetacounter}}{\pMarginLeft}}
+    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}\hspace*{-\pMarginLeft}}}}\ignorespaces}
     \fi
     \if\@spriteMode\@isTrue
       \if\introarg\@isTrue
@@ -371,7 +373,7 @@ tag/.estore in=\exb@currentTag,
     \fi
     \showhideproblem{%
       \tighten@paragraph%
-      \Trigger\BeginIntro%
+      \Trigger\BeginIntro\exb@pre@intro%
 }
   \fi%
   \intromargin{-1em}
@@ -533,7 +535,7 @@ tag/.estore in=\exb@currentTag,
 \exbank@def@makeset@command{\pbreak}{\clearpage}
 \let\DeclareExerciseCommand\exbank@def@makeset@command
 \global\let\ex@protect\noexpand
-\gdef\exec#1{:\ex@protect{#1}}
+\long\gdef\exec#1{:\ex@protect{#1}}
 \gdef\@countIntros{\isFalse}
 \gdef\exb@setpgf#1{%
 \edef\keystring{{/makeset,default,#1}}%
