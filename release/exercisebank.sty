@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/28) - build 81
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/08/29) - build 82
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,7 +13,7 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/08/28 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/08/29 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
@@ -100,11 +100,13 @@
 \gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
+\gdef\exb@currentPoints{0}
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
 default/.style = {  part problems = On,
   tighten paragraphs = True,
   problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
+  part problem header suffix={},
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
@@ -119,6 +121,7 @@ problem header/.store in = \exbank@opt@problemHeader,
 part problem header/.store in = \exbank@opt@partProblemHeader,
 solution header/.store in = \exbank@opt@solutionHeader,
 problem needs space/.store in = \exbank@opt@problemneedspace,
+part problem header suffix/.store in=\exb@partproblem@header@suffix,
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
 style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
@@ -250,8 +253,8 @@ switches/.cd,
 		\gdef\exb@prePPHead{{\Large\themetacounter}:}
 	\fi%
 \if\exbank@opt@doMargins\@isTrue\relax%
-\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader}\hskip\ppMargin}}%
-\else{\exbank@opt@partProblemHeader}\fi%
+\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}}%
+\else{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%
 	\vspace*{\pMarginBelow}%
@@ -264,7 +267,7 @@ switches/.cd,
 \pgfkeys{/exbank/problems/.cd,
 default/.style={hide=false,tag=\relax},
 hide/.is if={exb@opthides},
-tag/.estore in=\exb@currentTag,
+tag/.estore in=\exb@currentTag
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}
 \At\EndProblem{%
@@ -651,3 +654,24 @@ tag/.estore in=\exb@currentTag,
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
 }
+\gdef\exb@currentPoints{0}
+\gdef\exb@currentPointsStyle{}
+\newif\ifexb@enablepoints\global\exb@enablepointstrue
+\exercisebanksetup{%
+current points style/.store in=\exb@currentPointsStyle,
+current points style={\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi\ignorespaces},
+disable points/.is if={exb@enablepoints}
+}
+\ifexb@enablepoints
+\AtEndDocument{%
+\immediate\write\@auxout{\string\gdef\string\totalpoints{\the\c@exb@points}}%
+}
+\At\PartProblemHeaderSuffix{\exb@currentPointsStyle}
+\fi
+\newcounter{exb@points}
+\setcounter{exb@points}{0}
+\providecommand\totalpoints{}
+\nextproblem{points/.store in=\exb@currentPoints}
+\@dlog{\string\exbank@opt@partProblemHeader\meaning\exbank@opt@partProblemHeader}
+\At\BeginPartproblem{\addtocounter{exb@points}\exb@currentPoints}
+\At\EndPartproblem{\gdef\exb@currentPoints{0}}

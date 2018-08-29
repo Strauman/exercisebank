@@ -7,7 +7,7 @@ This is the documentation for version v0.2.1-prerelease, and might not be the sa
 
 # Versions
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
-GitHub at version: v0.2.1-prerelease (2018/08/28) build 81
+GitHub at version: v0.2.1-prerelease (2018/08/29) build 82
 
 CTAN at version: v0.2.0 (2018/07/21) build 75
 
@@ -31,12 +31,14 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 - [`packageoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packageoptions.tex) contains all the macros that are intended for user configuration
 - [`packages.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packages.tex) contains all the external packages used.
 - [`pathcontrol.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pathcontrol.tex) contains the logic that makes figures available within scope of exercise folder.
+- [`pointsystem.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pointsystem.tex) contains the logic and definition of the point system.
 - [`pplabel.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pplabel.tex)  contains definition of custom labeling and referring of problems.
 - [`preamble.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/preamble.tex) contains the preamble logic. Mostly including other files.
+- [`problemoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/problemoptions.tex) contains definition of the `\nextproblem`-command and it's options.
 - [`problemstyle.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/problemstyle.tex)  contains `\At`-commands that are responsible for formatting exercise headers and exercise-related styles.
 - [`setbuilder.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/setbuilder.tex) contains the logic of the set making and set building. It also decides whether or not a problem,intro and/or solution should be built
 - [`squeeze.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/squeeze.tex) contains the style for which `\sprite` applies with `\squeeze`. It "squeezes" everything so that more stuff fits on the pages
-- (`texpack.tex`) is the file that is built when making all these files into packaging
+- (`exbankpack.tex`) is the file that is built when making all these files into packaging
 #### `src/packaging`
 - `aftercompile.sh` is just instructions to perform after the `.sty` and the documentation is created.
 - `packagehead.tex`: All the files are compiled into one `.sty`-file before sent to [CTAN](http://ctan.org). This file contains the top of that `.sty`-file.
