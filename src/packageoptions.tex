@@ -19,6 +19,7 @@
 \gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
+\gdef\exb@currentPoints{0}
 %:§config
 %:-
 % ---- \exercisebanksetup ----- %
@@ -29,6 +30,7 @@ default/.style = {
   tighten paragraphs = True,
   problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
+  part problem header suffix={},
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
@@ -45,6 +47,7 @@ problem header/.store in = \exbank@opt@problemHeader,
 part problem header/.store in = \exbank@opt@partProblemHeader,
 solution header/.store in = \exbank@opt@solutionHeader,
 problem needs space/.store in = \exbank@opt@problemneedspace,
+part problem header suffix/.store in=\exb@partproblem@header@suffix,
 % Bools
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
 tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
@@ -114,6 +117,11 @@ switches/.cd,
 %: Default is:\\
 %: \large\textbf{(\theproblemcounter\alph{partproblemcounter})}
 %:}
+%:\keyDef{part problem header suffix}{macro}{\meta{empty}}{
+%: This sets the suffix problem header, and defaults to be the number of points
+%: the current exercise is worth.
+%: Default is \meta{empty}
+%:}
 %:\keyDef{solution header}{string}{see below}{
 %:\large{\textbf{\@tr\brackets{Solution:}}}
 %:\@tr is the translation macro
@@ -153,3 +161,5 @@ switches/.cd,
 %:Whether or not to put problem headers and part problem headers out in the margins.
 %:}
 %:-
+%:$packageOptions=
+%:$$packageOptions

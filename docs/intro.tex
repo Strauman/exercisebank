@@ -75,18 +75,18 @@ In \dac{makeset} you can just separate exercises with commas! Here is an example
 Let's say you have two files with exercises. One located in \texttt{exercises/circuits/RLC.tex} and one in \texttt{exercises/ohm/ohmsGeneralLaw.tex}, and you want to include partproblem 1 through 5 from \texttt{RLC.tex} and all of the exercises from \texttt{ohmsGeneralLaw.tex}.
 
 \begin{dispListing}
-\makeset{\select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
+\makeset{myExerciseSet}{\select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
 \end{dispListing}
 This will divide it up with problem headers. So that what is in the \texttt{RLC.tex}-file will be Problem 1, and \texttt{ohmsGeneralLaw.tex} Problem 2.
 \subsection{Mixnmatch}
 What if you want to make both of them the same exercise? Well, then you pass the [nohead] argument to \dac{makeset}:
 \begin{dispListing}
-\makeset[nohead]{\phead, \select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
+\makeset[nohead]{myExerciseSet}{\phead, \select{circuits/RLC}{1,...,5}, ohmsGeneralLaw}
 \end{dispListing}
 The \dac{phead} command makes a problem header. You can pass them as much as you want:
 
 \begin{dispListing}
-\makeset[nohead]{\phead, \select{circuits/RLC}{1,...,5},
+\makeset[nohead]{myExerciseSet}{\phead, \select{circuits/RLC}{1,...,5},
               ohmsGeneralLaw, \phead, someOtherExercise, moreExercises}
 \end{dispListing}
 
@@ -141,6 +141,22 @@ the same as exercise is in. E.g. if you have a declared the option
 
 You can change the root dir by doing \\
 \dac{exercisebanksetup}\brackets{\refKey{figure root directory}=figures}. See the \refKey{figure root directory} key for more info.
+
+\subsection{Points and tags for exercises}
+By default since version v0.2.1 there are now points and tags available through the \refCom{nextproblem} command.%
+To assign a points to a part problem you'd do
+\begin{dispListing}
+  \nextproblem{points=3,tag=difficult}
+  \begin{problem}
+    This problem is worth 3 points and has the `difficult' tag.
+  \end{problem}
+\end{dispListing}
+Then to build all exercises that has the `difficult' and e.g. the `easy' tag one would use the \refCom{buildtags} command.
+\begin{dispListing}
+  \makeset{myExerciseSet}{ohmsGeneralLaw}
+  \buildtags{dificult,easy}{ohmsGeneralLaw}
+\end{dispListing}
+
 
 That covers the basics. Enjoy
 \begin{marker}

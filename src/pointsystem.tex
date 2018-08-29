@@ -1,0 +1,38 @@
+%!TEX root = main.tex
+\makeatletter
+\gdef\exb@currentPoints{0}
+\gdef\exb@currentPointsStyle{}
+%current points style
+%:$packageOptions.=\keyDef{current points style}{style}{see below}{
+%:$packageOptions.= This is how the points will be shown in the part problem headers.
+%:$packageOptions.= the default code is by \!gh{thorstengrote}
+%:$packageOptions.= \texttt{~\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi~\ignorespaces}
+%:$packageOptions.=}
+%:$packageOptions.=\keyDef{disable points}{bool}{false}{
+%:$packageOptions.= Whether or not to disable the point system.
+%:$packageOptions.=}
+%:-
+\newif\ifexb@enablepoints\global\exb@enablepointstrue
+\exercisebanksetup{%
+current points style/.store in=\exb@currentPointsStyle,
+current points style={\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi\ignorespaces},
+disable points/.is if={exb@enablepoints}
+}
+\ifexb@enablepoints
+\AtEndDocument{%
+\immediate\write\@auxout{\string\gdef\string\totalpoints{\the\c@exb@points}}%
+}
+\At\PartProblemHeaderSuffix{\exb@currentPointsStyle}
+\fi
+\newcounter{exb@points}
+\setcounter{exb@points}{0}
+\providecommand\totalpoints{}
+%:$problemKeys.=\keyDef{points}{number}{0}{
+%:$problemKeys.= The number of points the next exercise is worth.
+%:$problemKeys.= you can retrieve the total points using \totalpoints
+%:$problemKeys.=}
+%:-
+\nextproblem{points/.store in=\exb@currentPoints}
+\@dlog{\string\exbank@opt@partProblemHeader\meaning\exbank@opt@partProblemHeader}
+\At\BeginPartproblem{\addtocounter{exb@points}\exb@currentPoints}
+\At\EndPartproblem{\gdef\exb@currentPoints{0}}
