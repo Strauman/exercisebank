@@ -148,8 +148,13 @@
     \Trigger\DecideProblemDisplay
     % \begingroup
     \gdef\exb@pre@intro{}
+    \gdef\exb@post@intro{}
     \if\@displayMetaCounter\isTrue\relax%
-    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}\hspace*{-\pMarginLeft}}}}\ignorespaces}
+    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}
+    \fi
+    \if\exb@showtags\isTrue%
+    % \exb@printCurrentTags defined in packageoptions.tex
+    \xdef\exb@post@intro{\exb@printCurrentTags}
     \fi
     \if\@spriteMode\@isTrue
       \if\introarg\@isTrue
@@ -158,7 +163,7 @@
     \fi
     \showhideproblem{%
       \tighten@paragraph%
-      \Trigger\BeginIntro\exb@pre@intro%
+      \Trigger\BeginIntro\exb@pre@intro\exb@post@intro%
     }
   \fi%
   \intromargin{-1em}

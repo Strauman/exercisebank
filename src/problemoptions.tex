@@ -25,19 +25,26 @@
 %:\buildtags{hard}\{SETNAME\}, where SETNAME is chosen by a
 %:\makeset command.
 %:-
+%: You can also have multiple tags per exercise
+%:!\nextproblem{tag={tag1,tag2}}
+%:!\begin{problem}
+%:!  This problem is easy
+%:!\end{problem}
+%:-
 %:§problemopts
 %:$problemKeys=Here are the \nextproblem keys:
 %:$$problemKeys
 %:-
 %%% points are defined in poinstystem.tex
 \newif\ifexb@opthides
-\providecommand\exb@currentTag{}
+\providecommand\exb@currentTags{}
 \pgfkeys{
 /exbank/problems/.cd,
 default/.style={hide=false,tag=\relax},
 % print/.code={Hello there! #1},
 hide/.is if={exb@opthides},
-tag/.estore in=\exb@currentTag
+tags/.estore in=\exb@currentTags,
+tag/.code={\pgfkeysalso{tags={#1}}}
 % print/.code={\@dlog{#1}}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}

@@ -10,6 +10,12 @@
 %: \exclude and \select
 %:-
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
+%:=\ShowTags
+%: Shows the tags in front of the part problems much like \ShowNumbers
+%:-
+\gdef\exb@showtags{\isFalse}
+\gdef\ShowTags{\gdef\exb@showtags{\isTrue}}
+\gdef\exb@printCurrentTags{Tags: \exb@currentTags~}
 %:§env
 %:=\DisplaySolutions
 %:Turns on the solutions, so they are shown.

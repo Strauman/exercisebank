@@ -82,13 +82,18 @@
 	\bgroup%
 	% If we should display the meta counter, then%
 	\gdef\exb@prePPHead{}
+	\gdef\exb@postPPHead{}
 	\if\@displayMetaCounter\@isTrue\relax%%
 		\gdef\exb@prePPHead{{\Large\themetacounter}:}
 	\fi%
+	\if\exb@showtags\isTrue%
+		% \exb@printCurrentTags defined in packageoptions.tex
+		\gdef\exb@postPPHead{\exb@printCurrentTags}
+	\fi
 %:$triggers.=\Trigger\PartProblemHeaderSuffix:\\ Triggers after the part problem header.
 %:$triggers.= anything added to this trigger will happen within the header
 \if\exbank@opt@doMargins\@isTrue\relax%
-\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}}%
+\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}%
 \else{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\fi%
 \ignorespaces}%
 \At\EndPartproblem{%

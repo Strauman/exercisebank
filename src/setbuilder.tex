@@ -39,7 +39,7 @@
 \let\F@\isFalse
 % \ifnum\pdfstrcmp{\exb@tagList}{\exb@emptyList}=\z@\relax
 %   \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}\else%
-%   \isin{\exb@currentTag}{\exb@tagList}{}{\xdef\DisplayProblem{\F@}}%
+%   \isin{\exb@currentTags}{\exb@tagList}{}{\xdef\DisplayProblem{\F@}}%
 % \fi
 \At\DecideProblemDisplay{%
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
@@ -50,11 +50,14 @@
     }{
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
     }
+% \@dlog{DP:\DisplayProblem - \themetacounter}
+% \@dlog{mlist:\ppList}
+% \@dlog{\exb@currentTags}
 % \def\DisplayProblem{0}
-\@dlog{\exb@currentTag}
 \ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
-\exb@isin{\exb@currentTag}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
+%TODO: MakeIntersection
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
 \fi\fi
 }
 

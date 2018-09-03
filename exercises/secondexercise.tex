@@ -1,4 +1,5 @@
 %!TEX root = ../example.tex
+\nextproblem{tag=Intro}
 \begin{intro}
 	In this exercise, we'll be looking at \( \dots \)
 \end{intro}
@@ -9,7 +10,7 @@
 \nextproblem{tag=Y}
 \nextproblem{points=2}
 \begin{problem}
-  Second exercise - might not be a chosen problem. \makeatletter Tagged \exb@currentTag and is worth \exb@currentPoints points\makeatother
+  Second exercise - might not be a chosen problem. \makeatletter Tagged \exb@currentTags and is worth \exb@currentPoints points\makeatother
 \end{problem}
 \begin{solution}
 	SOLUTION2
@@ -25,13 +26,17 @@
 \begin{solution}
 	SOLUTION3
 \end{solution}
-\nextproblem{tag=N}
+\nextproblem{tag={Y,Q}}
 \begin{problem}
-\ppref{TST}\lipsum[2-3] tagged N. No points.
+tagged Y and Q. No points. \ppref{TST}\lipsum[2-3]
 \end{problem}
 \begin{solution}
 	SOLUTION4
 \end{solution}
+\nextproblem{tag={Y,N}}
 \begin{problem}
-\lipsum[4]
+\lipsum[4] Tagged Y and N
+\end{problem}
+\begin{problem}
+\lipsum[4] No tags, No points.
 \end{problem}

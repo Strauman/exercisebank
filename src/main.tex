@@ -17,7 +17,8 @@
 % Testing all makeset functions
 % \makeset{11}{firstexercise, \exclude{secondexercise}{1,2}, thirdexercise}
 % \makeset{11}{\exclude{secondexercise}{1,2}}
-\makeset{11}{secondexercise}
+% \makeset{11}{\select{secondexercise}{1,...,3}}
+\makeset[intro]{11}{\select{secondexercise}{1,2}}
 
 
 % \makeset[nohead,intro]{11}{%
@@ -45,8 +46,8 @@
 % }
 \ShowNumbers
 \begin{document}
-% \buildtags{Y,N}{11}
 \buildset{11}
-\totalpoints
+% \buildtags{A}{11}
+% \totalpoints
 % \sprite
 \end{document}
