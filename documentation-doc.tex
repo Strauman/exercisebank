@@ -1,3 +1,7 @@
+%%%%%%%%%%%%%%%%%%%
+%%% DO NOT EDIT %%%
+%%%%%%%%%%%%%%%%%%%
+
 The documentation is ultimately formatted by tcolorbox. But it is parsed from comments in the code by a custom script.
 The syntax for doc parsing is explained through these examples:
 
@@ -51,6 +55,16 @@ The first way is to just print what the variable has now:
 The second way is to wait until the entire script has finished and then
 print the variables:
 %:$$MYVAR
+
+There is a couple of special variables:
+%:$$macrodefs
+gives a list of all defined macros.
+
+Using %:?TOC
+prevents the next macro definition from showing up in this list
+% whilst :!TOC prevents it from showing in the _actual_ TOC
+%:!iTOCOff turns inline TOC permanently off
+%:!iTOCOn turns inline TOC back on
 
 Macro escaping:
 Most macros will be escaped automatically with \dac. That is:

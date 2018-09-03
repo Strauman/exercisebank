@@ -45,7 +45,7 @@
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
     \fi
-    \exb@isin{\themetacounter}{\ppList}{
+    \exb@int@isin{\themetacounter}{\ppList}{
       \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
     }{
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}

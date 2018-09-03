@@ -14,7 +14,7 @@
 % #2: needle
 % #3: action if found in list
 % #4: action if not found in list
-\gdef\isin#1#2#3#4{
+\gdef\exb@int@isin#1#2#3#4{
  \def\needle{#2}
  \def\haystack{#1}
  \def\isFalse{0}
@@ -39,6 +39,7 @@
  }
 }
 \newif\ifexb@isInList
+\newcounter{exb@isin@dots}
 \gdef\exb@isin#1#2#3#4{
   \global\exb@isInListfalse
   \xdef\needle{#1}
