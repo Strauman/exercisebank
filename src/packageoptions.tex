@@ -29,6 +29,8 @@
 %:§config
 %:-
 % ---- \exercisebanksetup ----- %
+\newif\ifexbank@if@needspace
+\global\exbank@if@needspacetrue
 \pgfkeys{
 /exbanksetup/.is family, /exbanksetup,
 default/.style = {
@@ -41,7 +43,9 @@ default/.style = {
   exercise directory=.,
   figure root directory=\@exercisesDir,
   style margins=On,
-  problem needs space=0.2\paperheight
+  problem needs space=0.2\paperheight,
+  no needspace/.is if={exbank@if@needspace},
+  no needspace/.default = false
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
@@ -116,6 +120,12 @@ switches/.cd,
 %: the problem counter is accessed with \theproblemcounter.\\
 %: Defaults to\\
 %: \brackets{\normalfont\Large\bfseries\@tr{Problem}~\theproblemcounter}.
+%:}
+%:\keyDef{problem needs space}{dimension}{0.2\pageheight}{
+%:How much space has to be left on the page for a problem to start
+%:}
+%:\keyDef{no needspace}{bool}{false}{
+%:Don't use \needspace command (only used in \refKey{problem needs space})
 %:}
 %:\keyDef{part problem header}{macro}{see below}{
 %: This sets the problem header. To access the current problem, use \theproblemcounter, and then the current

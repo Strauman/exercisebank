@@ -41,22 +41,22 @@
 \gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 \ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}
+\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}%
 }
 \gdef\showhideproblem@old#1{%
-\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
+\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
   \ifexb@opthides%
-    \def\ProcessCutFile{}
-  \else
-    \if\DisplayProblem\isFalse
-        \def\ProcessCutFile{}
-    \else
+    \def\ProcessCutFile{}%
+  \else%
+    \if\DisplayProblem\isFalse%
+        \def\ProcessCutFile{}%
+    \else%
       \if\@SolutionsOnly\@isTrue\relax%
-        \def\ProcessCutFile{}
+        \def\ProcessCutFile{}%
       \fi%
         #1%
     \fi
-  \fi\fi
+  \fi\fi%
 }
 
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
@@ -140,37 +140,43 @@
 \else%
 \relax\global\let\endintromargin=\relax\fi%
 }
-\generalcomment{intro}{
+\generalcomment{intro}{%
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)
-  \if\@countIntros\isTrue
-    \stepcounter{metacounter}
-    \Trigger\DecideProblemDisplay
-    % \begingroup
-    \gdef\exb@pre@intro{}
-    \gdef\exb@post@intro{}
-    \if\@displayMetaCounter\isTrue\relax%
-    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}
-    \fi
-    \if\exb@showtags\isTrue%
-    % \exb@printCurrentTags defined in packageoptions.tex
-    \xdef\exb@post@intro{\exb@printCurrentTags}
-    \fi
-    \if\@spriteMode\@isTrue
-      \if\introarg\@isTrue
-        \stepcounter{partproblemcounter}
-      \fi
-    \fi
-    \showhideproblem{%
-      \tighten@paragraph%
-      \Trigger\BeginIntro\exb@pre@intro\exb@post@intro%
-    }
+  \if\@countIntros\isTrue%
+    \stepcounter{metacounter}%
+    \Trigger\DecideProblemDisplay%
+    % \begingroup%
+    \gdef\exb@pre@intro{}%
+    \gdef\exb@post@intro{}%
+    \if\@displayMetaCounter\isTrue\relax%%
+    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}%
+    \fi%
+    \if\exb@showtags\isTrue%%
+    % \exb@printCurrentTags defined in packageoptions.tex%
+    \xdef\exb@post@intro{\exb@printCurrentTags}%
+    \fi%
+    \if\@spriteMode\@isTrue%
+      \if\introarg\@isTrue%
+        \stepcounter{partproblemcounter}%
+      \fi%
+    \fi%
+    \gdef\@displayIntro{\@isFalse}
+    \showhideproblem{%%
+      \tighten@paragraph%%
+      \Trigger\BeginIntro\exb@pre@intro\exb@post@intro%%
+      \gdef\@displayIntro{\@isTrue}
+    }%
   \fi%
-  \intromargin{-1em}
+  \exb@ifshowproblem{\intromargin{-1em}}{}
+  \if\DisplayProblem\isTrue%
+  \fi
 }{
-  \if\@countIntros\isTrue
-    \Trigger\EndIntro
+  \if\@countIntros\isTrue%
+    \Trigger\EndIntro%
     % \endgroup
-  \fi\par\endintromargin
+  \fi%
+  \exb@ifshowproblem{\endintromargin}{}
+  \ignorespaces%
 % \newline
 }

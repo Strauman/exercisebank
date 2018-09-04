@@ -45,4 +45,4 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 - `README.txt` README file for CTAN.
 - `texpackvars.ini` contains information that is used when "compiling" the package.
 ### `docs/`
-Docs are generated automatically. See `src/documentingExample.tex` for info on how to do documentation.
+Docs are generated automatically. See [`documentation-doc.tex`](https://github.com/Strauman/exerciseBank/blob/master/documentation-doc.tex) for info on how to do documentation.

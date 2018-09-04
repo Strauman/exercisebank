@@ -65,7 +65,7 @@
 
 \At\VeryBeginProblem{%
 	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
-	\needspace{\exbank@opt@problemneedspace}%
+	\ifexbank@if@needspace\needspace{\exbank@opt@problemneedspace}\fi%
 	\vskip-2\baselineskip\relax%
 	\fi%
 	\stepcounter{problemcounter}%
