@@ -5,6 +5,7 @@
 \gdef\exb@int@isin#1#2#3#4{
  \def\needle{#1}
  \def\haystack{#2}
+\if\haystack\@empty\relax#4\else
  \def\isFalse{0}
  \let\isInList = \isFalse
  \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric: `\needle' in `\haystack'!}{}\bye\stop}
@@ -25,7 +26,7 @@
    #4
   \fi
  }
-}
+\fi}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
 %:§ref
@@ -45,6 +46,7 @@
   \xdef\haystack{#2}
   \def\whenfalse{#4}
   \def\whentrue{#3}
+  \@dlog{h:\haystack\space n:\needle}\if\haystack{}\relax#4\else
   \readlist*\items\haystack%
   \foreachitem\itm\in\items{
     \ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
@@ -53,7 +55,7 @@
   }
   \ifexb@isInList\else%
   #4
-  \fi%
+  \fi\fi%
 }
 
 %\strif: Compare two strings
@@ -97,10 +99,12 @@
 }
 % TODO: FINISH
 \def\exb@intersection@any#1#2#3#4{
+\edef\listarg{#1}
+\if\listarg\relax\else
 \readlist*\needlelist{#1}
 \newif\ifexb@isintersection
   \foreachitem\needle\in\needlelist{
     \exb@isin{\needle}{#2}{\exb@isintersectiontrue}{}
   }
-\ifexb@isintersection#3\else#4\fi
+\ifexb@isintersection#3\else#4\fi\fi
 }

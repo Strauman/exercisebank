@@ -18,9 +18,10 @@
 % \makeset{11}{firstexercise, \exclude{secondexercise}{1,2}, thirdexercise}
 % \makeset{11}{\exclude{secondexercise}{1,2}}
 % \makeset{11}{\select{secondexercise}{1,...,3}}
-\makeset[intro]{11}{\select{secondexercise}{1,2}}
+% \makeset[intro]{11}{\select{secondexercise}{1,2}}
+\makeset{11}{secondexercise}
 
-
+% \makeset{11}{firstexercise}
 % \makeset[nohead,intro]{11}{%
 % \phead,
 % \exclude{secondexercise}{2,3},
@@ -34,7 +35,7 @@
 % firstexercise,
 % thirdexercise%
 % }
-% \DisplaySolutions
+\DisplaySolutions
 % Different function tests
 % \makeset[nohead,intro]{11}{\phead,\exclude{secondexercise}{2,3},secondexercise}
 % \makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
@@ -46,8 +47,8 @@
 % }
 \ShowNumbers
 \begin{document}
-\buildset{11}
-% \buildtags{A}{11}
+% \buildset{11}
+\buildtags{Y1}{11}
 % \totalpoints
 % \sprite
 \end{document}

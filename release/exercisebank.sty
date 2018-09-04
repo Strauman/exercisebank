@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1 (2018/09/04) - build 85
+%% The LaTeX package exercisebank - version v0.2.1 (2018/09/04) - build 86
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -37,6 +37,7 @@
 \edef\@isFalse{0}
 \gdef\exb@int@isin#1#2#3#4{ \def\needle{#1}
  \def\haystack{#2}
+\if\haystack\@empty\relax#4\else
  \def\isFalse{0}
  \let\isInList = \isFalse
  \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric: `\needle' in `\haystack'!}{}\bye\stop}
@@ -54,7 +55,7 @@
    #4
   \fi
 }
-}
+\fi}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
 \gdef\exb@isin#1#2#3#4{  \global\exb@isInListfalse
@@ -62,6 +63,7 @@
   \xdef\haystack{#2}
   \def\whenfalse{#4}
   \def\whentrue{#3}
+  \@dlog{h:\haystack\space n:\needle}\if\haystack{}\relax#4\else
   \readlist*\items\haystack%
   \foreachitem\itm\in\items{    \ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
   \global\exb@isInListtrue%
@@ -69,7 +71,7 @@
 }
   \ifexb@isInList\else%
   #4
-  \fi%
+  \fi\fi%
 }
 \gdef\strif#1#2{%
  \ifnum\pdfstrcmp{#1}{#2}=\z@\relax%
@@ -93,11 +95,13 @@
 }%
 }
 }
-\def\exb@intersection@any#1#2#3#4{\readlist*\needlelist{#1}
+\def\exb@intersection@any#1#2#3#4{\edef\listarg{#1}
+\if\listarg\relax\else
+\readlist*\needlelist{#1}
 \newif\ifexb@isintersection
   \foreachitem\needle\in\needlelist{    \exb@isin{\needle}{#2}{\exb@isintersectiontrue}{}
 }
-\ifexb@isintersection#3\else#4\fi
+\ifexb@isintersection#3\else#4\fi\fi
 }
 \edef\@isTrue{1}
 \edef\@isFalse{0}
@@ -312,25 +316,12 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 }
 \global\let\do@ProcessCutFile = \ProcessCutFile
 \newif\ifexb@isdisplaying
+\newif\ifexb@hidenextsol
+\global\exb@hidenextsolfalse
 \gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 \ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}%
-}
-\gdef\showhideproblem@old#1{%
-\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
-  \ifexb@opthides%
-    \def\ProcessCutFile{}%
-  \else%
-    \if\DisplayProblem\isFalse%
-        \def\ProcessCutFile{}%
-    \else%
-      \if\@SolutionsOnly\@isTrue\relax%
-        \def\ProcessCutFile{}%
-      \fi%
-        #1%
-    \fi
-  \fi\fi%
+\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
 }
 \generalcomment{problem}{  \edef\DisplaySolution{\@DisplaySolutions}
   \stepcounter{metacounter}
@@ -362,11 +353,12 @@ tag/.code={\pgfkeysalso{tags={#1}}}
     \fi
   \fi
   \if\DisplaySolution\isTrue
-    \Trigger\BeginSolution
+    \ifexb@hidenextsol\else\Trigger\BeginSolution\fi
   \else
     \def\ProcessCutFile{}
   \fi
-}{\if\DisplaySolution\isTrue
+}{%
+\if\DisplaySolution\isTrue
 \Trigger\EndSolution
 \tighten@paragraph@solutions
 \vspace*{0.5em}

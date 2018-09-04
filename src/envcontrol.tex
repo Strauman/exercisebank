@@ -38,26 +38,29 @@
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
 \newif\ifexb@isdisplaying
+\newif\ifexb@hidenextsol
+\global\exb@hidenextsolfalse
+%
 \gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 \ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}%
+\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
 }
-\gdef\showhideproblem@old#1{%
-\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
-  \ifexb@opthides%
-    \def\ProcessCutFile{}%
-  \else%
-    \if\DisplayProblem\isFalse%
-        \def\ProcessCutFile{}%
-    \else%
-      \if\@SolutionsOnly\@isTrue\relax%
-        \def\ProcessCutFile{}%
-      \fi%
-        #1%
-    \fi
-  \fi\fi%
-}
+% \gdef\showhideproblem@old#1{%
+% \ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
+%   \ifexb@opthides%
+%     \def\ProcessCutFile{}%
+%   \else%
+%     \if\DisplayProblem\isFalse%
+%         \def\ProcessCutFile{}%
+%     \else%
+%       \if\@SolutionsOnly\@isTrue\relax%
+%         \def\ProcessCutFile{}%
+%       \fi%
+%         #1%
+%     \fi
+%   \fi\fi%
+% }
 
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
 
@@ -111,11 +114,11 @@
     \fi
   \fi
   \if\DisplaySolution\isTrue
-    \Trigger\BeginSolution
+    \ifexb@hidenextsol\else\Trigger\BeginSolution\fi
   \else
     \def\ProcessCutFile{}
   \fi
-}{
+}{%\exb@ifshowproblem{
 % \input{\CommentCutFile}
 \if\DisplaySolution\isTrue
 \Trigger\EndSolution
