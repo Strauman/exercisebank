@@ -7,7 +7,7 @@ This is the documentation for version v0.2.1, and might not be the same as for t
 
 # Versions
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
-GitHub at version: v0.2.1 (2018/09/03) build 83
+GitHub at version: v0.2.1 (2018/09/04) build 85
 
 CTAN at version: v0.2.0 (2018/07/21) build 75
 
@@ -45,4 +45,4 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 - `README.txt` README file for CTAN.
 - `texpackvars.ini` contains information that is used when "compiling" the package.
 ### `docs/`
-Docs are generated automatically. See `src/documentingExample.tex` for info on how to do documentation.
+Docs are generated automatically. See [`documentation-doc.tex`](https://github.com/Strauman/exerciseBank/blob/master/documentation-doc.tex) for info on how to do documentation.

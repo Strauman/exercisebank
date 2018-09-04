@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1 (2018/09/03) - build 83
+%% The LaTeX package exercisebank - version v0.2.1 (2018/09/04) - build 85
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,7 +13,7 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/09/03 v0.2.1 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/09/04 v0.2.1 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
 \PackageWarningNoLine{exercisebank-v0.2.1}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
@@ -111,6 +111,8 @@
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
 \gdef\exb@currentPoints{0}
+\newif\ifexbank@if@needspace
+\global\exbank@if@needspacetrue
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
 default/.style = {  part problems = On,
   tighten paragraphs = True,
@@ -121,7 +123,9 @@ default/.style = {  part problems = On,
   exercise directory=.,
   figure root directory=\@exercisesDir,
   style margins=On,
-  problem needs space=0.2\paperheight
+  problem needs space=0.2\paperheight,
+  no needspace/.is if={exbank@if@needspace},
+  no needspace/.default = false
 },
 exercise directory/.estore in = \@exercisesDir, %
 figure root directory/.estore in = \@figrootDir, %
@@ -243,7 +247,7 @@ switches/.cd,
 \newcounter{partproblemcounter}
 \At\VeryBeginProblem{%
 	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
-	\needspace{\exbank@opt@problemneedspace}%
+	\ifexbank@if@needspace\needspace{\exbank@opt@problemneedspace}\fi%
 	\vskip-2\baselineskip\relax%
 	\fi%
 	\stepcounter{problemcounter}%
@@ -311,22 +315,22 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 \gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 \ifexb@isdisplaying#1\else#2\fi}
 \gdef\showhideproblem#1{%
-\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}
+\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1}{\def\ProcessCutFile{}}%
 }
 \gdef\showhideproblem@old#1{%
-\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else
+\ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
   \ifexb@opthides%
-    \def\ProcessCutFile{}
-  \else
-    \if\DisplayProblem\isFalse
-        \def\ProcessCutFile{}
-    \else
+    \def\ProcessCutFile{}%
+  \else%
+    \if\DisplayProblem\isFalse%
+        \def\ProcessCutFile{}%
+    \else%
       \if\@SolutionsOnly\@isTrue\relax%
-        \def\ProcessCutFile{}
+        \def\ProcessCutFile{}%
       \fi%
         #1%
     \fi
-  \fi\fi
+  \fi\fi%
 }
 \generalcomment{problem}{  \edef\DisplaySolution{\@DisplaySolutions}
   \stepcounter{metacounter}
@@ -377,31 +381,40 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 \else%
 \relax\global\let\endintromargin=\relax\fi%
 }
-\generalcomment{intro}{  \if\@countIntros\isTrue
-    \stepcounter{metacounter}
-    \Trigger\DecideProblemDisplay
-    \gdef\exb@pre@intro{}
-    \gdef\exb@post@intro{}
+\generalcomment{intro}{%
+  \if\@countIntros\isTrue%
+    \stepcounter{metacounter}%
+    \Trigger\DecideProblemDisplay%
+    \gdef\exb@pre@intro{}%
+    \gdef\exb@post@intro{}%
     \if\@displayMetaCounter\isTrue\relax%
-    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}
-    \fi
+    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}%
+    \fi%
     \if\exb@showtags\isTrue%
-    \xdef\exb@post@intro{\exb@printCurrentTags}
-    \fi
-    \if\@spriteMode\@isTrue
-      \if\introarg\@isTrue
-        \stepcounter{partproblemcounter}
-      \fi
-    \fi
+    \xdef\exb@post@intro{\exb@printCurrentTags}%
+    \fi%
+    \if\@spriteMode\@isTrue%
+      \if\introarg\@isTrue%
+        \stepcounter{partproblemcounter}%
+      \fi%
+    \fi%
+    \gdef\@displayIntro{\@isFalse}
     \showhideproblem{%
       \tighten@paragraph%
       \Trigger\BeginIntro\exb@pre@intro\exb@post@intro%
-}
-  \fi%
+      \gdef\@displayIntro{\@isTrue}
+}%
+  \exb@ifshowproblem{\intromargin{-1em}}{}
+  \else%
   \intromargin{-1em}
-}{  \if\@countIntros\isTrue
-    \Trigger\EndIntro
-  \fi\par\endintromargin
+  \fi%
+}{  \if\@countIntros\isTrue%
+    \Trigger\EndIntro%
+    \exb@ifshowproblem{\endintromargin}{}
+  \else
+    \endintromargin
+  \fi%
+  \ignorespaces%
 }
 \def\squeeze{  \newlength{\marginw}
   \setlength{\marginw}{1.5cm}

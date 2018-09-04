@@ -167,16 +167,18 @@
       \Trigger\BeginIntro\exb@pre@intro\exb@post@intro%%
       \gdef\@displayIntro{\@isTrue}
     }%
-  \fi%
   \exb@ifshowproblem{\intromargin{-1em}}{}
-  \if\DisplayProblem\isTrue%
-  \fi
+  \else%
+  \intromargin{-1em}
+  \fi%
+
 }{
   \if\@countIntros\isTrue%
     \Trigger\EndIntro%
-    % \endgroup
+    \exb@ifshowproblem{\endintromargin}{}
+  \else
+    \endintromargin
   \fi%
-  \exb@ifshowproblem{\endintromargin}{}
   \ignorespaces%
 % \newline
 }
