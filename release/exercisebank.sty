@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/05) - build 87
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/06) - build 88
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,8 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/09/05 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/09/06 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
+\def\exercisebankversion{v0.2.1-prerelease - Build 88}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -37,7 +38,7 @@
 \edef\@isFalse{0}
 \gdef\exb@int@isin#1#2#3#4{ \def\needle{#1}
  \def\haystack{#2}
-\if\haystack\@empty\relax#4\else
+\ifx\haystack\empty\relax\@dlog{int:haystack empty}#4\else
  \def\isFalse{0}
  \let\isInList = \isFalse
  \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric: `\needle' in `\haystack'!}{}\bye\stop}
@@ -63,7 +64,8 @@
   \xdef\haystack{#2}
   \def\whenfalse{#4}
   \def\whentrue{#3}
-  \@dlog{h:\haystack\space n:\needle}\if\haystack{}\relax#4\else
+  \@dlog{h:\haystack\space n:\needle}%
+  \ifx\haystack\empty\relax\@dlog{int:haystack empty}#4\else%
   \readlist*\items\haystack%
   \foreachitem\itm\in\items{    \ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
   \global\exb@isInListtrue%
