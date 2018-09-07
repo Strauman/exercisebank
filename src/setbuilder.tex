@@ -58,7 +58,8 @@
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
 %TODO: MakeIntersection
 \exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
-\fi\fi
+\fi
+\fi
 }
 
 %% Makeset arg handler
@@ -393,8 +394,9 @@
 \newcommand\buildtags[2]{%
   \global\exb@tagbuildmodetrue
   \xdef\csvtags{#1}%
+  \xdef\csvlist{#2}
 	\xdef\csvsets{#2}%
-	\readlist*\tagsItems\csvtags%
+	% \readlist*\tagsItems\csvtags%
   \readlist*\setsItems\csvsets%
 	\foreachitem\set\in\setsItems{%
     \xdef\exb@tagList{\csvtags}
