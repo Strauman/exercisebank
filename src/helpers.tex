@@ -101,7 +101,7 @@
 % TODO: FINISH
 \def\exb@intersection@any#1#2#3#4{
 \edef\listarg{#1}
-\if\listarg\relax\else
+\ifx\listarg\relax\else
 \readlist*\needlelist{#1}
 \newif\ifexb@isintersection
   \foreachitem\needle\in\needlelist{
