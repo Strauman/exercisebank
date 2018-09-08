@@ -69,15 +69,17 @@
 %:Inside the \keyRef{exercise directory}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % :-
-\generalcomment{problem}{
+\generalcomment{problem}{\@dinfo{Starting problem env}
 \makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
   \edef\DisplaySolution{\@DisplaySolutions}
   \stepcounter{metacounter}
   %% BeginProblemHard is before regardless whether
   %% the problem is included or not.
+  \@dinfo{problem: Triggering \string\DecideProblemDisplay}
   \Trigger\DecideProblemDisplay
   % \begingroup
+  \@dinfo{problem:Executing - \string\showhideproblem}
      \showhideproblem{%
         % If the user haven't turned off part problems
         \if\exbank@opt@partProblems\isTrue
@@ -88,7 +90,7 @@
             \Trigger\VeryBeginProblem
         \fi
       }
-  }{
+  }{\@dinfo{Ending problem env}
     \if\DisplayProblem\@isTrue\relax
       \if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
         \Trigger\EndPartproblem
@@ -96,6 +98,7 @@
       \else
         \Trigger\EndProblem
     \fi
+\@dinfo{Ended problem env}
 }
 \g@addto@macro\AfterproblemComment{\nextproblem{default}}
 %:§env
@@ -104,8 +107,7 @@
 %: \!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
 %:-
 %% Solutions
-\generalcomment{solution}
-{
+\generalcomment{solution}{\@dinfo{START solution ENV}%
 \Trigger\AtBeginSolutionHard
 \begingroup
   \if\@DisplaySolutions\isTrue
@@ -127,7 +129,7 @@
 \fi
 \endgroup
 
-\Trigger\EndSolutionHard%
+\Trigger\EndSolutionHard\@dinfo{END solution ENV}%
 % \egroup
 }
 %% Problem introductions
@@ -143,7 +145,7 @@
 \else%
 \relax\global\let\endintromargin=\relax\fi%
 }
-\generalcomment{intro}{%
+\generalcomment{intro}{\@dinfo{START intro ENV}%
   %% Decide wether to treat intro as problem in
   %% include/exclude (except from \Trigger\BeginProblem ofc)
   \if\@countIntros\isTrue%
@@ -182,7 +184,7 @@
   \else
     \endintromargin
   \fi%
-  \ignorespaces%
+  \@dinfo{END intro ENV}\ignorespaces%
 % \newline
 }
 \g@addto@macro\AfterintroComment{\nextproblem{default}}

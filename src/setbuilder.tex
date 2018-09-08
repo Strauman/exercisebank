@@ -37,6 +37,7 @@
 \let\ipm\@ifppMode
 \let\T@\isTrue
 \let\F@\isFalse
+% \@dlog{tlist:\meaning\exb@tagList}
 % \ifnum\pdfstrcmp{\exb@tagList}{\exb@emptyList}=\z@\relax
 %   \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}\else%
 %   \isin{\exb@currentTags}{\exb@tagList}{}{\xdef\DisplayProblem{\F@}}%
@@ -50,14 +51,9 @@
     }{
       \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
     }
-% \@dlog{DP:\DisplayProblem - \themetacounter}
-% \@dlog{mlist:\ppList}
-% \@dlog{\exb@currentTags}
-% \def\DisplayProblem{0}
 \ifexb@tagbuildmode
-\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
-%TODO: MakeIntersection
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
+\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}%
 \fi
 \fi
 }
@@ -240,7 +236,7 @@
 
 \newcommand\buildset[2][]{%
   \def\oarg{#1}%
-  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}%
+  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}}%
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
   %% Setting the global setName
 %:=\setName
@@ -301,7 +297,7 @@
   \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}%
   \gdef\X@exb@setEnv##1{%
     \def\continueLoop{\isTrue}%
-    \@dlog{Processing normal file "\exerciseFileInfo.tex"}%
+    \@dinfo{Processing normal file "\exerciseFileInfo.tex"}%
     \exbank@setEnv@normal{\exerciseFileInfo}\bgroup\nullfont%
   }
   \gdef\exb@setEnv@withOptargs{%
@@ -310,12 +306,12 @@
 
   \gdef\@execute@makeset@command ?##1{%
     \edef\inner{\@firstofone##1}%
-    \@dlog{Executing macro \@backslashchar\@gobble##1}%
+    \@dinfo{Executing macro \@backslashchar\@gobble##1}%
     \csname \inner\endcsname%
     #1\def\continueLoop{\isFalse}\ea\bgroup%
   }
   \def\@execute@exec:{%
-    \def\continueLoop{\isFalse}\@dlog{Executing custom command}\bgroup%
+    \def\continueLoop{\isFalse}\@dinfo{Executing custom command}\bgroup%
   }
 %% Loop through list
   \readlist*\setlist\exbank@setlist%
@@ -395,9 +391,9 @@
   \global\exb@tagbuildmodetrue
   \xdef\csvtags{#1}%
   \xdef\csvlist{#2}
-	\xdef\csvsets{#2}%
-	% \readlist*\tagsItems\csvtags%
-  \readlist*\setsItems\csvsets%
+	% \xdef\csvsets{#2}%
+	\readlist*\tagsItems\csvtags%
+  % \readlist*\setsItems\csvsets%
 	\foreachitem\set\in\setsItems{%
     \xdef\exb@tagList{\csvtags}
 		\buildset{\set}%

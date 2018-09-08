@@ -77,10 +77,11 @@
 \At\EndProblem{%
 \tighten@paragraph%
 }
-\At\VeryBeginPartproblem{%
+\At\VeryBeginPartproblem{\@dinfo{Triggered Beginning Part Problem}%
 	\stepcounter{partproblemcounter}%%
 	\bgroup%
 	% If we should display the meta counter, then%
+	\@dinfo{Generating title for part problem}
 	\gdef\exb@prePPHead{}
 	\gdef\exb@postPPHead{}
 	\if\@displayMetaCounter\@isTrue\relax%%
@@ -95,7 +96,7 @@
 \if\exbank@opt@doMargins\@isTrue\relax%
 \leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}%
 \else{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\fi%
-\ignorespaces}%
+\@dinfo{Ended \string\VeryBeginPartproblem}\ignorespaces}%
 \At\EndPartproblem{%
 	% \egroup%
 	\vspace*{\pMarginBelow}%
