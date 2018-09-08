@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/07) - build 89
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/08) - build 91
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/09/07 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/09/08 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.1-prerelease - Build 89}
+\def\exercisebankversion{v0.2.1-prerelease - Build 91}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -36,47 +36,47 @@
 \usepackage{needspace}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
-\gdef\exb@int@isin#1#2#3#4{ \def\needle{#1}
- \def\haystack{#2}
-\ifx\haystack\empty\relax\@dlog{int:haystack empty}#4\else
- \def\isFalse{0}
- \let\isInList = \isFalse
- \IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric: `\needle' in `\haystack'!}{}\bye\stop}
- \IfInteger{\haystack}{  \ifnum\haystack=\needle\relax
-   #3
-  \else
-   #4
-  \fi
-}{  \foreach\pp in #2{    \ifnum\pp=\needle\relax%
-     \gdef\isInList{1}
-     #3
-    \fi
+\gdef\exb@int@isin#1#2#3#4{	\def\needle{#1}
+	\def\haystack{#2}
+	\ifx\haystack\empty\relax#4\else
+		\def\isFalse{0}
+		\let\isInList = \isFalse
+		\IfInteger{\needle}{}{\@latex@error{ISIN: Can't look for part problem that is not numeric: `\needle' in `\haystack'!}{}\bye\stop}
+		\IfInteger{\haystack}{			\ifnum\haystack=\needle\relax
+				#3
+			\else
+				#4
+			\fi
+}{			\foreach\pp in #2{					\ifnum\pp=\needle\relax%
+						\gdef\isInList{1}
+						#3
+					\fi
 }
-  \if\isInList\isFalse
-   #4
-  \fi
+			\if\isInList\isFalse
+				#4
+			\fi
 }
-\fi}
+	\fi}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
-\gdef\exb@isin#1#2#3#4{  \global\exb@isInListfalse
-  \xdef\needle{#1}
-  \xdef\haystack{#2}
-  \def\whenfalse{#4}
-  \def\whentrue{#3}
-  \@dlog{h:\haystack\space n:\needle}%
-  \ifx\haystack\empty\relax\@dlog{int:haystack empty}#4\else%
-  \readlist*\items\haystack%
-  \foreachitem\itm\in\items{    \ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
-  \global\exb@isInListtrue%
-  #3\fi
+\gdef\exb@isin#1#2#3#4{\@dinfo{running isin}
+	\global\exb@isInListfalse
+	\xdef\needle{#1}
+	\xdef\haystack{#2}
+	\def\whenfalse{#4}
+	\def\whentrue{#3}
+	\ifx\haystack\empty\relax#4\else%
+		\readlist*\items\haystack%
+		\foreachitem\itm\in\items{			\ifnum\pdfstrcmp{\needle}{\itm}=\z@\relax%
+				\global\exb@isInListtrue%
+				#3\fi
 }
-  \ifexb@isInList\else%
-  #4
-  \fi\fi%
+		\ifexb@isInList\else%
+			#4
+		\fi\fi%
 }
 \gdef\strif#1#2{%
- \ifnum\pdfstrcmp{#1}{#2}=\z@\relax%
+	\ifnum\pdfstrcmp{#1}{#2}=\z@\relax%
 }
 \let\ea = \expandafter
 \begingroup\lccode`\|=`\\
@@ -84,26 +84,37 @@
 \gdef\exbank@macroname#1{\expandafter\removebs\string#1}
 \gdef\@noneofone#1{}
 \gdef\@noneoftwo#1#2{}
-\@ifundefined{exbank@quiet}{ \global\let\@dlog\@latex@warning
-}{ \global\let\@dlog\@noneofone
+{\globaldefs=1\newcommand\@opt@gobble[2][]{}}
+\@ifundefined{exbank@verbose}{	\global\let\@dinfo\@gobble
+	\global\let\@dinfomode\@opt@gobble
+}{	\bgroup
+	\globaldefs=1\newcommand\@dinfo[2][]{%
+			\@latex@warning{--INFO:#2}%
+}%
+	\egroup%
 }
-\newcommand\ex@before[2]{\edef #1{\unexpanded{#2}\unexpanded\expandafter{#1}}
+\@ifundefined{exbank@quiet}{	\gdef\@dlog#1{\@latex@warning{::DEBUG:#1}}
+}{	\global\let\@dlog\@noneofone
+}
+\newcommand\ex@before[2]{	\edef #1{\unexpanded{#2}\unexpanded\expandafter{#1}}
 }
 \newcommand{\exb@lmargin}[2]{\strut\vadjust{\exb@domark{#1}{#2}}}
 \newcommand{\exb@domark}[2]{%
-  \hbox to #2{    \vbox to 0pt{      \kern-\dp\strutbox
-      \smash{\llap{#1}}
-      \vss
+	\hbox to #2{		\vbox to 0pt{				\kern-\dp\strutbox
+				\smash{\llap{#1}}
+				\vss
 }%
 }
 }
-\def\exb@intersection@any#1#2#3#4{\edef\listarg{#1}
-\ifx\listarg\relax\else
-\readlist*\needlelist{#1}
 \newif\ifexb@isintersection
-  \foreachitem\needle\in\needlelist{    \exb@isin{\needle}{#2}{\exb@isintersectiontrue}{}
+\def\exb@intersection@any#1#2#3#4{	\exb@isintersectionfalse
+	\edef\listarg{#1}
+	\ifx\listarg\empty\@dlog{RELAX}\else
+	\readlist*\needlelist{#1}
+		\foreachitem\needle\in\needlelist{			\exb@isin{\needle}{#2}{\exb@isintersectiontrue}{}
 }
-\ifexb@isintersection#3\else#4\fi\fi
+		\ifexb@isintersection#3\else#4\fi%
+		\fi
 }
 \edef\@isTrue{1}
 \edef\@isFalse{0}
@@ -219,7 +230,6 @@ switches/.cd,
   \xdef\fileInputPath{\figuresPath\filename@area}
   \xdef\fileInputBase{\figuresPath\filename@area\filename@base/}
   \graphicspath{{\fileInputBase}{\fileInputPath}}
-  \@dlog{\fileInputBase}
   \@ifundefined{input@path}{\gdef\input@path{{\fileInputBase}{\fileInputPath}}}{}
 }
 \newlength{\pMarginBelow}
@@ -265,9 +275,10 @@ switches/.cd,
 \At\EndProblem{%
 \tighten@paragraph%
 }
-\At\VeryBeginPartproblem{%
+\At\VeryBeginPartproblem{\@dinfo{Triggered Beginning Part Problem}%
 	\stepcounter{partproblemcounter}%
 	\bgroup%
+	\@dinfo{Generating title for part problem}
 	\gdef\exb@prePPHead{}
 	\gdef\exb@postPPHead{}
 	\if\@displayMetaCounter\@isTrue\relax%
@@ -279,7 +290,7 @@ switches/.cd,
 \if\exbank@opt@doMargins\@isTrue\relax%
 \leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}%
 \else{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\fi%
-\ignorespaces}%
+\@dinfo{Ended \string\VeryBeginPartproblem}\ignorespaces}%
 \At\EndPartproblem{%
 	\vspace*{\pMarginBelow}%
 	\tighten@paragraph\par%
@@ -325,9 +336,12 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 \gdef\showhideproblem#1{%
 \exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
 }
-\generalcomment{problem}{  \edef\DisplaySolution{\@DisplaySolutions}
+\generalcomment{problem}{\@dinfo{Starting problem env}
+  \edef\DisplaySolution{\@DisplaySolutions}
   \stepcounter{metacounter}
+  \@dinfo{problem: Triggering \string\DecideProblemDisplay}
   \Trigger\DecideProblemDisplay
+  \@dinfo{problem:Executing - \string\showhideproblem}
      \showhideproblem{%
         \if\exbank@opt@partProblems\isTrue
             \Trigger\BeginPartproblem
@@ -337,17 +351,19 @@ tag/.code={\pgfkeysalso{tags={#1}}}
             \Trigger\VeryBeginProblem
         \fi
 }
-}{    \if\DisplayProblem\@isTrue\relax
+}{\@dinfo{Ending problem env}
+    \if\DisplayProblem\@isTrue\relax
       \if\exbank@opt@partProblems\@isTrue\relax%
         \Trigger\EndPartproblem
         \tighten@paragraph\fi
       \else
         \Trigger\EndProblem
     \fi
+\@dinfo{Ended problem env}
 }
 \g@addto@macro\AfterproblemComment{\nextproblem{default}}
-\generalcomment{solution}
-{\Trigger\AtBeginSolutionHard
+\generalcomment{solution}{\@dinfo{START solution ENV}%
+\Trigger\AtBeginSolutionHard
 \begingroup
   \if\@DisplaySolutions\isTrue
     \if\DisplayProblem\isFalse
@@ -366,7 +382,7 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 \vspace*{0.5em}
 \fi
 \endgroup
-\Trigger\EndSolutionHard%
+\Trigger\EndSolutionHard\@dinfo{END solution ENV}%
 }
 \def\intromargin#1{%
 \if\exbank@opt@doMargins\@isTrue%
@@ -375,7 +391,7 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 \else%
 \relax\global\let\endintromargin=\relax\fi%
 }
-\generalcomment{intro}{%
+\generalcomment{intro}{\@dinfo{START intro ENV}%
   \if\@countIntros\isTrue%
     \stepcounter{metacounter}%
     \Trigger\DecideProblemDisplay%
@@ -408,7 +424,7 @@ tag/.code={\pgfkeysalso{tags={#1}}}
   \else
     \endintromargin
   \fi%
-  \ignorespaces%
+  \@dinfo{END intro ENV}\ignorespaces%
 }
 \g@addto@macro\AfterintroComment{\nextproblem{default}}
 \def\squeeze{  \newlength{\marginw}
@@ -476,8 +492,8 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 }{      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
 }
 \ifexb@tagbuildmode
-\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}
+\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}%
 \fi
 \fi
 }
@@ -572,7 +588,7 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 \ea\pgfkeys\keystring}
 \newcommand\buildset[2][]{%
   \def\oarg{#1}%
-  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}\@dlog{Counting intros}}%
+  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}}%
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
   \xdef\setName{#2}%
   \ifcsname setkeys@\setName\endcsname%
@@ -595,7 +611,7 @@ tag/.code={\pgfkeysalso{tags={#1}}}
   \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}%
   \gdef\X@exb@setEnv##1{%
     \def\continueLoop{\isTrue}%
-    \@dlog{Processing normal file "\exerciseFileInfo.tex"}%
+    \@dinfo{Processing normal file "\exerciseFileInfo.tex"}%
     \exbank@setEnv@normal{\exerciseFileInfo}\bgroup\nullfont%
 }
   \gdef\exb@setEnv@withOptargs{%
@@ -603,12 +619,12 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 }
   \gdef\@execute@makeset@command ?##1{%
     \edef\inner{\@firstofone##1}%
-    \@dlog{Executing macro \@backslashchar\@gobble##1}%
+    \@dinfo{Executing macro \@backslashchar\@gobble##1}%
     \csname\inner\endcsname%
     #1\def\continueLoop{\isFalse}\ea\bgroup%
 }
   \def\@execute@exec:{%
-    \def\continueLoop{\isFalse}\@dlog{Executing custom command}\bgroup%
+    \def\continueLoop{\isFalse}\@dinfo{Executing custom command}\bgroup%
 }
   \readlist*\setlist\exbank@setlist%
   \foreachitem\exerciseFileInfo\in\setlist{%
@@ -659,6 +675,7 @@ tag/.code={\pgfkeysalso{tags={#1}}}
   \xdef\csvtags{#1}%
   \xdef\csvlist{#2}
 	\xdef\csvsets{#2}%
+	\readlist*\tagsItems\csvtags%
   \readlist*\setsItems\csvsets%
 	\foreachitem\set\in\setsItems{%
     \xdef\exb@tagList{\csvtags}
@@ -699,6 +716,5 @@ disable points/.is if={exb@enablepoints}
 \setcounter{exb@points}{0}
 \providecommand\totalpoints{}
 \nextproblem{points/.store in=\exb@currentPoints}
-\@dlog{\string\exbank@opt@partProblemHeader\meaning\exbank@opt@partProblemHeader}
 \At\BeginPartproblem{\addtocounter{exb@points}\exb@currentPoints}
 \At\EndPartproblem{\gdef\exb@currentPoints{0}}
