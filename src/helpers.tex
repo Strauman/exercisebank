@@ -111,6 +111,7 @@
 % TODO: FINISH
 \newif\ifexb@isintersection
 \def\exb@intersection@any#1#2#3#4{
+	\exb@isintersectionfalse
 	\edef\listarg{#1}
 	\ifx\listarg\empty\@dlog{RELAX}\else
 	\readlist*\needlelist{#1}
