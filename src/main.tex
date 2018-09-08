@@ -1,60 +1,17 @@
-% This file is the main file for building during development
-\documentclass{article}
-\makeatletter
-\def\insp#1{\texttt{\string#1:\meaning#1}}
-\def\inspw#1{\@latex@warning{\string#1:\meaning#1}}
-  % \@latex@warning{COMPILING EXBANK MAIN}
-  % \@latex@warning{COMPILING EXBANK MAIN}
-  % \@latex@warning{COMPILING EXBANK MAIN}
-  \@latex@warning{COMPILING EXBANK MAIN}
-\usepackage[english]{babel}
-\input{exbankpack}
-\exercisebanksetup{exercise directory=../exercises}
-\usepackage{lipsum}
-% \ShowNumbers
-\def\hello{\textbf{Hello}}
-\def\asdf#1{\@latex@warning{Called hello}#1}
-% Testing all makeset functions
-% \makeset{11}{firstexercise, \exclude{secondexercise}{1,2}, thirdexercise}
-% \makeset{11}{\exclude{secondexercise}{1,2}}
-% \makeset{11}{\select{secondexercise}{1,...,3}}
-% \makeset[intro]{11}{\select{secondexercise}{1,2}}
-\makeset{11}{firstexercise,secondexercise}
+\documentclass{article}\makeatletter
+% \def\exbank@quiet{1}
+\gdef\exbank@verbose{1}
+% \gdef\followMacro#1{
+% \edef\mname{\expandafter\@gobble\string#1}
+% \expandafter\let\csname follow@old@\mname\endcsname#1
+% \def#1{\@dlog{change}}
+% }%
 
-% \makeset{11}{firstexercise}
-% \makeset[nohead,intro]{11}{%
-% \phead,
-% \exclude{secondexercise}{2,3},
-% \pbreak,
-% \phead,
-% \exec{\textbf{hello}},
-% firstexercise,
-% \select{thirdexercise}{1,2}%
-% }
-% \makeset{11}{secondexercise,
-% firstexercise,
-% thirdexercise%
-% }
-\DisplaySolutions
-% Different function tests
-% \makeset[nohead,intro]{11}{\phead,\exclude{secondexercise}{2,3},secondexercise}
-% \makeset[nohead,intro]{11}{\phead,thirdexercise, secondexercise, firstexercise}
-% \makeset[nohead,intro]{11}{thirdexercise}
-% \makeset[nohead,intro]{11}{\phead}
-% \makeset[nohead,intro]{12}{\phead,thirdexercise, secondexercise, firstexercise}
-% \At\StartBuildset{
-% BEFORE THE SET
-% }
-% \ShowNumbers
+\input{exbankpack}
+% \usepackage{exercisebank-debug}
+\exercisebanksetup{exercise directory=../exercises}
+\makeset{myExerciseSet}{dummy}
 \begin{document}
-% \buildset{11}
-\buildtags{Y}{11}
-% \def\eleven{11}
-% \readlist*\items\eleven
-% \foreachitem\itm\in\items{
-% \@dlog{\pdfstrcmp{\itm}{\eleven}}
-% }
-% \buildtags{Y1}{11}
-% \totalpoints
-% \sprite
+\buildtags{fiche1}{myExerciseSet}
+~
 \end{document}

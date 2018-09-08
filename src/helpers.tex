@@ -82,8 +82,6 @@
 	\gdef\@@dinfomode{ALL}
 }{
 	\bgroup
-	\gdef\@dinfomode#1{\gdef\@@dinfomode{#1}}
-  \gdef\@@dinfomode{ALL}
 	\globaldefs=1\newcommand\@dinfo[2][]{%
 			\@latex@warning{--INFO:#2}%
 		}%

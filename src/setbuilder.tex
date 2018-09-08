@@ -391,9 +391,9 @@
   \global\exb@tagbuildmodetrue
   \xdef\csvtags{#1}%
   \xdef\csvlist{#2}
-	% \xdef\csvsets{#2}%
+	\xdef\csvsets{#2}%
 	\readlist*\tagsItems\csvtags%
-  % \readlist*\setsItems\csvsets%
+  \readlist*\setsItems\csvsets%
 	\foreachitem\set\in\setsItems{%
     \xdef\exb@tagList{\csvtags}
 		\buildset{\set}%
