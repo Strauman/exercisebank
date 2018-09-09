@@ -1,3 +1,6 @@
+branches:
+  only:
+  - travistest
 sudo: required
 services: docker
 script:
