@@ -9,6 +9,7 @@ setup_git() {
 commit_website_files() {
   git checkout -b travisbranch
   git add . *.pdf
+  echo `git status`
   git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 }
 
