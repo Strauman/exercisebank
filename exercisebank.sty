@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/08) - build 91
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/09) - build 92
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/09/08 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/09/09 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.1-prerelease - Build 91}
+\def\exercisebankversion{v0.2.1-prerelease - Build 92}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -107,9 +107,9 @@
 }
 }
 \newif\ifexb@isintersection
-\def\exb@intersection@any#1#2#3#4{	\exb@isintersectionfalse
+\def\exb@intersection@any#1#2#3#4{	\global\exb@isintersectionfalse
 	\edef\listarg{#1}
-	\ifx\listarg\empty\@dlog{RELAX}\else
+	\ifx\listarg\empty\@dlog{RELAX}#4\else
 	\readlist*\needlelist{#1}
 		\foreachitem\needle\in\needlelist{			\exb@isin{\needle}{#2}{\exb@isintersectiontrue}{}
 }
@@ -493,7 +493,8 @@ tag/.code={\pgfkeysalso{tags={#1}}}
 }
 \ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}%
+\@dlog{inters: {\exb@currentTags}vs.{\exb@tagList}}
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\@dlog{IntsTrue}\global\exb@opthidesfalse}{\@dlog{IntsFalse}\global\exb@opthidestrue}%
 \fi
 \fi
 }
