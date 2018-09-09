@@ -46,3 +46,11 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 - `texpackvars.ini` contains information that is used when "compiling" the package.
 ### `docs/`
 Docs are generated automatically. See [`documentation-doc.tex`](https://github.com/Strauman/exerciseBank/blob/master/documentation-doc.tex) for info on how to do documentation.
+### `tests/`
+Writing tests is also very highly appreciated:
+The `tests/` directory contains multiple things.
+
+See how the [tests/sanitycheck/main.tex](https://github.com/Strauman/exercisebank/tree/develop/tests/sanitycheck/main.tex) is made, and you can make similar structures.
+Exercises are located in [tests/exercises](https://github.com/Strauman/exercisebank/tree/develop/tests/exercises). You can read more on how the tests would work [here](https://github.com/Strauman/travis-latexbuild). The best would be if you could clone this git, change stuff and make pull requests to this github with your tests.  (Then the tests would actually be run!).
+
+Also: If you have docker installed and are on OS X or Linux, you can use `./runtests.sh` to run the tests locally on your computer.
