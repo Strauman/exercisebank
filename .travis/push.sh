@@ -15,7 +15,7 @@ commit_pdfs() {
 
 upload_files() {
   git remote add origin https://${GH_TOKEN}@github.com/Strauman/exercisebank.git
-  git push --quiet --set-upstream origin travisbranch
+  git push --set-upstream origin travisbranch
 }
 
 setup_git
