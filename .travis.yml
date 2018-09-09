@@ -8,4 +8,5 @@ script:
   - docker pull strauman/travis-latexbuild
   - docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild
 after_success:
-  - .travis/push.sh
+  - echo `git status`
+  - echo `.travis/push.sh`

@@ -6,7 +6,7 @@ setup_git() {
   git config --global user.name "Travis CI"
 }
 
-commit_website_files() {
+commit_pdfs() {
   git checkout -b travisbranch
   git add tests/*.pdf
   echo `git status`
@@ -14,10 +14,10 @@ commit_website_files() {
 }
 
 upload_files() {
-  git remote add origin https://${GH_TOKEN}@github.com/Strauman/exercisebank.git > /dev/null 2>&1
+  git remote add origin https://${GH_TOKEN}@github.com/Strauman/exercisebank.git
   git push --quiet --set-upstream origin travisbranch
 }
 
 setup_git
-commit_website_files
+commit_pdfs
 upload_files
