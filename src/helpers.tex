@@ -111,9 +111,9 @@
 % TODO: FINISH
 \newif\ifexb@isintersection
 \def\exb@intersection@any#1#2#3#4{
-	\exb@isintersectionfalse
+	\global\exb@isintersectionfalse
 	\edef\listarg{#1}
-	\ifx\listarg\empty\@dlog{RELAX}\else
+	\ifx\listarg\empty\@dlog{RELAX}#4\else
 	\readlist*\needlelist{#1}
 		\foreachitem\needle\in\needlelist{
 			\exb@isin{\needle}{#2}{\exb@isintersectiontrue}{}
