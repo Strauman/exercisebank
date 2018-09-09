@@ -1,3 +1,6 @@
+branches:
+  except:
+    - travisbranch
 sudo:       required
 services:   docker
 env:
