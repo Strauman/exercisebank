@@ -31,10 +31,10 @@ function make_example(){
     echo "Building example"
     cp $pkgSTY ./
     cp $pkgSTY "$mainDir"
-    if [ -f "$mainDir/tests/$packagename.sty" ]; then
-      rm "$mainDir/tests/$packagename.sty"
-    fi
-    cp $pkgSTY "$mainDir/tests/$packagename.sty"
+    # if [ -f "$mainDir/tests/$packagename.sty" ]; then
+    #   rm "$mainDir/tests/$packagename.sty"
+    # fi
+    # cp $pkgSTY "$mainDir/tests/$packagename.sty"
     outHandle "Error in latexmk - example.tex" latexmk -pdf "example.tex" -outdir="./bin" --shell-escape -interaction=nonstopmode -f
     rm "$outfile"
     cp "bin/example.pdf" ./
