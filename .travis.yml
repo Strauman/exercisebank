@@ -1,6 +1,7 @@
 branches:
   only:
   - travistest
+  - latest-release
 sudo: required
 services: docker
 script:
