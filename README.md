@@ -1,13 +1,15 @@
+Develop build status: [![Build Status](https://travis-ci.org/Strauman/exercisebank.svg?branch=develop)](https://travis-ci.org/Strauman/exercisebank)
+
 Check out the bleeding edge version in the [releases](https://github.com/Strauman/exercisebank/releases) section. Any testing help is appreciated!
 
 # Updated documentation
 The latest release is stored in this zip: [exercisebank.zip](https://github.com/Strauman/exerciseBank/raw/master/exercisebank.zip)
 You can download the latest documentation here: [release/exercisebank.pdf](https://github.com/Strauman/exerciseBank/raw/master/release/exercisebank.pdf).
-This is the documentation for version v0.2.1-prerelease, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
+This is the documentation for version v0.2.1, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
 
 # Versions
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
-GitHub at version: v0.2.1-prerelease (2018/09/08) build 91
+GitHub at version: v0.2.1 (2018/09/09) build 91
 
 CTAN at version: v0.2.0 (2018/07/21) build 75
 
@@ -46,3 +48,11 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 - `texpackvars.ini` contains information that is used when "compiling" the package.
 ### `docs/`
 Docs are generated automatically. See [`documentation-doc.tex`](https://github.com/Strauman/exerciseBank/blob/master/documentation-doc.tex) for info on how to do documentation.
+### `tests/`
+Writing tests is also very highly appreciated:
+The `tests/` directory contains multiple things.
+
+See how the [tests/sanitycheck/main.tex](https://github.com/Strauman/exercisebank/tree/develop/tests/sanitycheck/main.tex) is made, and you can make similar structures.
+Exercises are located in [tests/exercises](https://github.com/Strauman/exercisebank/tree/develop/tests/exercises). You can read more on how the tests would work [here](https://github.com/Strauman/travis-latexbuild). The best would be if you could clone this git, change stuff and make pull requests to this github with your tests.  (Then the tests would actually be run!).
+
+Also: If you have docker installed and are on OS X or Linux, you can use `./runtests.sh` to run the tests locally on your computer.
