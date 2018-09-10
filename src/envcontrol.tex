@@ -33,6 +33,7 @@
     \@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
   \fi
 }
+
 \global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
@@ -69,38 +70,38 @@
 %:Inside the \keyRef{exercise directory}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \begin{problem} instead of \begin{partproblem} when you're writing a partproblem, but it's less typing.
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % :-
-\generalcomment{problem}{\@dinfo{Starting problem env}
+\generalcomment{problem}{%
 \makeatletter
   %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
-  \edef\DisplaySolution{\@DisplaySolutions}
-  \stepcounter{metacounter}
+  \edef\DisplaySolution{\@DisplaySolutions}%
+  \stepcounter{metacounter}%
   %% BeginProblemHard is before regardless whether
   %% the problem is included or not.
-  \@dinfo{problem: Triggering \string\DecideProblemDisplay}
-  \Trigger\DecideProblemDisplay
+  \@dinfo{problem: Triggering \string\DecideProblemDisplay}%
+  \Trigger\DecideProblemDisplay%
   % \begingroup
-  \@dinfo{problem:Executing - \string\showhideproblem}
+  \@dinfo{problem:Executing - \string\showhideproblem}%
      \showhideproblem{%
         % If the user haven't turned off part problems
         \if\exbank@opt@partProblems\isTrue
-            \Trigger\BeginPartproblem
-            \Trigger\VeryBeginPartproblem
-        \else
-            \Trigger\BeginProblem
-            \Trigger\VeryBeginProblem
-        \fi
-      }
-  }{\@dinfo{Ending problem env}
-    \if\DisplayProblem\@isTrue\relax
+            \Trigger\BeginPartproblem%
+            \Trigger\VeryBeginPartproblem%
+        \else%
+            \Trigger\BeginProblem%
+            \Trigger\VeryBeginProblem%
+        \fi%
+      }%
+  }{\@dinfo{Ending problem env}%
+    \if\DisplayProblem\@isTrue\relax%
       \if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
-        \Trigger\EndPartproblem
-        \tighten@paragraph\fi
+        \Trigger\EndPartproblem%
+        \tighten@paragraph\fi%
       \else
-        \Trigger\EndProblem
-    \fi
-\@dinfo{Ended problem env}
+        \Trigger\EndProblem%
+    \fi%
+\@dinfo{Ended problem env}%
 }
-\g@addto@macro\AfterproblemComment{\nextproblem{default}}
+\g@addto@macro\AfterproblemComment{\nextproblem{default}\ignorespaces}%
 %:§env
 %:=\\begin{solution}
 %: Things inside here is only visible if \refCom{DisplaySolutions} are given before \begin{document}
@@ -128,10 +129,10 @@
 \vspace*{0.5em}
 \fi
 \endgroup
-
 \Trigger\EndSolutionHard\@dinfo{END solution ENV}%
 % \egroup
 }
+\g@addto@macro\AftersolutionComment{\ignorespaces}
 %% Problem introductions
 %:§env
 %:=\\begin{intro}
@@ -187,4 +188,4 @@
   \@dinfo{END intro ENV}\ignorespaces%
 % \newline
 }
-\g@addto@macro\AfterintroComment{\nextproblem{default}}
+\g@addto@macro\AfterintroComment{\nextproblem{default}\ignorespaces}

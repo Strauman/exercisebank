@@ -356,7 +356,7 @@
       \incl{\@exercisesDir/\exerciseFile}%
       \if\@spriteMode\isTrue%
         \setcounter{partproblemcounter}{0}%
-      \fi
+      \fi%
     }{
       \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
       \stop\bye
@@ -367,7 +367,7 @@
   }
   \if\@spriteMode\isFalse%
     \Trigger\EndBuildset%
-  \fi
+  \fi%
   \setcounter{problemcounter}{0}%
   \setcounter{partproblemcounter}{0}%
   \clearpage%

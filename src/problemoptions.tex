@@ -39,12 +39,13 @@
 \newif\ifexb@opthides
 \providecommand\exb@currentTags{}
 \pgfkeys{
-/exbank/problems/.cd,
-default/.style={hide=false,tag=\relax},
+/exbank/problems/.cd,%
+default/.style={hide=false,tag=\relax},%
 % print/.code={Hello there! #1},
-hide/.is if={exb@opthides},
-tags/.estore in=\exb@currentTags,
-tag/.code={\pgfkeysalso{tags={#1}}}
+hide/.is if={exb@opthides},%
+tags/.estore in=\exb@currentTags,%
+tag/.code={\pgfkeysalso{tags={#1}}}%
 % print/.code={\@dlog{#1}}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}
+% \global\let\nextproblem\@gobble

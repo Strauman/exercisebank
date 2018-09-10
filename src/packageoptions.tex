@@ -16,6 +16,10 @@
 \gdef\exb@showtags{\isFalse}
 \gdef\ShowTags{\gdef\exb@showtags{\isTrue}}
 \gdef\exb@printCurrentTags{Tags: \exb@currentTags~}
+%:=\ShowFilenames
+%: Shows the path+filename to the current exercise file
+%:-
+\gdef\ShowFilenames{\At\VeryBeginProblem{\exerciseFile\\}}
 %:§env
 %:=\DisplaySolutions
 %:Turns on the solutions, so they are shown.
