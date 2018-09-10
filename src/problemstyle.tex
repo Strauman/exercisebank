@@ -76,27 +76,37 @@
 }
 \At\EndProblem{%
 \tighten@paragraph%
-}
-\At\VeryBeginPartproblem{\@dinfo{Triggered Beginning Part Problem}%
+}%
+% For executing the tag only when entered hmode
+
+\At\VeryBeginPartproblem{%
+\@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
 	\stepcounter{partproblemcounter}%%
-	\bgroup%
+	% \bgroup%
 	% If we should display the meta counter, then%
-	\@dinfo{Generating title for part problem}
-	\gdef\exb@prePPHead{}
-	\gdef\exb@postPPHead{}
+	\@dinfo{Generating title for part problem}%
+	\gdef\exb@prePPHead{}%
+	\gdef\exb@postPPHead{}%
 	\if\@displayMetaCounter\@isTrue\relax%%
-		\gdef\exb@prePPHead{{\Large\themetacounter}:}
+		\gdef\exb@prePPHead{{\Large\themetacounter}:}%
 	\fi%
 	\if\exb@showtags\isTrue%
 		% \exb@printCurrentTags defined in packageoptions.tex
-		\gdef\exb@postPPHead{\exb@printCurrentTags}
-	\fi
+		\gdef\exb@postPPHead{\exb@printCurrentTags}%
+	\fi%
 %:$triggers.=\Trigger\PartProblemHeaderSuffix:\\ Triggers after the part problem header.
 %:$triggers.= anything added to this trigger will happen within the header
-\if\exbank@opt@doMargins\@isTrue\relax%
-\leavevmode\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}%
-\else{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\fi%
-\@dinfo{Ended \string\VeryBeginPartproblem}\ignorespaces}%
+
+\ifnum\pdfstrcmp{\exbank@opt@doMargins}{\@isTrue}=\z@\relax%
+% \if\exbank@opt@doMargins\@isTrue
+%TODO: BADLINE BELOW:
+\newbox\nobox%
+\gdef\exb@pp@lefttag{\leavevmode{\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}}}%
+\else%
+\gdef\exb@pp@lefttag{{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
+\fi%
+\AtNextPar{\exb@pp@lefttag}%
+\ignorespaces}%
 \At\EndPartproblem{%
 	% \egroup%
 	\vspace*{\pMarginBelow}%
