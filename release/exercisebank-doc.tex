@@ -1,5 +1,5 @@
-%% exercisebank v0.2.1-prereleaseb92 - 2018/09/09
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/09) build 92
+%% exercisebank v0.2.1-prereleaseb92 - 2018/09/10
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/10) build 92
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -363,7 +363,7 @@ This can be used later in makesets. E.g.
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{exec}{\marg{macros}}\addcontentsline{toc}{subsubsection}{\refCom{exec}}
-\updated{v0.2.1-prerelease\\2018/09/09 }
+\updated{v0.2.1-prerelease\\2018/09/10 }
 You can use this in \dac{makeset} to execute commands between problems.
 E.g. to insert a new page in between two problems when using nohead:
 \begin{dispListing}
@@ -393,7 +393,7 @@ This command will generate multiple sets:
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{buildtags}{\marg{tagslist}\marg{setslist}}\addcontentsline{toc}{subsubsection}{\refCom{buildtags}}
-\defnew{v0.2.1-prerelease\\2018/09/09 }
+\defnew{v0.2.1-prerelease\\2018/09/10 }
 This command will generate multiple sets:
 \begin{dispListing}
 \buildsets{tag,tag2,tag3}{set,set2,set3}
@@ -415,16 +415,20 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 You can do a lot of configurations on this package, and probably
  even more to come in later versions!
 \begin{docCommand}{ShowNumbers}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowNumbers}}
-\updated{v0.2.1-prerelease\\2018/09/09 }
+\updated{v0.2.1-prerelease\\2018/09/10 }
  Shows the numbers in fron of the part problems and intros that should be used with
  \dac{exclude} and \dac{select}
 \end{docCommand}
 \begin{docCommand}{ShowTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowTags}}
-\defnew{v0.2.1-prerelease\\2018/09/09 }
+\defnew{v0.2.1-prerelease\\2018/09/10 }
  Shows the tags in front of the part problems much like \dac{ShowNumbers}
 \end{docCommand}
+\begin{docCommand}{ShowFilenames}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowFilenames}}
+\defnew{v0.2.1-prerelease\\2018/09/10 }
+ Shows the path+filename to the current exercise file
+\end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{[key/values]}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
-\updated{v0.2.1-prerelease\\2018/09/09 }
+\updated{v0.2.1-prerelease\\2018/09/10 }
  Here is a list of the different keys and their meaning
 \keyDef{part problems}{On/Off}{On}{
  This is whether or not to do part problems. E.g. 1a), 1b) etc.
@@ -523,7 +527,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\defnew{v0.2.1-prerelease\\2018/09/09 }
+\defnew{v0.2.1-prerelease\\2018/09/10 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -568,7 +572,7 @@ Here are the \dac{nextproblem} keys:
 
 \filbreak\subsection{Triggers}
 \begin{docCommand}{Trigger}{\marg{Any Macro}}\addcontentsline{toc}{subsubsection}{\refCom{Trigger}}
-\updated{v0.2.1-prerelease\\2018/09/09 }
+\updated{v0.2.1-prerelease\\2018/09/10 }
  See \refCom{At}\\
  Available triggers:\\
 \dac{Trigger}\dac{PartProblemHeaderSuffix}:\\ Triggers after the part problem header.
@@ -604,7 +608,7 @@ where the package should be looking for exercises. Default is the same directory
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
 \begin{docCommand}{At}{\marg{AnyMacro}}
-\updated{v0.2.1-prerelease\\2018/09/09 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
+\updated{v0.2.1-prerelease\\2018/09/10 }Here you can send any macro because it isn't evaluated! For example \dac{At}\dac{BeginSomething} is fine and even if \dac{BeginSomething} is not defined. Also and when using \dac{Trigger} it just ignores it if it didn't exist. It's pretty similar in function as to \dac{AtBeginDocument}.
 \begin{dispListing}
  \At\BeginSomething{DoSomething}
  Which is triggered with
@@ -657,6 +661,7 @@ Distance above Problem \# header
  \addcontentsline{mac}{macro}{\refCom{At}}{}
 \addcontentsline{mac}{macro}{\refCom{DeclareExerciseCommand}}{}
 \addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
+\addcontentsline{mac}{macro}{\refCom{ShowFilenames}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowTags}}{}
 \addcontentsline{mac}{macro}{\refCom{Trigger}}{}
@@ -743,7 +748,7 @@ Distance above Problem \# header
     \change{Introducing \refCom{buildsets}-command for building more than one set at a time.}
     \change{Ability to add front page with the \refKey{front page} setup-key.}
     \change{You can now remove the forced margin setup with \refKey{style margins}.}
-\newversion{v0.2.1-prerelease 2018/09/09}
+\newversion{v0.2.1-prerelease 2018/09/10}
     \change{Added options for individual part problems using the \dac{nextproblem}-command}
     \change{Added tagging for part problems using using the \dac{nextproblem}-command and \dac{buildtags}-commands.}
     \change{Fixed problems related to \dac{ShowNumbers} not showing correctly.}
