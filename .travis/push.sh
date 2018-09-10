@@ -13,7 +13,7 @@ setup_git() {
 
 commit_pdfs() {
   git checkout --orphan "travis-$TRAVIS_BUILD_NUMBER"
-  git rm --cached $(git ls-files)
+  git rm -f --cached $(git ls-files)
   echo `ls tests`
   git add "$TRAVIS_BUILD_DIR/tests/pdfs/"
   echo `git status`
