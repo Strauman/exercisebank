@@ -529,7 +529,8 @@ tag/.code={\pgfkeysalso{tags={#1}}}%
 }
 \ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}%
+\@dlog{inters: {\exb@currentTags}vs.{\exb@tagList}}
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\@dlog{IntsTrue}\global\exb@opthidesfalse}{\@dlog{IntsFalse}\global\exb@opthidestrue}%
 \fi
 \fi
 }
