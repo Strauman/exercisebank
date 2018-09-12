@@ -27,6 +27,8 @@
 			\fi%
 		}%
 	\fi}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-@@VERSION}}
+\gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
 %:§ref

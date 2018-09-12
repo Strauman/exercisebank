@@ -58,14 +58,40 @@
 \fi
 }
 
+\gdef\introarg{\@isFalse}
+\gdef\noheadarg{\@isFalse}
 %% Makeset arg handler
 \pgfkeys{
  /makeset/.is family, /makeset,
- default/.style = {noheadarg=\isFalse, introarg=\isFalse},
- intro/.style = {introarg=\isTrue},
- nohead/.style = {noheadarg=\isTrue},
+ default/.style = {},
+ intro/.style = {introarg=\@isTrue},
+ nointro/.style = {introarg=\@isFalse},
+ nohead/.style = {noheadarg=\@isTrue},
+ head/.style = {noheadarg=\@isFalse},
  introarg/.estore in = \introarg,
  noheadarg/.estore in = \noheadarg
+}
+%:=\makesetdefaults{nohead|intro}
+%: Sets the default arguments to all makeset-keys.
+%:e.g.
+%:!\makesetdefaults{intro}
+%:Will effectively make all
+%:!\makeset{...}{...}
+%:into
+%:!\makeset[intro]{...}{...}
+%:However, you can override this;
+%:!\makesetdefaults{intro}
+%:!\makeset[nointro]{...}{...}
+%:(the \oarg{nointro} overrides the default \meta{intro} setting)
+%:-
+\gdef\makesetdefaults#1{%
+\edef\exb@setpgfkeys{{\unexpanded\expandafter{/makeset/default/.style = {#1}}}}%
+\expandafter\pgfkeys\exb@setpgfkeys%
+}
+\pgfkeys{/makeset/override/.cd,
+intro/.code = {\gdef\introarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isTrue}},
+nointro/.code = {\gdef\introarg{\@isFalse}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isFalse}},
+nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @nohead\endcsname{\@isTrue}}
 }
 % When a \makeset is made, it adds the set name to the
 % \@listOfSets for use in \sprite
@@ -149,93 +175,29 @@
 %:This is a `read-only' macro that contains the name of the current exerciseFile
 %:-
 %:§makingSets
-%% Sets the variables \ppList and \exerciseFile based on the current set
-\gdef\exbank@setEnv@normal#1{
-\exbank@setEnv{#1}{normal}
-}
-\newcommand{\exbank@setEnv}[3][{-1}]{
-  \if\@spriteMode\isFalse%
-    \gdef\ppList{#1}
-    \gdef\exerciseFile{#2}
-    \gdef\ppMode{#3}
-  \else
-    \gdef\ppList{\emptyList}
-    \gdef\exerciseFile{#2}
-    \gdef\ppMode{\pm@Normal}
-  \fi
-
-}
-%% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
-%% as optional arguments to exbank@setEnv. The last is set as ppMode (exclude/select/mix)
-%:=\exclude{exerciseFileName}{Comma separated numbers}
-%:As you can see in the intro section of the documentation, this is for excluding partproblems
-%:To be used in \refCom{makeset}
-% :-
-\newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
-
-%:=\select{exerciseFileName}{Comma separated numbers}
-%:As you can see in the intro section of the documentation, this is for cherry picking partproblems
-%:To be used in \refCom{makeset}
-% :-
-\newcommand{\select}[2]{[{#2}]{#1}{select}}
-
+\input{exercisecommands}
 %% Build one exercise
 \gdef\buildex#1{
   \makeset{#1}{#1}
   \buildset{#1}
 }
-%% Commands that can be sent to makeset
-%% Problem header
-\gdef\exbank@def@makeset@command#1#2{%
-  \edef\macroname{\exbank@macroname{#1}}%
-  \xdef#1{?{@\macroname}}%
-  \ea\gdef\csname @\macroname\endcsname{#2}%
-}
-\let\exbank@isFirstProblem\isTrue
-\exbank@def@makeset@command{\phead}{
-  \if\exbank@isFirstProblem\isTrue%
-    \let\exbank@isFirstProblem\isFalse%
-  \else%
-    \Trigger\EndProblem%
-  \fi%
-  \Trigger\BeginProblem%
-  \Trigger\VeryBeginProblem%
-}
-\exbank@def@makeset@command{\pbreak}{\clearpage}
-%:-
-%:=\DeclareExerciseCommand{command}{actions}
-%:This can be used later in makesets. E.g.
-%:\DelcareExerciseCommand{\pbreak}\brackets{\clearpage} will make
-%:\pbreak behave like \clearpage in the set:
-%:!\makeset[nohead]{%
-%:! \phead,
-%:! myExercise,
-%:! \pbreak,
-%:! myExerciseOnNewPage%
-%:!}
-%:-
-\let\DeclareExerciseCommand\exbank@def@makeset@command
-%:=\exec{macros}
-%:You can use this in \makeset to execute commands between problems.
-%:E.g. to insert a new page in between two problems when using nohead:
-%:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
-%:-
-%---- Protectors: ----%
-%% \ex@protect:
-%% \def\hello{\exec{\textbf{world}}} ~> :\noexpand{\textbf{world}}
-%% Then when it's tested
-%% \let\ex@protect\unexpanded
-%% \edef\hello{\hello} ~> :\textbf{world}
-\global\let\ex@protect\noexpand
-\long\gdef\exec#1{:\ex@protect{#1}}
 %%Logic for building a set
 \gdef\@countIntros{\isFalse}
 \gdef\exb@setpgf#1{%
 \edef\keystring{{/makeset,default,#1}}%
 \ea\pgfkeys\keystring}
-
+%:=\buildset[intro|nohead|nointro]{setname}
+%:This command runs the set given. The set has do be defined by \makeset. E.eg
+%:!\makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
+%:!\!begin{document}
+%:!  \buildset{myExerciseSet}
+%:!\!end{document}
+%:-
 \newcommand\buildset[2][]{%
-  \def\oarg{#1}%
+  \xdef\exb@currentSetID{#2}%
+  \pgfkeys{/makeset/override/.cd, #1}
+  \global\let\setName\exb@currentSetID%
+  \gdef\exb@buildset@oarg{#1}
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}}%
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
   %% Setting the global setName
@@ -251,7 +213,6 @@
 %:! \buildset{2}{myexercise}
 %:!\end{document}
 %:-
-  \xdef\setName{#2}%
   % Set keys for this set in case user set some keys
   \ifcsname setkeys@\setName\endcsname%
   \xdef\skeys{\csname setkeys@#2\endcsname}%
@@ -275,7 +236,7 @@
   % ---- BEGIN setlist divider ----%
   % The following code distinguish between the different things that can be sent to \makeset.
   % At time of writing that is:
-  % \select, \exclude, \exec, or makeset@commands: \pbreak and \phead
+  % \select, \exclude, \exec, or ExerciseCommands: e.g. \pbreak and \phead (included customs)
   % \select and \exclude expands to [#2]{#1}{select|exclude} i.e. \exclude{file}{1,2,3} -> [1,2,3]{file}{exclude}
   % and are se to exbank@setEnv for parsing. The last expanded "argument" is the \@ppmode
   % or exclude / select eg [1,3]{some,ex}{select}
@@ -372,15 +333,15 @@
   \setcounter{partproblemcounter}{0}%
   \clearpage%
 }
-%:=\buildsets{list}
+%:=\buildsets[intro|nohead|nointro]{list}
 %:This command will generate multiple sets:
 %:!\buildsets{set,set2,set3}
 %:-
-\newcommand\buildsets[1]{%
-	\xdef\csvlist{#1}%
+\newcommand\buildsets[2][]{%
+	\xdef\csvlist{#2}%
 	\readlist*\items\csvlist%
 	\foreachitem\set\in\items{%
-		\buildset{\set}%
+		\buildset[#1]{\set}%
 	}
 }
 %:=\buildtags{tagslist}{setslist}
