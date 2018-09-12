@@ -1,0 +1,103 @@
+%!TEX root = main.tex
+%:§makingSets
+%% Sets the variables \ppList and \exerciseFile based on the current set
+\gdef\exbank@setEnv@normal#1{
+\exbank@setEnv{#1}{normal}
+}
+\newcommand{\exbank@setEnv}[3][{-1}]{
+  \if\@spriteMode\isFalse%
+    \gdef\ppList{#1}
+    \gdef\exerciseFile{#2}
+    \gdef\ppMode{#3}
+  \else
+    \gdef\ppList{\emptyList}
+    \gdef\exerciseFile{#2}
+    \gdef\ppMode{\pm@Normal}
+  \fi
+
+}
+%:=\exec{macros}
+%:You can use this in \makeset to execute commands between problems.
+%:E.g. to insert a new page in between two problems when using nohead:
+%:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
+%:-
+\global\let\ex@protect\noexpand
+\long\gdef\exec#1{:\ex@protect{#1}}
+% Documented as \DeclareExerciseCommand
+\gdef\exb@def@makeset@cmd#1{\@ifnextchar[{\@exb@def@makeset@cmd{#1}}{\@exb@def@makeset@cmd{#1}[0]}}
+\gdef\@exb@def@makeset@cmd#1[#2]#3{
+\def\ncArgs{#1[#2]}%
+\bgroup\globaldefs=1\ea\newcommand\ncArgs{\exec{#3}}\egroup%
+}
+% For backwards compability
+\def\exbank@def@makeset@command{\exb@warn{\string\exbank@def@makeset@command\space is deprecated and will be removed in versions >= 0.3.0. Use \string\exb@def@makeset@cmd}\exb@def@makeset@cmd}
+%:=\DeclareExerciseCommand{command}[numargs]{actions}
+%:Now, use similar to newcommand. Does not support default arguments yet, but plans to.
+%:The old way of defining still works:
+%:!\DelcareExerciseCommand{\pbreak}\brackets{\clearpage}
+%:and
+%:!\DelcareExerciseCommand{\ptitle}[1]\brackets{\Large\textbf{#1}}
+%:This can be used later in makesets. E.g.
+%:\DelcareExerciseCommand{\pbreak}\brackets{\clearpage} will make
+%:\pbreak behave like \clearpage in the set:
+%:!\makeset[nohead]{%
+%:! \phead,
+%:! myExercise,
+%:! \pbreak,
+%:! myExerciseOnNewPage%
+%:!}
+%:-
+\let\DeclareExerciseCommand\exb@def@makeset@cmd
+
+
+%% Converts {A}{1,2,3} into [{1,2,3}]{A}{exclude} such that it can be sent
+%% as optional arguments to exbank@setEnv. The last is set as ppMode (exclude/select/mix)
+%:=\exclude{exerciseFileName}{Comma separated numbers}
+%:As you can see in the intro section of the documentation, this is for excluding partproblems
+%:To be used in \refCom{makeset}
+% :-
+\newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
+
+%:=\select{exerciseFileName}{Comma separated numbers}
+%:As you can see in the intro section of the documentation, this is for cherry picking partproblems
+%:To be used in \refCom{makeset}
+% :-
+\newcommand{\select}[2]{[{#2}]{#1}{select}}
+%:=\orderedselect
+%:-
+\newcommand{\orderedselect}[2]{%
+\readlist*\thelist\csv@list%
+\foreachitem\items\in\thelist{[{\item}]{#1},}%
+}
+
+%% Commands that can be sent to makeset
+%% Problem header
+\let\exbank@isFirstProblem\isTrue
+\exb@def@makeset@cmd{\phead}{
+  \if\exbank@isFirstProblem\isTrue%
+    \let\exbank@isFirstProblem\isFalse%
+  \else%
+    \Trigger\EndProblem%
+  \fi%
+  \Trigger\BeginProblem%
+  \Trigger\VeryBeginProblem%
+}
+% Problem header with custom problem "number"
+\exb@def@makeset@cmd{\pheadarg}[1]{
+  \if\exbank@isFirstProblem\isTrue%
+    \let\exbank@isFirstProblem\isFalse%
+  \else%
+    \Trigger\EndProblem%
+  \fi%
+  \Trigger\BeginProblem%
+  \bgroup\def\theproblemcounter{#1}\Trigger\VeryBeginProblem\egroup%
+}
+\exb@def@makeset@cmd{\pbreak}{\clearpage}
+%:-
+
+%---- Protectors: ----%
+%% \ex@protect:
+%% \def\hello{\exec{\textbf{world}}} ~> :\noexpand{\textbf{world}}
+%% Then when it's tested
+%% \let\ex@protect\unexpanded
+%% \edef\hello{\hello} ~> :\textbf{world}
