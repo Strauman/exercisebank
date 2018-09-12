@@ -1,34 +1,23 @@
 \documentclass{article}\makeatletter
+\usepackage{lipsum}
 % \def\exbank@quiet{1}
 \gdef\exbank@verbose{1}
-\usepackage{lipsum}
+\gdef\at@verbose{1}
 % \gdef\followMacro#1{
 % \edef\mname{\expandafter\@gobble\string#1}
 % \expandafter\let\csname follow@old@\mname\endcsname#1
 % \def#1{\@dlog{change}}
 % }%
 
-\input{exbankpack}\makeatletter
+\input{exbankpack}
+
+
 % \usepackage{exercisebank-debug}
-\exercisebanksetup{exercise directory=../exercises}
-\makesetdefaults{intro}
-% \newcommand\mysel{\select{dummy}{1}}
-% \makeset{myExerciseSet}{dummy}
-% \xdef\tst{\unexpanded\expandafter{\orderedselect{dummy}{2,1}}}
-% \@latex@warning{\tst}
-% \makeset{11}{\orderedselect{dummy}{2,1}}
-\ShowNumbers
-\makeset{11}{\select{dummy}{2,1},\select{dummy}{2,1}}
-% \makeset[nohead,intro]{11}{%
-% \pheadarg{ASDF},
-% \exclude{secondexercise}{2,3},
-% \pbreak,
-% \phead,
-% \exec{\textbf{hello}},
-% firstexercise,
-% \select{thirdexercise}{1,2}%
-% }
+\DisplaySolutions
+\setlength\parindent{0pt}
+\exercisebanksetup{exercise directory=../exercises, tighten paragraphs = False}
+\makeset{myExerciseSet}{dummy}
+\makeset{lipsum}{lipsum}
 \begin{document}
-\buildset{11}
-% \buildtags{fiche1}{myExerciseSet}
+\buildset{lipsum}
 \end{document}
