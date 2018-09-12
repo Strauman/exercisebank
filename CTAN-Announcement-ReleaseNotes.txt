@@ -1,7 +1,7 @@
 New awesome features in this simple exercise management system.
 
 New features
-- You can now (finally) tag problems and only show problems with  your tag.
+- You can now (finally) tag problems and selectively show problems based on their tags.
 - Point system implemented!
 - You can hide specific exercises by doing \nextproblem{hide} above them
 - You can now set default \makeset keys, and override them in \buildset and \buildsets
