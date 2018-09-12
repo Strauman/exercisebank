@@ -1,0 +1,16 @@
+New awesome features in this simple exercise management system.
+
+New features
+- You can now (finally) tag problems and only show problems with  your tag.
+- Point system implemented!
+- You can hide specific exercises by doing \nextproblem{hide} above them
+- You can now set default \makeset keys, and override them in \buildset and \buildsets
+
+Bug fixes:
+- Fixed problems related to \ShowNumbers not showing correctly.
+- Fixed \exec so that it now can take paragraphs (made it \long)
+- Fixed bug where vertical space would remain when intro environment hidden
+- \DeclareExerciseCommand now takes args
+
+A special mention to the github users @tristelune1 and @thorstengrothe
+for doing a lot of the testing for this version! Thank you!
