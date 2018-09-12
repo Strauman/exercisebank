@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/10) - build 93
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/12) - build 94
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/09/10 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/09/12 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.1-prerelease - Build 93}
+\def\exercisebankversion{v0.2.1-prerelease - Build 94}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -59,6 +59,8 @@
 			\fi%
 }%
 	\fi}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.1-prerelease}}
+\gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
 \gdef\exb@isin#1#2#3#4{\@dinfo{running isin}
@@ -529,17 +531,29 @@ tag/.code={\pgfkeysalso{tags={#1}}}%
 }
 \ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
-\@dlog{inters: {\exb@currentTags}vs.{\exb@tagList}}
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\@dlog{IntsTrue}\global\exb@opthidesfalse}{\@dlog{IntsFalse}\global\exb@opthidestrue}%
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}%
 \fi
 \fi
 }
+\gdef\introarg{\@isFalse}
+\gdef\noheadarg{\@isFalse}
 \pgfkeys{ /makeset/.is family, /makeset,
- default/.style = {noheadarg=\isFalse, introarg=\isFalse},
- intro/.style = {introarg=\isTrue},
- nohead/.style = {noheadarg=\isTrue},
+ default/.style = {},
+ intro/.style = {introarg=\@isTrue},
+ nointro/.style = {introarg=\@isFalse},
+ nohead/.style = {noheadarg=\@isTrue},
+ head/.style = {noheadarg=\@isFalse},
  introarg/.estore in = \introarg,
  noheadarg/.estore in = \noheadarg
+}
+\gdef\makesetdefaults#1{%
+\edef\exb@setpgfkeys{{\unexpanded\expandafter{/makeset/default/.style = {#1}}}}%
+\expandafter\pgfkeys\exb@setpgfkeys%
+}
+\pgfkeys{/makeset/override/.cd,
+intro/.code = {\gdef\introarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isTrue}},
+nointro/.code = {\gdef\introarg{\@isFalse}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isFalse}},
+nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @nohead\endcsname{\@isTrue}}
 }
 \gdef\@listOfSets{}
 \gdef\@spriteMode{\isFalse}
@@ -596,18 +610,22 @@ tag/.code={\pgfkeysalso{tags={#1}}}%
     \gdef\ppMode{\pm@Normal}
   \fi
 }
+\global\let\ex@protect\noexpand
+\long\gdef\exec#1{:\ex@protect{#1}}
+\gdef\exb@def@makeset@cmd#1{\@ifnextchar[{\@exb@def@makeset@cmd{#1}}{\@exb@def@makeset@cmd{#1}[0]}}
+\gdef\@exb@def@makeset@cmd#1[#2]#3{\def\ncArgs{#1[#2]}%
+\bgroup\globaldefs=1\ea\newcommand\ncArgs{\exec{#3}}\egroup%
+}
+\def\exbank@def@makeset@command{\exb@warn{\string\exbank@def@makeset@command\space is deprecated and will be removed in versions >= 0.3.0. Use \string\exb@def@makeset@cmd}\exb@def@makeset@cmd}
+\let\DeclareExerciseCommand\exb@def@makeset@cmd
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
-\gdef\buildex#1{  \makeset{#1}{#1}
-  \buildset{#1}
-}
-\gdef\exbank@def@makeset@command#1#2{%
-  \edef\macroname{\exbank@macroname{#1}}%
-  \xdef#1{?{@\macroname}}%
-  \ea\gdef\csname @\macroname\endcsname{#2}%
+\newcommand{\orderedselect}[2]{%
+\readlist*\thelist\csv@list%
+\foreachitem\items\in\thelist{[{\item}]{#1},}%
 }
 \let\exbank@isFirstProblem\isTrue
-\exbank@def@makeset@command{\phead}{  \if\exbank@isFirstProblem\isTrue%
+\exb@def@makeset@cmd{\phead}{  \if\exbank@isFirstProblem\isTrue%
     \let\exbank@isFirstProblem\isFalse%
   \else%
     \Trigger\EndProblem%
@@ -615,19 +633,29 @@ tag/.code={\pgfkeysalso{tags={#1}}}%
   \Trigger\BeginProblem%
   \Trigger\VeryBeginProblem%
 }
-\exbank@def@makeset@command{\pbreak}{\clearpage}
-\let\DeclareExerciseCommand\exbank@def@makeset@command
-\global\let\ex@protect\noexpand
-\long\gdef\exec#1{:\ex@protect{#1}}
+\exb@def@makeset@cmd{\pheadarg}[1]{  \if\exbank@isFirstProblem\isTrue%
+    \let\exbank@isFirstProblem\isFalse%
+  \else%
+    \Trigger\EndProblem%
+  \fi%
+  \Trigger\BeginProblem%
+  \bgroup\def\theproblemcounter{#1}\Trigger\VeryBeginProblem\egroup%
+}
+\exb@def@makeset@cmd{\pbreak}{\clearpage}
+\gdef\buildex#1{  \makeset{#1}{#1}
+  \buildset{#1}
+}
 \gdef\@countIntros{\isFalse}
 \gdef\exb@setpgf#1{%
 \edef\keystring{{/makeset,default,#1}}%
 \ea\pgfkeys\keystring}
 \newcommand\buildset[2][]{%
-  \def\oarg{#1}%
+  \xdef\exb@currentSetID{#2}%
+  \pgfkeys{/makeset/override/.cd, #1}
+  \global\let\setName\exb@currentSetID%
+  \gdef\exb@buildset@oarg{#1}
   \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}}%
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
-  \xdef\setName{#2}%
   \ifcsname setkeys@\setName\endcsname%
   \xdef\skeys{\csname setkeys@#2\endcsname}%
   \exb@setpgf\skeys%
@@ -700,11 +728,11 @@ tag/.code={\pgfkeysalso{tags={#1}}}%
   \setcounter{partproblemcounter}{0}%
   \clearpage%
 }
-\newcommand\buildsets[1]{%
-	\xdef\csvlist{#1}%
+\newcommand\buildsets[2][]{%
+	\xdef\csvlist{#2}%
 	\readlist*\items\csvlist%
 	\foreachitem\set\in\items{%
-		\buildset{\set}%
+		\buildset[#1]{\set}%
 }
 }
 \newcommand\buildtags[2]{%

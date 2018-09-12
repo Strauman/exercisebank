@@ -35,3 +35,4 @@ src/main.pdf
 *.formated
 *.dvi
 example.pdf
+tests/pdfs
