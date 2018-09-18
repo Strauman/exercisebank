@@ -12,4 +12,4 @@ script:
   - docker pull strauman/travis-latexbuild:latest
   - docker run --mount src=$TRAVIS_BUILD_DIR/,target=/repo,type=bind strauman/travis-latexbuild:latest
 after_success:
-  - . .travis/pushs.sh
+  - . .travis/push.sh
