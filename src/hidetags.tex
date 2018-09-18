@@ -1,0 +1,14 @@
+%!TEX root = main.tex
+\def\exb@hidetaglist{}
+\At\DecideProblemDisplay{
+\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
+\ifx\exb@hidetaglist\relax\else
+\exb@intersection@any{\exb@currentTags}{\exb@hidetaglist}{\global\exb@opthidestrue}{\global\exb@opthidesfalse}%
+\fi
+\fi
+}
+%:§makingSets
+%:=\HideTags{list}
+%:Hide all exercises containing the list of tags when building a set.
+%:-
+\gdef\HideTags#1{\xdef\exb@hidetaglist{#1}}
