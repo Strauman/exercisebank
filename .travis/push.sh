@@ -15,7 +15,7 @@ commit_pdfs() {
   git checkout --orphan "travis-$TRAVIS_BUILD_NUMBER"
   git rm -f --cached $(git ls-files)
   echo `ls tests`
-  git add "$TRAVIS_BUILD_DIR/tests/pdfs/"
+  git add -f "$TRAVIS_BUILD_DIR/tests/pdfs/"
   echo `git status`
   git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 }
