@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/12) - build 94
+%% The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/18) - build 95
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/09/12 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/09/18 v0.2.1-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.1-prerelease - Build 94}
+\def\exercisebankversion{v0.2.1-prerelease - Build 95}
 \PackageWarningNoLine{exercisebank-v0.2.1-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -783,3 +783,11 @@ disable points/.is if={exb@enablepoints}
 \nextproblem{points/.store in=\exb@currentPoints}
 \At\BeginPartproblem{\addtocounter{exb@points}\exb@currentPoints}
 \At\EndPartproblem{\gdef\exb@currentPoints{0}}
+\def\exb@hidetaglist{}
+\At\DecideProblemDisplay{\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
+\ifx\exb@hidetaglist\relax\else
+\exb@intersection@any{\exb@currentTags}{\exb@hidetaglist}{\global\exb@opthidestrue}{\global\exb@opthidesfalse}%
+\fi
+\fi
+}
+\gdef\HideTags#1{\xdef\exb@hidetaglist{#1}}
