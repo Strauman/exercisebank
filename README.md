@@ -1,5 +1,3 @@
-Master build status: [![Build Status](https://travis-ci.org/Strauman/exercisebank.svg?branch=master)](https://travis-ci.org/Strauman/exercisebank)
-
 Check out the bleeding edge version in the [releases](https://github.com/Strauman/exercisebank/releases) section. Any testing help is appreciated!
 
 # Updated documentation
