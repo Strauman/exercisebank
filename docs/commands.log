@@ -49,7 +49,7 @@
 \ppref
 \exercisebanksetup
 \buildsets
-:@@VERSION:@@DATE
+:v0.2.1:2018/09/24
 \nextproblem
 \buildtags
 \ShowNumbers

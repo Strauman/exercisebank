@@ -8,18 +8,7 @@ Files:
 │   ├── example.pdf
 │   ├── example.tex
 │   └── exercises
-│       ├── bin
-│       │   ├── dummy.aux
-│       │   ├── dummy.fdb_latexmk
-│       │   ├── dummy.fls
-│       │   ├── dummy.log
-│       │   ├── lipsum.aux
-│       │   ├── lipsum.fdb_latexmk
-│       │   ├── lipsum.fls
-│       │   └── lipsum.log
-│       ├── dummy.tex
 │       ├── firstexercise.tex
-│       ├── lipsum.tex
 │       ├── secondexercise.tex
 │       └── thirdexercise.tex
 ├── exercisebank-doc.pdf
@@ -33,7 +22,7 @@ https://github.com/Strauman/exercisebank/
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.1-prerelease (2018/09/12) - build 94
+The LaTeX package exercisebank - version v0.2.1 (2018/09/24) - build 95
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman
