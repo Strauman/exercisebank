@@ -65,3 +65,4 @@
 \buildsets
 \makesetdefaults
 \HideTags
+:@@VERSION:@@DATE
