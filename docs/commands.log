@@ -66,3 +66,5 @@
 \makesetdefaults
 \HideTags
 :@@VERSION:@@DATE
+\nextproblem
+\buildtags
