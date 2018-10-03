@@ -53,7 +53,7 @@
     }
 \ifexb@tagbuildmode
 \ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue}%
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\xdef\DisplayProblem{0}}%
 \fi
 \fi
 }
