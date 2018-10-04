@@ -21,12 +21,16 @@
 \@ifundefined{endfigure}{}{
 \g@addto@macro\endfigure{\tighten@paragraph@always}
 }
+% \isFalse and \isTrue should be deprecated soon.
+% An all of their uses should be be replaced by ifs.
 \gdef\isFalse{0}
 \gdef\isTrue{1}
+%\DisplayProblem should be prefixed ASAP!
 \gdef\DisplayProblem{\isTrue}
 \gdef\@displayMetaCounter{\isFalse}
 
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
+%%      ^ This should be fixed!
 %%NB: DOC for \DisplaySolutions are moved down
 \AtBeginDocument{
   \if\@DisplaySolutions\isFalse
@@ -42,27 +46,23 @@
 \newif\ifexb@hidenextsol
 \global\exb@hidenextsolfalse
 %
-\gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
-\ifexb@isdisplaying#1\else#2\fi}
+% \exb@ifshowproblem{true}{false}
+\gdef\exb@ifshowproblem#1#2{%
+% If \DisplayProblem==1 && exb@opthides==false, then show
+% Set displaying default to false
+\exb@isdisplayingfalse%
+% If \DisplayProblem==1
+\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@%
+\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
+\ifexb@isdisplaying#1\else#2\fi%
+}
+% \showhideproblem - should be prefixed
+% If problem is to show, then set ProcessCutFile and execute first arg
+% else remove ProcessCutFile.
 \gdef\showhideproblem#1{%
 \exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
 }
-% \gdef\showhideproblem@old#1{%
-% \ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
-%   \ifexb@opthides%
-%     \def\ProcessCutFile{}%
-%   \else%
-%     \if\DisplayProblem\isFalse%
-%         \def\ProcessCutFile{}%
-%     \else%
-%       \if\@SolutionsOnly\@isTrue\relax%
-%         \def\ProcessCutFile{}%
-%       \fi%
-%         #1%
-%     \fi
-%   \fi\fi%
-% }
-
+% Is \ifexb@hidenextsol in use?
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
 
 %:§env
