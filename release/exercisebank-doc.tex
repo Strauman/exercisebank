@@ -1,5 +1,5 @@
-%% exercisebank v0.2.1b95 - 2018/09/24
-%% The LaTeX package exercisebank - version v0.2.1 (2018/09/24) build 95
+%% exercisebank v0.2.2b97 - 2018/10/04
+%% The LaTeX package exercisebank - version v0.2.2 (2018/10/04) build 97
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.1{\\[-0.5em]\footnotesize(build 95)}}}
+\title{{exercisebank - manual\\ v0.2.2{\\[-0.5em]\footnotesize(build 97)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -441,7 +441,7 @@ This command will generate multiple sets:
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{buildtags}{\marg{tagslist}\marg{setslist}}\addcontentsline{toc}{subsubsection}{\refCom{buildtags}}
-\defnew{v0.2.1\\2018/09/24 }
+\updated{v0.2.2\\2018/10/04 }
 This command will generate multiple sets:
 \begin{dispListing}
 \buildsets{tag,tag2,tag3}{set,set2,set3}
@@ -579,7 +579,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\defnew{v0.2.1\\2018/09/24 }
+\updated{v0.2.2\\2018/10/04 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -814,12 +814,13 @@ Distance above Problem \# header
     \change{\dac\DeclareExerciseCommand~now takes args}
     \change{Keys sent to \dac\makeset can now be sent to \dac\buildset~and~\dac\buildsets}
     \change{Introducing \dac\makesetdefaults}
+\newversion{v0.2.2 2018/10/04}
+    \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
+    \change{Fixed bug where tags wouldn't hide.}
 \chlogtable
 
 
 % Testers and thanks
-\thankyou{\gh{tristelune1} -- \ghURL{tristelune1} for help with testing and bug-reporting the current version (0.2.1)}
-\thankyou{\gh{thorstengrothe} -- \ghURL{thorstengrothe} for help with testing and bug-reporting the current version (0.2.1)}
-% \tester{\gh{thorstengrothe}}
-% \tester{\gh{tristelune1}}
+\tester{\gh{thorstengrothe}}
+\tester{\gh{tristelune1}}
  \end{document}

@@ -11,7 +11,7 @@ This is the documentation for version @@VERSION, and might not be the same as fo
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
 GitHub at version: @@VERSION (@@DATE) build @@BUILD
 
-CTAN at version: v0.2.0 (2018/07/21) build 75
+CTAN at version: v0.2.2 (2018/10/04) build 97
 
 *It might take up to 24 hours from CTAN version is uploaded until you can download it, and then even a few more days until it is updated at TeXLive and MiKTeX*
 
