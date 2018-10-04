@@ -65,6 +65,6 @@
 \buildsets
 \makesetdefaults
 \HideTags
-:@@VERSION:@@DATE
+:v0.2.2:2018/10/04
 \nextproblem
 \buildtags
