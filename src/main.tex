@@ -10,14 +10,15 @@
 % }%
 
 \input{exbankpack}
-
+% \usepackage{pdftexcmds}
 
 % \usepackage{exercisebank-debug}
-\DisplaySolutions
-\setlength\parindent{0pt}
+% \DisplaySolutions
+% \setlength\parindent{0pt}
+% \DisplaySolutions
 \exercisebanksetup{exercise directory=../exercises, tighten paragraphs = False}
-\makeset{myExerciseSet}{dummy}
-\makeset{lipsum}{lipsum}
+\makeset[nohead]{firstest}{\phead,firstexercise}%,\phead,secondexercise}
+
 \begin{document}
-\buildset{lipsum}
+\buildset{firstest}
 \end{document}

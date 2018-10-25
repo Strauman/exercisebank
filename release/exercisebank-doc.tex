@@ -1,5 +1,5 @@
-%% exercisebank v0.2.2b97 - 2018/10/04
-%% The LaTeX package exercisebank - version v0.2.2 (2018/10/04) build 97
+%% exercisebank v0.2.3b102 - 2018/10/25
+%% The LaTeX package exercisebank - version v0.2.3 (2018/10/25) build 102
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.2{\\[-0.5em]\footnotesize(build 97)}}}
+\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 102)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -579,7 +579,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.2\\2018/10/04 }
+\updated{v0.2.3\\2018/10/25 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -615,6 +615,12 @@ you can also tag problems using this:
   This problem is easy
 \end{problem}
 \end{dispListing}
+\keyDef{head}{text}{}{
+  Set the part problem header for the next problem.
+}
+\keyDef{solution only}{true|false}{}{
+  hide next problem unless \dac{DisplaySolutions} are on
+}
 Here are the \dac{nextproblem} keys:
 \keyDef{points}{number}{0}{
  The number of points the next exercise is worth.
@@ -817,6 +823,10 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
+\newversion{v0.2.3 2018/10/25}
+    \change{Added possibility of custom part problem header from \dac\nextproblem}
+    \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
+    \change{Corrected use of the length \dac\ppMarginBelow}
 \chlogtable
 
 

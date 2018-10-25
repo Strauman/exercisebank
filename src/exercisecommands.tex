@@ -24,8 +24,8 @@
 \global\let\ex@protect\noexpand
 \long\gdef\exec#1{:\ex@protect{#1}}
 % Documented as \DeclareExerciseCommand
-\gdef\exb@def@makeset@cmd#1{\@ifnextchar[{\@exb@def@makeset@cmd{#1}}{\@exb@def@makeset@cmd{#1}[0]}}
-\gdef\@exb@def@makeset@cmd#1[#2]#3{
+\long\gdef\exb@def@makeset@cmd#1{\@ifnextchar[{\@exb@def@makeset@cmd{#1}}{\@exb@def@makeset@cmd{#1}[0]}}
+\long\gdef\@exb@def@makeset@cmd#1[#2]#3{
 \def\ncArgs{#1[#2]}%
 \bgroup\globaldefs=1\ea\newcommand\ncArgs{\exec{#3}}\egroup%
 }
@@ -73,12 +73,14 @@
 %% Commands that can be sent to makeset
 %% Problem header
 \let\exbank@isFirstProblem\isTrue
-\exb@def@makeset@cmd{\phead}{
+\exb@def@makeset@cmd{\phead}{%
   \if\exbank@isFirstProblem\isTrue%
     \let\exbank@isFirstProblem\isFalse%
   \else%
     \Trigger\EndProblem%
   \fi%
+% \ifhmode\else\par\fi
+\par
   \Trigger\BeginProblem%
   \Trigger\VeryBeginProblem%
 }

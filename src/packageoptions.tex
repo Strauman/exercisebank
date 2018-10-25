@@ -25,7 +25,7 @@
 %:Turns on the solutions, so they are shown.
 %:-
 \gdef\@DisplaySolutions{\@isFalse}
-\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\gdef\DisplaySolutions{\global\exb@b@DisplaySolutionstrue\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
 \gdef\@SolutionsOnly{\@isFalse}
 \gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}

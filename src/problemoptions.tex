@@ -33,18 +33,31 @@
 %:-
 %:§problemopts
 %:$problemKeys=Here are the \nextproblem keys:
+%:\keyDef{head}{text}{}{
+%:  Set the part problem header for the next problem.
+%:}
+%:\keyDef{solution only}{true|false}{}{
+%:  hide next problem unless \DisplaySolutions are on
+%:}
+%:-
 %:$$problemKeys
 %:-
 %%% points are defined in poinstystem.tex
-\newif\ifexb@opthides
+
+
 \providecommand\exb@currentTags{}
+\providecommand\exb@nextprob@header{}
 \pgfkeys{
 /exbank/problems/.cd,%
-default/.style={hide=false,tag=\relax},%
+default/.style={hide=false,tag=\relax,reset pp head},%
+% default/.append code={\global\exb@b@nextprob@headerfalse},
 % print/.code={Hello there! #1},
 hide/.is if={exb@opthides},%
 tags/.estore in=\exb@currentTags,%
-tag/.code={\pgfkeysalso{tags={#1}}}%
+tag/.code={\pgfkeysalso{tags={#1}}},
+head/.code={\global\exb@b@nextprob@headertrue\gdef\exb@nextprob@header{#1}},%
+reset pp head/.code={\global\exb@b@nextprob@headerfalse},
+solution only/.code={\ifexb@b@DisplaySolutions\else\pgfkeysalso{/exbank/problems/hide=true}\fi}
 % print/.code={\@dlog{#1}}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}
