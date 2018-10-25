@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3 (2018/10/25) - build 102
+%% The LaTeX package exercisebank - version v0.2.3 (2018/10/25) - build 103
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -15,7 +15,7 @@
 %% This work consists of all files listed in README
 \ProvidesPackage{exercisebank}[2018/10/25 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3 - Build 102}
+\def\exercisebankversion{v0.2.3 - Build 103}
 \PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -154,7 +154,7 @@
 \gdef\exb@showtags{\isFalse}
 \gdef\ShowTags{\gdef\exb@showtags{\isTrue}}
 \gdef\exb@printCurrentTags{Tags: \exb@currentTags~}
-\gdef\ShowFilenames{\At\VeryBeginProblem{\exerciseFile\\}}
+\gdef\ShowFilenames{\At\InputExerciseFile{\exerciseFile\par}}
 \gdef\@DisplaySolutions{\@isFalse}
 \gdef\DisplaySolutions{\global\exb@b@DisplaySolutionstrue\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
@@ -423,8 +423,12 @@ solution only/.code={\ifexb@b@DisplaySolutions\else\pgfkeysalso{/exbank/problems
 \newif\ifexb@isdisplaying
 \newif\ifexb@hidenextsol
 \global\exb@hidenextsolfalse
-\gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\global\exb@isdisplayingtrue\fi%
-\ifexb@opthides\global\exb@isdisplayingfalse\@dlog{HIDEE}\else\@dlog{NHIDEE}\fi\ifexb@isdisplaying#1\else#2\fi}
+\gdef\exb@ifshowproblem#1#2{%
+\exb@isdisplayingfalse%
+\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@%
+\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
+\ifexb@isdisplaying#1\else#2\fi%
+}
 \gdef\showhideproblem#1{%
 \exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
 }
@@ -655,6 +659,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
 }
 \gdef\exbank@setEnv@normal#1{\exbank@setEnv{#1}{normal}
 }
+\gdef\exerciseFile{}%
 \newcommand{\exbank@setEnv}[3][{-1}]{  \if\@spriteMode\isFalse%
     \gdef\ppList{#1}
     \gdef\exerciseFile{#2}
@@ -768,6 +773,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
     \if\nohead\isFalse\Trigger\VeryBeginProblem\fi%
     \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi%
     \IfFileExists{\@exercisesDir/\exerciseFile}{%
+      \Trigger\InputExerciseFile
       \incl{\@exercisesDir/\exerciseFile}%
       \if\@spriteMode\isTrue%
         \setcounter{partproblemcounter}{0}%

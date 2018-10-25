@@ -314,6 +314,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
     %% \incl = \ input because otherwise latexpanded would try.
     %% to input the file
     \IfFileExists{\@exercisesDir/\exerciseFile}{%
+      \Trigger\InputExerciseFile
       \incl{\@exercisesDir/\exerciseFile}%
       \if\@spriteMode\isTrue%
         \setcounter{partproblemcounter}{0}%
