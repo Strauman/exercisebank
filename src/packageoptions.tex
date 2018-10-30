@@ -28,8 +28,10 @@
 \gdef\@DisplaySolutions{\@isFalse}
 \gdef\DisplaySolutions{\global\exb@b@DisplaySolutionstrue\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
-\gdef\@SolutionsOnly{\@isFalse}
-\gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
+%:=\SolutionsOnly
+%:Displays only solutions (if there are any) to the part problem
+%:-
+\gdef\SolutionsOnly{\DisplaySolutions\global\exb@solutionsonlytrue}
 \gdef\exb@currentPoints{0}
 %:§config
 %:-

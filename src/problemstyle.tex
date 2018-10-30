@@ -79,7 +79,6 @@
 \tighten@paragraph%
 }%
 % For executing the tag only when entered hmode
-
 \At\VeryBeginPartproblem{%
 \@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
 	\stepcounter{partproblemcounter}%%
@@ -122,5 +121,5 @@
 	\tighten@paragraph\par%
 }
 
-\At\BeginSolution{\hfill\break\vspace*{\solutionMarginAbove}{\exbank@opt@solutionHeader}}
+\At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
