@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3b103 - 2018/10/25
-%% The LaTeX package exercisebank - version v0.2.3 (2018/10/25) build 103
+%% exercisebank v0.2.3-prereleaseb104 - 2018/10/30
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/10/30) build 104
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 103)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 104)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -306,6 +306,10 @@ That covers the basics. Enjoy
 \begin{docCommand}{DisplaySolutions}{}\addcontentsline{toc}{subsubsection}{\refCom{DisplaySolutions}}
 
 Turns on the solutions, so they are shown.
+\end{docCommand}
+\begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
+\defnew{v0.2.3-prerelease\\2018/10/30 }
+Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
 Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
@@ -579,7 +583,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3\\2018/10/25 }
+\updated{v0.2.3-prerelease\\2018/10/30 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -723,6 +727,7 @@ Distance above Problem \# header
 \addcontentsline{mac}{macro}{\refCom{ShowFilenames}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowTags}}{}
+\addcontentsline{mac}{macro}{\refCom{SolutionsOnly}}{}
 \addcontentsline{mac}{macro}{\refCom{Trigger}}{}
 \addcontentsline{mac}{macro}{\refCom{about}}{}
 \addcontentsline{mac}{macro}{\refCom{buildset}}{}
@@ -823,11 +828,12 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3 2018/10/25}
+\newversion{v0.2.3-prerelease 2018/10/30}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
     \change{Fixed bug where \dac\phead and \dac\ShowFilenames crash}
+    \change{Introduced \dac\SolutionsOnly}
 \chlogtable
 
 
