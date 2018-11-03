@@ -5,9 +5,17 @@
 %current points style
 %:$packageOptions.=\keyDef{current points style}{style}{see below}{
 %:$packageOptions.= This is how the points will be shown in the part problem headers.
-%:$packageOptions.= the default code is by \!gh{thorstengrote}
-%:$packageOptions.= \texttt{~\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi~\ignorespaces}
+%:$packageOptions.= the default code is by \!gh{thorstengrote} (see example below)
 %:$packageOptions.=}
+%:$packageOptions.=\!begin{dispListing}
+%:$packageOptions.=~\!ifnum\!exb@currentPoints=\!z@%
+%:$packageOptions.=    \!ifnum\!totalpoints=\!z@\!else%
+%:$packageOptions.=      \!phantom{0p}%
+%:$packageOptions.=    \!fi%
+%:$packageOptions.=  \!else%
+%:$packageOptions.=    \!exb@currentPoints p%
+%:$packageOptions.=  \!fi~\!ignorespaces
+%:$packageOptions.=\!end{dispListing}
 %:$packageOptions.=\keyDef{disable points}{bool}{false}{
 %:$packageOptions.= Whether or not to disable the point system.
 %:$packageOptions.=}
