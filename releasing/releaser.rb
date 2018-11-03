@@ -25,10 +25,12 @@ class Releaser
       title: "Release #{@release_tag}",
       body: latest_commit[:commit][:message],
       prerelease: true,
-      draft: true
+      draft: true,
+      sha: latest_commit[:sha]
     }.update(options)
+    # @cli.create_ref(@repo,"tags/#{@release_tag}", opts[:sha])
     @release = @cli.create_release(repo = @repo, tag_name = @release_tag,
-                                   target_commitish: latest_commit[:sha],
+                                   target_commitish: opts[:sha],
                                    name: opts[:title],
                                    body: opts[:body],
                                    draft: opts[:draft],
@@ -65,7 +67,11 @@ class Releaser
 
   def delete
     get_release
-    @cli.delete_ref(@repo, "tags/#{@release_tag}")
+    begin
+      @cli.delete_ref(@repo, "tags/#{@release_tag}")
+    rescue
+      print "Error when deleting remote tag"
+    end
     delete_release
   end
 
@@ -73,7 +79,7 @@ class Releaser
     delete_release @cli.releases.first[:url]
   end
 
-  def publish_release
+  def publish
     get_release
     @cli.update_release(@release[:url], draft: false) if @release
   end
@@ -93,6 +99,7 @@ end
 # require 'octokit'
 # require 'pp'
 # token=ENV['GH_TOKEN']
-# repo='Strauman/LaTeX-UiTStyles'
+# repo='Strauman/exercisebank'
 # reltag='v0.1.0-prerelease'
+# reltag='TEST'
 # cli = Octokit::Client.new(access_token: token)
