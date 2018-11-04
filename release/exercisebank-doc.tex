@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3b105 - 2018/11/03
-%% The LaTeX package exercisebank - version v0.2.3 (2018/11/03) build 105
+%% exercisebank v0.2.3-prereleaseb106 - 2018/11/04
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/04) build 106
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 105)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 106)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -308,7 +308,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3\\2018/11/03 }
+\defnew{v0.2.3-prerelease\\2018/11/04 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -605,7 +605,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3\\2018/11/03 }
+\updated{v0.2.3-prerelease\\2018/11/04 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -850,12 +850,13 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3 2018/11/03}
+\newversion{v0.2.3-prerelease 2018/11/04}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
     \change{Fixed bug where \dac\phead and \dac\ShowFilenames crash}
     \change{Introduced \dac\SolutionsOnly}
+    \change{Fixed bug where part problem header repeats if solution is itemize.}
 \chlogtable
 
 
