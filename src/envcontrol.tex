@@ -123,7 +123,7 @@
     \let\ProcessCutFile\do@ProcessCutFile%
     % If solutions only, then since there is a solution, we
     % will trigger the part problem header
-    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}}\fi%
+    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
 		\ifexb@hidenextsol\else\Trigger\BeginSolution\fi%
 	\else
 		\def\ProcessCutFile{}%
