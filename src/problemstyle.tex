@@ -43,7 +43,7 @@
 \setlength{\pMarginBelow}{0em}
 \setlength{\pMarginAbove}{\baselineskip}
 \setlength{\introMargin}{-1.5em}
-\setlength{\ppMarginBelow}{\baselineskip}
+\setlength{\ppMarginBelow}{0em}
 \setlength{\ppMarginAbove}{0em}
 
 
@@ -62,7 +62,6 @@
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
-
 \At\VeryBeginProblem{%
 	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
 	\ifexbank@if@needspace\needspace{\exbank@opt@problemneedspace}\fi%
@@ -71,6 +70,8 @@
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
 	\vspace*{\pMarginAbove}%
+		% \@dlog{YO}%
+		% \global\exbset@nextprob@headerfalse%
   \strut\vadjust{\vbox to 0pt{\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
 	\vspace*{\the\dimexpr\baselineskip+\pMarginBelow}%
 }
@@ -78,7 +79,6 @@
 \tighten@paragraph%
 }%
 % For executing the tag only when entered hmode
-
 \At\VeryBeginPartproblem{%
 \@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
 	\stepcounter{partproblemcounter}%%
@@ -101,17 +101,25 @@
 % \if\exbank@opt@doMargins\@isTrue
 %TODO: BADLINE BELOW:
 \newbox\nobox%
-\gdef\exb@pp@lefttag{\leavevmode{\smash{\llap{{\exb@prePPHead\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}}}%
+\bgroup
+\let\exb@partProblemHeader\exbank@opt@partProblemHeader
+\ifexb@b@nextprob@header\relax
+	\global\exb@b@nextprob@headerfalse
+	\addtocounter{partproblemcounter}{-1}
+	\let\exb@partProblemHeader\exb@nextprob@header%
+\fi
+\gdef\exb@pp@lefttag{\leavevmode{\smash{\llap{{\exb@prePPHead\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}}}%
 \else%
-\gdef\exb@pp@lefttag{{\exbank@opt@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
+\gdef\exb@pp@lefttag{{\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
 \fi%
-\AtNextPar{\exb@pp@lefttag}%
+\bgroup
+\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax}%
 \ignorespaces}%
 \At\EndPartproblem{%
 	% \egroup%
-	\vspace*{\pMarginBelow}%
+	\vspace*{\ppMarginBelow}%
 	\tighten@paragraph\par%
 }
 
-\At\BeginSolution{\hfill\break\vspace*{\solutionMarginAbove}{\exbank@opt@solutionHeader}}
+\At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}

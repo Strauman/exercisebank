@@ -19,16 +19,19 @@
 %:=\ShowFilenames
 %: Shows the path+filename to the current exercise file
 %:-
-\gdef\ShowFilenames{\At\VeryBeginProblem{\exerciseFile\\}}
+% \providecommand\exerciseFile{}
+\gdef\ShowFilenames{\At\InputExerciseFile{\exerciseFile\par}}
 %:§env
 %:=\DisplaySolutions
 %:Turns on the solutions, so they are shown.
 %:-
 \gdef\@DisplaySolutions{\@isFalse}
-\gdef\DisplaySolutions{\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
+\gdef\DisplaySolutions{\global\exb@b@DisplaySolutionstrue\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
 \gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
-\gdef\@SolutionsOnly{\@isFalse}
-\gdef\SolutionsOnly{\xdef\@SolutionsOnly{\@isTrue}\DisplaySolutions}
+%:=\SolutionsOnly
+%:Displays only solutions (if there are any) to the part problem
+%:-
+\gdef\SolutionsOnly{\DisplaySolutions\global\exb@solutionsonlytrue}
 \gdef\exb@currentPoints{0}
 %:§config
 %:-
@@ -96,11 +99,11 @@ switches/.cd,
 }
 \gdef\tighten@paragraph@solutions{%
 \if\exbank@opt@tightenparagraphs\@isTrue\relax%
-  \if\@SolutionsOnly\@isFalse
+  % \if\@SolutionsOnly\@isFalse
     \if\@DisplaySolutions\@isTrue
       \filbreak%
     \fi
-  \fi
+  % \fi
 \fi%
 }
 \gdef\tighten@paragraph@always{%

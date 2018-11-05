@@ -1,5 +1,5 @@
-%% exercisebank v0.2.2b97 - 2018/10/04
-%% The LaTeX package exercisebank - version v0.2.2 (2018/10/04) build 97
+%% exercisebank v0.2.3-prereleaseb106 - 2018/11/04
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/04) build 106
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.2{\\[-0.5em]\footnotesize(build 97)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 106)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -306,6 +306,10 @@ That covers the basics. Enjoy
 \begin{docCommand}{DisplaySolutions}{}\addcontentsline{toc}{subsubsection}{\refCom{DisplaySolutions}}
 
 Turns on the solutions, so they are shown.
+\end{docCommand}
+\begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
+\defnew{v0.2.3-prerelease\\2018/11/04 }
+Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
 Inside the \dac{keyRef}\{exercise directory\}, you keep your exercises. Inside the exercise file you'd use a problem environment to write your partproblems. It might be a little confusing that you're using \dac{begin}\{problem\} instead of \dac{begin}\{partproblem\} when you're writing a partproblem, but it's less typing.
@@ -556,9 +560,17 @@ Whether or not to put problem headers and part problem headers out in the margin
 \end{docCommand}
 \keyDef{current points style}{style}{see below}{
  This is how the points will be shown in the part problem headers.
- the default code is by \gh{thorstengrote}
- \texttt{~\dac{ifnum}\dac{exb@currentPoints}=\dac{z@}\dac{ifnum}\dac{totalpoints}=\dac{z@}\dac{else}\dac{phantom}\{0p\}\dac{fi}\dac{else}\dac{exb@currentPoints} p\dac{fi}~\dac{ignorespaces}}
+ the default code is by \gh{thorstengrote} (see example below)
 }
+\begin{dispListing}
+~\ifnum\exb@currentPoints=\z@%
+    \ifnum\totalpoints=\z@\else%
+      \phantom{0p}%
+    \fi%
+  \else%
+    \exb@currentPoints p%
+  \fi~\ignorespaces
+\end{dispListing}
 \keyDef{disable points}{bool}{false}{
  Whether or not to disable the point system.
 }
@@ -576,10 +588,24 @@ The Norwegian translation would then be done with
 \begin{dispListing}
 \translateExBank{Problem=Oppgave, Solution=Løsning}
 \end{dispListing}
+ It has also been pointed out that some characters sets, e.g. Chinese,
+ characters would not work with this exact method. The work around for this
+ is currently to set the storing macros, as below
+\begin{dispListing}
+\makeatletter
+\gdef\exbank@opt@problemHeader{%
+ \normalfont\Large\bfseries TRANSLATION~\theproblemcounter%
+}
+\gdef\exbank@opt@solutionHeader{%
+ \large{\textbf{TRANSLATION}}%
+}
+\makeatother
+\end{dispListing}
+ (replace \texttt{TRANSLATION} with your translation)
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.2\\2018/10/04 }
+\updated{v0.2.3-prerelease\\2018/11/04 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -615,6 +641,12 @@ you can also tag problems using this:
   This problem is easy
 \end{problem}
 \end{dispListing}
+\keyDef{head}{text}{}{
+  Set the part problem header for the next problem.
+}
+\keyDef{solution only}{true|false}{}{
+  hide next problem unless \dac{DisplaySolutions} are on
+}
 Here are the \dac{nextproblem} keys:
 \keyDef{points}{number}{0}{
  The number of points the next exercise is worth.
@@ -717,6 +749,7 @@ Distance above Problem \# header
 \addcontentsline{mac}{macro}{\refCom{ShowFilenames}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowTags}}{}
+\addcontentsline{mac}{macro}{\refCom{SolutionsOnly}}{}
 \addcontentsline{mac}{macro}{\refCom{Trigger}}{}
 \addcontentsline{mac}{macro}{\refCom{about}}{}
 \addcontentsline{mac}{macro}{\refCom{buildset}}{}
@@ -817,6 +850,13 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
+\newversion{v0.2.3-prerelease 2018/11/04}
+    \change{Added possibility of custom part problem header from \dac\nextproblem}
+    \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
+    \change{Corrected use of the length \dac\ppMarginBelow}
+    \change{Fixed bug where \dac\phead and \dac\ShowFilenames crash}
+    \change{Introduced \dac\SolutionsOnly}
+    \change{Fixed bug where part problem header repeats if solution is itemize.}
 \chlogtable
 
 

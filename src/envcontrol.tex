@@ -7,31 +7,33 @@
 \makeatletter
 % \At\EndProblem{\tighten@paragraph@solutions\tighten@paragraph}
 \At\EndProblem{%
-\if\exbank@opt@tightenparagraphs\@isTrue\relax%
-  \if\@SolutionsOnly\@isFalse%
-    \if\@DisplaySolutions\@isTrue%
-      \penalty-300%
-    \fi%
-  \fi%
-\fi%
+	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+		\if\@DisplaySolutions\@isTrue%
+			\penalty-300%
+		\fi%
+	\fi%
 }
 \@ifundefined{figure}{}{
-\edef\figure{\unexpanded{\tighten@paragraph@always}\unexpanded\expandafter{\figure}}
+	\edef\figure{\unexpanded{\tighten@paragraph@always}\unexpanded\expandafter{\figure}}
 }
 \@ifundefined{endfigure}{}{
-\g@addto@macro\endfigure{\tighten@paragraph@always}
+	\g@addto@macro\endfigure{\tighten@paragraph@always}
 }
+% \isFalse and \isTrue should be deprecated soon.
+% An all of their uses should be be replaced by ifs.
 \gdef\isFalse{0}
 \gdef\isTrue{1}
+%\DisplayProblem should be prefixed ASAP!
 \gdef\DisplayProblem{\isTrue}
 \gdef\@displayMetaCounter{\isFalse}
 
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
+%%      ^ This should be fixed!
 %%NB: DOC for \DisplaySolutions are moved down
 \AtBeginDocument{
-  \if\@DisplaySolutions\isFalse
-    \@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
-  \fi
+	\if\@DisplaySolutions\isFalse
+		\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
+	\fi
 }
 
 \global\let\do@ProcessCutFile = \ProcessCutFile
@@ -42,27 +44,23 @@
 \newif\ifexb@hidenextsol
 \global\exb@hidenextsolfalse
 %
-\gdef\exb@ifshowproblem#1#2{\exb@isdisplayingfalse\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
-\ifexb@isdisplaying#1\else#2\fi}
-\gdef\showhideproblem#1{%
-\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
+% \exb@ifshowproblem{true}{false}
+\gdef\exb@ifshowproblem#1#2{%
+	% If \DisplayProblem==1 && exb@opthides==false, then show
+	% Set displaying default to false
+	\exb@isdisplayingfalse%
+	% If \DisplayProblem==1
+	\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@%
+		\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
+	\ifexb@isdisplaying#1\else#2\fi%
 }
-% \gdef\showhideproblem@old#1{%
-% \ifnum\pdfstrcmp{\DisplayProblem}{\@isFalse}=\z@\def\ProcessCutFile{}\else%
-%   \ifexb@opthides%
-%     \def\ProcessCutFile{}%
-%   \else%
-%     \if\DisplayProblem\isFalse%
-%         \def\ProcessCutFile{}%
-%     \else%
-%       \if\@SolutionsOnly\@isTrue\relax%
-%         \def\ProcessCutFile{}%
-%       \fi%
-%         #1%
-%     \fi
-%   \fi\fi%
-% }
-
+% \showhideproblem - should be prefixed
+% If problem is to show, then set ProcessCutFile and execute first arg
+% else remove ProcessCutFile.
+\gdef\showhideproblem#1{%
+	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
+}
+% Is \ifexb@hidenextsol in use?
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
 
 %:§env
@@ -71,35 +69,40 @@
 %\!begin{marker}\end{problem} has to be on it's own line without any leading spaces!\!end{marker}
 % :-
 \generalcomment{problem}{%
-\makeatletter
-  %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
-  \edef\DisplaySolution{\@DisplaySolutions}%
-  \stepcounter{metacounter}%
-  %% BeginProblemHard is before regardless whether
-  %% the problem is included or not.
-  \@dinfo{problem: Triggering \string\DecideProblemDisplay}%
-  \Trigger\DecideProblemDisplay%
-  % \begingroup
-  \@dinfo{problem:Executing - \string\showhideproblem}%
-     \showhideproblem{%
-        % If the user haven't turned off part problems
-        \if\exbank@opt@partProblems\isTrue
-            \Trigger\BeginPartproblem%
-            \Trigger\VeryBeginPartproblem%
-        \else%
-            \Trigger\BeginProblem%
-            \Trigger\VeryBeginProblem%
-        \fi%
-      }%
-  }{\@dinfo{Ending problem env}%
-    \if\DisplayProblem\@isTrue\relax%
-      \if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
-        \Trigger\EndPartproblem%
-        \tighten@paragraph\fi%
-      \else
-        \Trigger\EndProblem%
-    \fi%
-\@dinfo{Ended problem env}%
+	\makeatletter
+	%%%% NB: Difference between \DisplaySolution and \DisplaySolutions
+	\edef\DisplaySolution{\@DisplaySolutions}%
+	\stepcounter{metacounter}%
+	%% BeginProblemHard is before regardless whether
+	%% the problem is included or not.
+	\@dinfo{problem: Triggering \string\DecideProblemDisplay}%
+	\Trigger\DecideProblemDisplay%
+	% \begingroup
+	\@dinfo{problem:Executing - \string\showhideproblem}%
+	\showhideproblem{%
+		% If the user haven't turned off part problems
+		\if\exbank@opt@partProblems\isTrue
+      % Don't trigger part problem header if only solutions to be shown
+      \ifexb@solutionsonly\else
+			 \Trigger\BeginPartproblem%
+			 \Trigger\VeryBeginPartproblem%
+      \fi
+		\else%
+			\Trigger\BeginProblem%
+			\Trigger\VeryBeginProblem%
+		\fi%
+	}%
+  % Special case: solutions only
+  \ifexb@solutionsonly\def\ProcessCutFile{}\if\DisplayProblem\@isTrue\relax\stepcounter{partproblemcounter}\fi\fi
+}{\@dinfo{Ending problem env}%
+	\if\DisplayProblem\@isTrue\relax%
+		\if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
+			\Trigger\EndPartproblem%
+			\tighten@paragraph\fi%
+	\else
+		\Trigger\EndProblem%
+	\fi%
+	\@dinfo{Ended problem env}%
 }
 \g@addto@macro\AfterproblemComment{\nextproblem{default}\ignorespaces}%
 %:§env
@@ -109,28 +112,32 @@
 %:-
 %% Solutions
 \generalcomment{solution}{\@dinfo{START solution ENV}%
-\Trigger\AtBeginSolutionHard
-\begingroup
-  \if\@DisplaySolutions\isTrue
-    \if\DisplayProblem\isFalse
-      \xdef\DisplaySolution{\isFalse}
-    \fi
-  \fi
-  \if\DisplaySolution\isTrue
-    \ifexb@hidenextsol\else\Trigger\BeginSolution\fi
-  \else
-    \def\ProcessCutFile{}
-  \fi
+	\Trigger\AtBeginSolutionHard
+	\begingroup
+	\if\@DisplaySolutions\isTrue
+		\if\DisplayProblem\isFalse%
+			\xdef\DisplaySolution{\isFalse}
+		\fi
+	\fi
+	\if\DisplaySolution\isTrue%
+    \let\ProcessCutFile\do@ProcessCutFile%
+    % If solutions only, then since there is a solution, we
+    % will trigger the part problem header
+    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}}\fi%
+		\ifexb@hidenextsol\else\Trigger\BeginSolution\fi%
+	\else
+		\def\ProcessCutFile{}%
+	\fi
 }{%\exb@ifshowproblem{
-% \input{\CommentCutFile}
-\if\DisplaySolution\isTrue
-\Trigger\EndSolution
-\tighten@paragraph@solutions
-\vspace*{0.5em}
-\fi
-\endgroup
-\Trigger\EndSolutionHard\@dinfo{END solution ENV}%
-% \egroup
+	% \input{\CommentCutFile}
+	\if\DisplaySolution\isTrue
+		\Trigger\EndSolution
+		\tighten@paragraph@solutions
+		\vspace*{0.5em}
+	\fi
+	\endgroup
+	\Trigger\EndSolutionHard\@dinfo{END solution ENV}%
+	% \egroup
 }
 \g@addto@macro\AftersolutionComment{\ignorespaces}
 %% Problem introductions
@@ -140,52 +147,53 @@
 %\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
 %:-
 \def\intromargin#1{%
-\if\exbank@opt@doMargins\@isTrue%
-\gdef\endintromargin{\endlist\endgroup}%
-\begingroup\list{}{\leftmargin#1}\item[]%
-\else%
-\relax\global\let\endintromargin=\relax\fi%
+	\if\exbank@opt@doMargins\@isTrue%
+		\gdef\endintromargin{\endlist\endgroup}%
+		\begingroup\list{}{\leftmargin#1}\item[]%
+	\else%
+		\relax\global\let\endintromargin=\relax\fi%
 }
 \generalcomment{intro}{\@dinfo{START intro ENV}%
-  %% Decide wether to treat intro as problem in
-  %% include/exclude (except from \Trigger\BeginProblem ofc)
-  \if\@countIntros\isTrue%
-    \stepcounter{metacounter}%
-    \Trigger\DecideProblemDisplay%
-    % \begingroup%
-    \gdef\exb@pre@intro{}%
-    \gdef\exb@post@intro{}%
-    \if\@displayMetaCounter\isTrue\relax%%
-    \gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}%
-    \fi%
-    \if\exb@showtags\isTrue%%
-    % \exb@printCurrentTags defined in packageoptions.tex%
-    \xdef\exb@post@intro{\exb@printCurrentTags}%
-    \fi%
-    \if\@spriteMode\@isTrue%
-      \if\introarg\@isTrue%
-        \stepcounter{partproblemcounter}%
-      \fi%
-    \fi%
-    \gdef\@displayIntro{\@isFalse}
-    \showhideproblem{%%
-      \tighten@paragraph%%
-      \Trigger\BeginIntro\exb@pre@intro\exb@post@intro%%
-      \gdef\@displayIntro{\@isTrue}
-    }%
-  \exb@ifshowproblem{\intromargin{-1em}}{}
-  \else%
-  \intromargin{-1em}
-  \fi%
-
+	%% Decide wether to treat intro as problem in
+	%% include/exclude (except from \Trigger\BeginProblem ofc)
+	\if\@countIntros\isTrue%
+		\stepcounter{metacounter}%
+		\Trigger\DecideProblemDisplay%
+		% \begingroup%
+		\gdef\exb@pre@intro{}%
+		\gdef\exb@post@intro{}%
+		\if\@displayMetaCounter\isTrue\relax%%
+			\gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}%
+		\fi%
+		\if\exb@showtags\isTrue%%
+			% \exb@printCurrentTags defined in packageoptions.tex%
+			\xdef\exb@post@intro{\exb@printCurrentTags}%
+		\fi%
+		\if\@spriteMode\@isTrue%
+			\if\introarg\@isTrue%
+				\stepcounter{partproblemcounter}%
+			\fi%
+		\fi%
+		\gdef\@displayIntro{\@isFalse}
+		\showhideproblem{%%
+			\tighten@paragraph%%
+			\Trigger\BeginIntro\exb@pre@intro\exb@post@intro%%
+			\gdef\@displayIntro{\@isTrue}
+		}%
+		\exb@ifshowproblem{\intromargin{-1em}}{}
+	\else%
+		\intromargin{-1em}
+	\fi%
+  % Special case: solutions only
+  \ifexb@solutionsonly\def\ProcessCutFile{}\fi
 }{
-  \if\@countIntros\isTrue%
-    \Trigger\EndIntro%
-    \exb@ifshowproblem{\endintromargin}{}
-  \else
-    \endintromargin
-  \fi%
-  \@dinfo{END intro ENV}\ignorespaces%
-% \newline
+	\if\@countIntros\isTrue%
+		\Trigger\EndIntro%
+		\exb@ifshowproblem{\endintromargin}{}
+	\else
+		\endintromargin
+	\fi%
+	\@dinfo{END intro ENV}\ignorespaces%
+	% \newline
 }
 \g@addto@macro\AfterintroComment{\nextproblem{default}\ignorespaces}

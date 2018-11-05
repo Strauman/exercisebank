@@ -136,7 +136,11 @@
 \global\catcode`\^^J=12\relax%
 \global\catcode`\ =10\relax%
 }
-\let\nextPar\everypar
+\def\@AtNextParHook{}
+% Copy contents of current everypar
+\let\oldep\everypar
+% Reset the current everypar toks
 \newtoks\everypar
-\nextPar{\the\everypar}
-\def\AtNextPar#1{\nextPar\expandafter{\the\nextPar\nextPar{\the\everypar}#1}}
+% Execute
+\oldep{\the\everypar\@AtNextParHook\gdef\@AtNextParHook{}}
+\def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
