@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3-prereleaseb106 - 2018/11/04
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/04) build 106
+%% exercisebank v0.2.3b107 - 2018/11/05
+%% The LaTeX package exercisebank - version v0.2.3 (2018/11/05) build 107
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 106)}}}
+\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 107)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -308,7 +308,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3-prerelease\\2018/11/04 }
+\defnew{v0.2.3\\2018/11/05 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -588,24 +588,10 @@ The Norwegian translation would then be done with
 \begin{dispListing}
 \translateExBank{Problem=Oppgave, Solution=Løsning}
 \end{dispListing}
- It has also been pointed out that some characters sets, e.g. Chinese,
- characters would not work with this exact method. The work around for this
- is currently to set the storing macros, as below
-\begin{dispListing}
-\makeatletter
-\gdef\exbank@opt@problemHeader{%
- \normalfont\Large\bfseries TRANSLATION~\theproblemcounter%
-}
-\gdef\exbank@opt@solutionHeader{%
- \large{\textbf{TRANSLATION}}%
-}
-\makeatother
-\end{dispListing}
- (replace \texttt{TRANSLATION} with your translation)
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3-prerelease\\2018/11/04 }
+\updated{v0.2.3\\2018/11/05 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -661,6 +647,8 @@ Here are the \dac{nextproblem} keys:
  Available triggers:\\
 \dac{Trigger}\dac{PartProblemHeaderSuffix}:\\ Triggers after the part problem header.
  anything added to this trigger will happen within the header
+\dac{Trigger}\dac{PostPPHeader}:\\ Triggers right after the part problem header
+has been printed. It is also triggered after the PP header for SolutionsOnly.
 \dac{Trigger}\dac{BeginPartproblem}:\\ Triggers before a partproblem is inserted\\
 \dac{Trigger}\dac{VeryBeginPartproblem}:\\ Triggers right after \dac{BeginPartproblem}. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \dac{At}\dac{VeryBeginPartproblem}\\
 \dac{Trigger}\dac{InputExercise}:\\ Triggers before a file is included\\\
@@ -850,7 +838,7 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3-prerelease 2018/11/04}
+\newversion{v0.2.3 2018/11/05}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}

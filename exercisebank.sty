@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/04) - build 106
+%% The LaTeX package exercisebank - version v0.2.3 (2018/11/05) - build 107
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,10 +13,10 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/11/04 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/11/05 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 106}
-\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\def\exercisebankversion{v0.2.3 - Build 107}
+\PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -67,7 +67,7 @@
 			\fi%
 }%
 	\fi}
-\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3}}
 \gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
@@ -377,7 +377,7 @@ switches/.cd,
 \gdef\exb@pp@lefttag{{\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
 \fi%
 \bgroup
-\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax}%
+\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
 \ignorespaces}%
 \At\EndPartproblem{%
 	\vspace*{\ppMarginBelow}%
@@ -468,7 +468,7 @@ solution only/.code={\ifexb@b@DisplaySolutions\else\pgfkeysalso{/exbank/problems
 	\fi
 	\if\DisplaySolution\isTrue%
     \let\ProcessCutFile\do@ProcessCutFile%
-    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}}\fi%
+    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
 		\ifexb@hidenextsol\else\Trigger\BeginSolution\fi%
 	\else
 		\def\ProcessCutFile{}%
@@ -833,15 +833,15 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
 \gdef\exb@currentPointsStyle{}
 \newif\ifexb@enablepoints\global\exb@enablepointstrue
 \exercisebanksetup{%
-current points style/.store in=\exb@currentPointsStyle,
-current points style={\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi\ignorespaces},
-disable points/.is if={exb@enablepoints}
+	current points style/.store in=\exb@currentPointsStyle,
+	current points style={\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi\ignorespaces},
+	disable points/.is if={exb@enablepoints}
 }
 \ifexb@enablepoints
-\AtEndDocument{%
-\immediate\write\@auxout{\string\gdef\string\totalpoints{\the\c@exb@points}}%
+	\AtEndDocument{%
+		\immediate\write\@auxout{\string\gdef\string\totalpoints{\the\c@exb@points}}%
 }
-\At\PartProblemHeaderSuffix{\exb@currentPointsStyle}
+	\At\PartProblemHeaderSuffix{\exb@currentPointsStyle}
 \fi
 \newcounter{exb@points}
 \setcounter{exb@points}{0}
