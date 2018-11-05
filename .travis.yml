@@ -3,10 +3,10 @@ language:    generic
 services:    docker
 
 tex-config:
-- tex-scheme=small
-- push-type=none
-- build-pattern=tests/*/main.tex
-- packages=lipsum, blindtext
+  - tex-scheme=small
+  - push-type=none
+  - build-pattern=tests/*/main.tex
+  - packages=lipsum, blindtext
 
 env:
   global:
@@ -15,3 +15,6 @@ env:
     ## something like this
     # secure: ENCRYPTED-GITHUBTOKEN
     # - IS_TRAVIS=true
+script:
+  - chmod +x travis-texbuild.sh
+  - ./travis-texbuild.sh
