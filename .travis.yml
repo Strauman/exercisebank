@@ -4,7 +4,7 @@ services:    docker
 
 tex-config:
   - tex-scheme=small
-  - push-type=branch
+  - push-type=none
   - build-pattern=tests/*/main.tex
   - packages=lipsum,blindtext,xstring,pgf,comment,listofitems,trimspaces,needspace,koma-script,xcolor
 env:
