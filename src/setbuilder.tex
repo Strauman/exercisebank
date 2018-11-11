@@ -221,7 +221,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
   \fi%
   %% Warnins if the set doesn't exist
   \@ifundefined{setlist@#2}{%
-    \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
+    \exb@err{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
     \stop\bye
   }{}
   %% Sets the current setlist from the variable
