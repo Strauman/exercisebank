@@ -1,0 +1,24 @@
+%!TEX root = ../example.tex
+\nextproblem{tag=electro}
+\begin{intro}
+	In this problem we're considering an RC circuit with AC current.
+\end{intro}
+\begin{problem}
+	Use the definition of Capacitance and derive that the voltage over the capacitor is
+	\[ V=\frac{1}{C}\int_{0}^{t} I(\tau)\mathrm d \tau \]
+\end{problem}
+%----- Solution 1 -----%
+\begin{solution}
+	\begin{align*}
+		V             &= \frac{q}{C}                           \\
+		I             &= \der{q}{t}                          \\
+		\Rightarrow q &=\int_{0}^{t} I(\tau)\mathrm d \tau     \\
+		\Rightarrow V &= \frac{1}{C}\int_{0}^{t} I \mathrm d t
+	\end{align*}
+\end{solution}
+%----- Problem 2 -----%
+\begin{problem}
+	Show by deriving that the differential equation for \( I(t) \) in the circuit
+  is er given by
+	\[ \der{I(t)}{t}+\frac1{RC}I(t)=\frac{1}{R}\der{V}{t} \]
+\end{problem}
