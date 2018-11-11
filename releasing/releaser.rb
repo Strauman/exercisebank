@@ -1,6 +1,8 @@
+#!/usr/bin/env ruby
 require 'octokit'
 # require 'filemagic'
 require 'pp'
+a = %w[a b c]
 class Releaser
   attr_accessor :release_tag, :release, :cli
   def initialize(token, tag, repo)
@@ -18,7 +20,7 @@ class Releaser
   def set(**options)
     @release_opts = options
   end
-
+  
   def create(options)
     latest_commit = cli.commits(@repo).first
     opts = {
@@ -29,12 +31,24 @@ class Releaser
       sha: latest_commit[:sha]
     }.update(options)
     # @cli.create_ref(@repo,"tags/#{@release_tag}", opts[:sha])
-    @release = @cli.create_release(repo = @repo, tag_name = @release_tag,
-                                   target_commitish: opts[:sha],
-                                   name: opts[:title],
-                                   body: opts[:body],
-                                   draft: opts[:draft],
-                                   prerelease: opts[:prerelease])
+    begin
+      @release = @cli.create_release(repo = @repo, tag_name = @release_tag,
+                                     target_commitish: opts[:sha],
+                                     name: opts[:title],
+                                     body: opts[:body],
+                                     draft: opts[:draft],
+                                     prerelease: opts[:prerelease])
+    rescue Octokit::UnprocessableEntity => e
+      if e.response_status == 422
+        bt=e.backtrace
+        first_thing=bt.shift
+        puts "#{first_thing}:#{e.message.to_s}"
+        puts bt.map{|bt| "\t from #{bt}"}
+        puts "DID YOU REMEMBER TO PUSH THE GIT?"
+        exit 2
+      end
+      raise
+    end
   end
 
   def update(options)
@@ -70,7 +84,7 @@ class Releaser
     begin
       @cli.delete_ref(@repo, "tags/#{@release_tag}")
     rescue
-      print "Error when deleting remote tag"
+      print 'Error when deleting remote tag'
     end
     delete_release
   end
