@@ -71,3 +71,6 @@
 :@@VERSION:@@DATE
 \nextproblem
 \SolutionsOnly
+\rigid
+\ClearHook
+\buildset

@@ -139,8 +139,10 @@
 \def\@AtNextParHook{}
 % Copy contents of current everypar
 \let\oldep\everypar
+\oldep{\the\everypar}
 % Reset the current everypar toks
 \newtoks\everypar
 % Execute
-\oldep{\the\everypar\@AtNextParHook\gdef\@AtNextParHook{}}
+% \oldep{\the\everypar\@AtNextParHook\gdef\@AtNextParHook{}}
+\oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}

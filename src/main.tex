@@ -1,24 +1,17 @@
-\documentclass{article}\makeatletter
-\usepackage{lipsum}
-% \def\exbank@quiet{1}
-\gdef\exbank@verbose{1}
-\gdef\at@verbose{1}
-% \gdef\followMacro#1{
-% \edef\mname{\expandafter\@gobble\string#1}
-% \expandafter\let\csname follow@old@\mname\endcsname#1
-% \def#1{\@dlog{change}}
-% }%
-
+\documentclass{article}\makeatletter\let\ea\expandafter\let\dlog\@latex@warning\def\insp#1{\dlog{\string#1:\meaning#1}}\def\csinsp#1{\edef\mcro{\unexpanded\expandafter{\csname #1\endcsname}}\def\tmp{{\mcro}}\expandafter\insp\mcro}
+\input{../exercises/mathcommands}
 \input{exbankpack}
-% \usepackage{pdftexcmds}
 
-% \usepackage{exercisebank-debug}
-% \DisplaySolutions
-% \setlength\parindent{0pt}
-% \DisplaySolutions
-\exercisebanksetup{exercise directory=../exercises, tighten paragraphs = False}
-\makeset[nohead]{firstest}{\phead,firstexercise}%,\phead,secondexercise}
+\exercisebanksetup{%
+  exercise directory=../exercises
+}
 
+%% The \makeset{setname}{exercises,to,include} picks exercises from the exercises-folder
+%% The \exclude{setname}{1,2,3,...,9} excludes partproblems 1,...,9 from setname
+\makeset{electro}{capacitance}
+\makeset{first}{firstexercise}
+\makeset{2}{firstexercise, \exclude{secondexercise}{1,2}, thirdexercise}
+\DisplaySolutions
 \begin{document}
-\buildset{firstest}
+  \buildset{electro}
 \end{document}

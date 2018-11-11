@@ -22,15 +22,15 @@
 %:-
 \newif\ifexb@enablepoints\global\exb@enablepointstrue
 \exercisebanksetup{%
-current points style/.store in=\exb@currentPointsStyle,
-current points style={\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi\ignorespaces},
-disable points/.is if={exb@enablepoints}
+	current points style/.store in=\exb@currentPointsStyle,
+	current points style={\ifnum\exb@currentPoints=\z@\ifnum\totalpoints=\z@\else\phantom{0p}\fi\else\exb@currentPoints p\fi\ignorespaces},
+	disable points/.is if={exb@enablepoints}
 }
 \ifexb@enablepoints
-\AtEndDocument{%
-\immediate\write\@auxout{\string\gdef\string\totalpoints{\the\c@exb@points}}%
-}
-\At\PartProblemHeaderSuffix{\exb@currentPointsStyle}
+	\AtEndDocument{%
+		\immediate\write\@auxout{\string\gdef\string\totalpoints{\the\c@exb@points}}%
+	}
+	\At\PartProblemHeaderSuffix{\exb@currentPointsStyle}
 \fi
 \newcounter{exb@points}
 \setcounter{exb@points}{0}
