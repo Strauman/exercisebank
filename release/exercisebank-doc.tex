@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3b107 - 2018/11/05
-%% The LaTeX package exercisebank - version v0.2.3 (2018/11/05) build 107
+%% exercisebank v0.2.3-prereleaseb108 - 2018/11/11
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/11) build 108
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -119,7 +119,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 107)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 108)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -308,7 +308,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3\\2018/11/05 }
+\defnew{v0.2.3-prerelease\\2018/11/11 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -413,7 +413,7 @@ To be used in \refCom{makeset}
 \defnew{v0.2.1\\2018/09/24 }
 \end{docCommand}
 \begin{docCommand}{buildset}{\oarg{intro|nohead|nointro}\marg{setname}}\addcontentsline{toc}{subsubsection}{\refCom{buildset}}
-\updated{v0.2.1\\2018/09/24 }
+\updated{v0.2.3-prerelease\\2018/11/11 }
 This command runs the set given. The set has do be defined by \dac{makeset}. E.eg
 \begin{dispListing}
 \makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -591,7 +591,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3\\2018/11/05 }
+\updated{v0.2.3-prerelease\\2018/11/11 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -659,6 +659,14 @@ has been printed. It is also triggered after the PP header for SolutionsOnly.
 
 
 \end{docCommand}
+\begin{docCommand}{ClearHook}{}\addcontentsline{toc}{subsubsection}{\refCom{ClearHook}}
+\defnew{v0.2.3-prerelease\\2018/11/11 }
+ Deletes all information from a hook.
+ Note that if preceded by \dac{rigid}, then the
+ ENTIRE hook will be cleared.
+ Note that the necessary hooks might not be
+ registered as rigid. Thus show caution when deleting hooks
+\end{docCommand}
 \filbreak\subsection{General reference}
 \begin{docCommand}{ownLineNoSpacesGotIt}{}\addcontentsline{toc}{subsubsection}{\refCom{ownLineNoSpacesGotIt}}
 
@@ -686,6 +694,12 @@ This package also includes some extra stuff. For example the \dac{At} and \dac{T
  Which is triggered with
  \Trigger\BeginSomething, this evaluates to DoSomething
 \end{dispListing}
+\end{docCommand}
+\begin{docCommand}{@rigid}{}\addcontentsline{toc}{subsubsection}{\refCom{@rigid}}
+
+Used to make \dac{At} so that the contents won't be deleted
+with \dac{ClearHook}. Note that the necessary hooks might not be
+ registered as rigid. Thus show caution when deleting hooks
 \end{docCommand}
 \begin{docCommand}{exerciseFile}{}\addcontentsline{toc}{subsubsection}{\refCom{exerciseFile}}
 
@@ -730,7 +744,9 @@ Distance above Problem \# header
 \end{docCommand}
 \filbreak\subsection{Macro definitions}
 
- \addcontentsline{mac}{macro}{\refCom{At}}{}
+ \addcontentsline{mac}{macro}{\refCom{@rigid}}{}
+\addcontentsline{mac}{macro}{\refCom{At}}{}
+\addcontentsline{mac}{macro}{\refCom{ClearHook}}{}
 \addcontentsline{mac}{macro}{\refCom{DeclareExerciseCommand}}{}
 \addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
 \addcontentsline{mac}{macro}{\refCom{HideTags}}{}
@@ -838,13 +854,15 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3 2018/11/05}
+\newversion{v0.2.3-prerelease 2018/11/11}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
     \change{Fixed bug where \dac\phead and \dac\ShowFilenames crash}
     \change{Introduced \dac\SolutionsOnly}
     \change{Fixed bug where part problem header repeats if solution is itemize.}
+    \change{Introduced the \dac\rigid command for the \dac\At functionality. Also the \dac\ClearHook for deleting a hook}
+    \change{\dac\buildset now gives error if set does not exist.}
 \chlogtable
 
 

@@ -8,7 +8,9 @@ Files:
 │   ├── example.pdf
 │   ├── example.tex
 │   └── exercises
+│       ├── capacitance.tex
 │       ├── firstexercise.tex
+│       ├── mathcommands.tex
 │       ├── secondexercise.tex
 │       └── thirdexercise.tex
 ├── exercisebank-doc.pdf
@@ -22,7 +24,7 @@ https://github.com/Strauman/exercisebank/
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.3 (2018/11/05) - build 107
+The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/11) - build 108
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman

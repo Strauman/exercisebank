@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3 (2018/11/05) - build 107
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/11/11) - build 108
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,10 +13,10 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/11/05 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/11/11 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3 - Build 107}
-\PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\def\exercisebankversion{v0.2.3-prerelease - Build 108}
+\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
@@ -67,7 +67,7 @@
 			\fi%
 }%
 	\fi}
-\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3}}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}}
 \gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
@@ -147,8 +147,9 @@
 }
 \def\@AtNextParHook{}
 \let\oldep\everypar
+\oldep{\the\everypar}
 \newtoks\everypar
-\oldep{\the\everypar\@AtNextParHook\gdef\@AtNextParHook{}}
+\oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
@@ -271,29 +272,45 @@ switches/.cd,
   \csname @tr@#1\endcsname%
 }%
 }
+\newif\ifat@isrigid
 \let\ea = \expandafter
 \begingroup\lccode`\|=`\\
 \lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
 \ifcsname at@verbose\endcsname
-\global\def\@triggerLog#1{\@latex@warning{--\string\TRIGGER: #1}}%
+	\global\def\@triggerLog#1{\@latex@warning{--\string\TRIGGER: #1}}%
 \else
-\global\let\@triggerLog\@gobble%
+	\global\let\@triggerLog\@gobble%
 \fi
-\newcommand{\At}[2]{  \edef\mname{\exbank@macroname{#1}}%
-  \ifcsname At@\mname\endcsname%
-    \ea\g@addto@macro\csname At@\mname\endcsname{#2}%
-  \else%
-    \ea\gdef\csname At@\mname\endcsname{#2}%
-    \AtEndDocument{%
-        \expandafter\let\csname At@\mname\endcsname\relax%
+\newcommand{\At}[2]{%
+	\edef\mname{\exbank@macroname{#1}}%
+	\ifcsname At@\mname\endcsname%
+		\ea\g@addto@macro\csname At@\mname\endcsname{#2}%
+	\else%
+    \ifat@isrigid
+      \ea\gdef\csname Rigid@At@\mname\endcsname{#2}%
+    \else
+      \ea\gdef\csname At@\mname\endcsname{#2}%
+    \fi%
+	\fi%
+	\global\at@isrigidfalse%
 }
-  \fi%
-}
+\let\@rigid\at@isrigidtrue
 \newcommand{\Trigger}[1]{%
-  \edef\mname{\exbank@macroname{#1}}%
-  \ea\@ifundefined{At@\mname}{}{%
-  \@triggerLog{\mname}\csname At@\mname\endcsname%
+	\edef\mname{\exbank@macroname{#1}}%
+  \ea\@ifundefined{Rigid@At@\mname}{}{%
+		\@triggerLog{\mname}\csname Rigid@At@\mname\endcsname%
 }%
+	\ea\@ifundefined{At@\mname}{}{%
+		\@triggerLog{\mname}\csname At@\mname\endcsname%
+}%
+}
+\newcommand{\ClearHook}[1]{%
+	\edef\mname{\exbank@macroname{#1}}%
+	\expandafter\let\csname At@\mname\endcsname\relax%
+  \ifat@isrigid
+    \expandafter\let\csname Rigid@At@\mname\endcsname\relax%
+  \fi
+	\global\at@isrigidfalse%
 }
 \xdef\figuresPath{\@figrootDir/}
 \gdef\fileInputPath{}
@@ -367,16 +384,16 @@ switches/.cd,
 \newbox\nobox%
 \bgroup
 \let\exb@partProblemHeader\exbank@opt@partProblemHeader
-\ifexb@b@nextprob@header\relax
-	\global\exb@b@nextprob@headerfalse
-	\addtocounter{partproblemcounter}{-1}
+\ifexb@b@nextprob@header\relax%
+	\global\exb@b@nextprob@headerfalse%
+	\addtocounter{partproblemcounter}{-1}%
 	\let\exb@partProblemHeader\exb@nextprob@header%
-\fi
+\fi%
 \gdef\exb@pp@lefttag{\leavevmode{\smash{\llap{{\exb@prePPHead\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}\hskip\ppMargin}\exb@postPPHead}}}%
 \else%
 \gdef\exb@pp@lefttag{{\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
 \fi%
-\bgroup
+\bgroup%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
 \ignorespaces}%
 \At\EndPartproblem{%
@@ -726,7 +743,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
   \exb@setpgf\skeys%
   \fi%
   \@ifundefined{setlist@#2}{%
-    \@latex@error{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}?}
+    \exb@err{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}?}
     \stop\bye
 }{}
   \let\exlist@protect\unexpanded%
