@@ -1,11 +1,34 @@
 \documentclass{article}
 \usepackage{exercisebank}
 \usepackage{lipsum}
+% Input the commands related to maths
+% (Also does \usepackage{amsmath})
+\input{exercises/mathcommands}
+%% Uncomment below to show all solutions
+% \DisplaySolutions
+%% Uncomment below to only show solutions (but hide problems)
+% \SolutionsOnly
+%% Uncomment below to see the counter that relates to the current part problem
+%% (Useful for figuring out the correct number for \select and \exclude)
+% \ShowNumbers
+%% Uncomment below to also print any tags of part problems
+% \ShowTags
+%% Uncomment below to also print the file names of problems when imported
+% \ShowFilenames
+
 \exercisebanksetup{exercise directory=exercises}
 %% The \makeset{setname}{exercises,to,include} picks exercises from the exercises-folder
 %% The \exclude{setname}{1,2,3,...,9} excludes partproblems 1,...,9 from setname
 \makeset{1}{firstexercise}
 \makeset{2}{firstexercise, \exclude{secondexercise}{1,2}, thirdexercise}
 \begin{document}
+%% For building a set with name 2
 \buildset{2}
+%% Below is for building both set 1 and set 2
+% \buildsets{1,2}
+%% Below is for building only the part problems with tags electro and magnetism
+%% in sets with names 1 and 2
+% \buildtags{electro,magnetism}{1,2}
+%% Below is for only building exercisefile located in exercises/capacitance
+% \buildex{capacitance}
 \end{document}
