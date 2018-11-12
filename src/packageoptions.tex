@@ -25,9 +25,8 @@
 %:=\DisplaySolutions
 %:Turns on the solutions, so they are shown.
 %:-
-\gdef\@DisplaySolutions{\@isFalse}
-\gdef\DisplaySolutions{\global\exb@b@DisplaySolutionstrue\xdef\@DisplaySolutions{\isTrue}\@latex@warning{Showing solutions}}
-\gdef\ifDisplaySolutions{\if\@DisplaySolutions\@isTrue}
+\global\exb@DisplaySolutionsfalse
+\gdef\DisplaySolutions{\global\exb@DisplaySolutionstrue\@latex@warning{Showing solutions}}
 %:=\SolutionsOnly
 %:Displays only solutions (if there are any) to the part problem
 %:-
@@ -42,7 +41,7 @@
 /exbanksetup/.is family, /exbanksetup,
 default/.style = {
   part problems = On,
-  tighten paragraphs = True,
+  tighten paragraphs = true,
   problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
   part problem header suffix={},
@@ -67,7 +66,7 @@ problem needs space/.store in = \exbank@opt@problemneedspace,
 part problem header suffix/.store in=\exb@partproblem@header@suffix,
 % Bools
 part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
-tighten paragraphs/.style = {switches/#1/.get = \exbank@opt@tightenparagraphs},
+tighten paragraphs/.is if = {exb@opt@tightenparagraphs},
 style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
 % True/False
 switches/.cd,
@@ -89,25 +88,19 @@ switches/.cd,
 \exercisebanksetup{default}
 \AtBeginDocument{\xdef\tpd{\the\prevdepth}}
 \gdef\tighten@paragraph{%
-\if\exbank@opt@tightenparagraphs\@isTrue\relax%
-  % \if\@SolutionsOnly\@isFalse
-    % \if\@DisplaySolutions\@isFalse
-      \filbreak%
-    % \fi
-  % \fi
+\ifexb@opt@tightenparagraphs\relax%
+  \filbreak%
 \fi%
 }
 \gdef\tighten@paragraph@solutions{%
-\if\exbank@opt@tightenparagraphs\@isTrue\relax%
-  % \if\@SolutionsOnly\@isFalse
-    \if\@DisplaySolutions\@isTrue
-      \filbreak%
-    \fi
-  % \fi
+\ifexb@opt@tightenparagraphs%
+  \ifexb@DisplaySolutions%
+    \filbreak%
+  \fi
 \fi%
 }
 \gdef\tighten@paragraph@always{%
-\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+\ifexb@opt@tightenparagraphs%
 \filbreak%
 \fi%
 }
