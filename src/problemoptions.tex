@@ -57,7 +57,8 @@ tags/.estore in=\exb@currentTags,%
 tag/.code={\pgfkeysalso{tags={#1}}},
 head/.code={\global\exb@b@nextprob@headertrue\gdef\exb@nextprob@header{#1}},%
 reset pp head/.code={\global\exb@b@nextprob@headerfalse},
-solution only/.code={\ifexb@b@DisplaySolutions\else\pgfkeysalso{/exbank/problems/hide=true}\fi}
+% TODO: Is this necessary?
+solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/hide=true}\fi}
 % print/.code={\@dlog{#1}}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}

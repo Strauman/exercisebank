@@ -63,7 +63,7 @@
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
 \At\VeryBeginProblem{%
-	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
+	\ifexb@opt@tightenparagraphs%
 	\ifexbank@if@needspace\needspace{\exbank@opt@problemneedspace}\fi%
 	\vskip-2\baselineskip\relax%
 	\fi%

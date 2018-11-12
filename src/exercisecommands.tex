@@ -73,10 +73,10 @@
 
 %% Commands that can be sent to makeset
 %% Problem header
-\let\exbank@isFirstProblem\isTrue
+\exb@isFirstProblemtrue
 \exb@def@makeset@cmd{\phead}{%
-  \if\exbank@isFirstProblem\isTrue%
-    \let\exbank@isFirstProblem\isFalse%
+  \ifexb@isFirstProblem%
+    \global\exb@isFirstProblemfalse%
   \else%
     \Trigger\EndProblem%
   \fi%
@@ -87,8 +87,8 @@
 }
 % Problem header with custom problem "number"
 \exb@def@makeset@cmd{\pheadarg}[1]{
-  \if\exbank@isFirstProblem\isTrue%
-    \let\exbank@isFirstProblem\isFalse%
+  \ifexb@isFirstProblem%
+    \global\exb@isFirstProblemfalse%
   \else%
     \Trigger\EndProblem%
   \fi%
