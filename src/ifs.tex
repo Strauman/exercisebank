@@ -1,4 +1,5 @@
 %!TEX root = main.tex
+% TODO: check the @b@DisplaySolutions
 \makeatletter
 \global\newif\ifexbset@nextprob@header
 \global\exbset@nextprob@headertrue
@@ -6,5 +7,8 @@
 % \global\exb@opthidestrue
 \global\newif\ifexb@b@nextprob@header
 \global\exb@b@nextprob@headerfalse
-\global\newif\ifexb@b@DisplaySolutions
 \global\newif\ifexb@solutionsonly
+\global\newif\ifexb@isFirstProblem
+\global\newif\ifexb@opt@tightenparagraphs
+\global\newif\ifexb@DisplaySolutions
+\global\newif\ifexb@DisplayCurrentSolution

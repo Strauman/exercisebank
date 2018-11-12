@@ -7,8 +7,8 @@
 \makeatletter
 % \At\EndProblem{\tighten@paragraph@solutions\tighten@paragraph}
 \At\EndProblem{%
-	\if\exbank@opt@tightenparagraphs\@isTrue\relax%
-		\if\@DisplaySolutions\@isTrue%
+	\ifexb@opt@tightenparagraphs\relax%
+		\ifexb@DisplaySolutions%
 			\penalty-300%
 		\fi%
 	\fi%
@@ -31,7 +31,7 @@
 %%      ^ This should be fixed!
 %%NB: DOC for \DisplaySolutions are moved down
 \AtBeginDocument{
-	\if\@DisplaySolutions\isFalse
+	\ifexb@DisplaySolutions\isFalse
 		\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
 	\fi
 }
@@ -70,8 +70,7 @@
 % :-
 \generalcomment{problem}{%
 	\makeatletter
-	%%%% NB: Difference between \DisplaySolution and \DisplaySolutions
-	\edef\DisplaySolution{\@DisplaySolutions}%
+	\let\ifexb@DisplayCurrentSolution\ifexb@DisplaySolutions
 	\stepcounter{metacounter}%
 	%% BeginProblemHard is before regardless whether
 	%% the problem is included or not.
@@ -114,12 +113,12 @@
 \generalcomment{solution}{\@dinfo{START solution ENV}%
 	\Trigger\AtBeginSolutionHard
 	\begingroup
-	\if\@DisplaySolutions\isTrue
+	\ifexb@DisplaySolutions%
 		\if\DisplayProblem\isFalse%
-			\xdef\DisplaySolution{\isFalse}
+			\global\exb@DisplayCurrentSolutionfalse
 		\fi
 	\fi
-	\if\DisplaySolution\isTrue%
+	\ifexb@DisplayCurrentSolution%
     \let\ProcessCutFile\do@ProcessCutFile%
     % If solutions only, then since there is a solution, we
     % will trigger the part problem header
@@ -130,7 +129,7 @@
 	\fi
 }{%\exb@ifshowproblem{
 	% \input{\CommentCutFile}
-	\if\DisplaySolution\isTrue
+	\ifexb@DisplayCurrentSolution%
 		\Trigger\EndSolution
 		\tighten@paragraph@solutions
 		\vspace*{0.5em}
