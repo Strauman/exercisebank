@@ -23,8 +23,7 @@
 % An all of their uses should be be replaced by ifs.
 \gdef\isFalse{0}
 \gdef\isTrue{1}
-%\DisplayProblem should be prefixed ASAP!
-\gdef\DisplayProblem{\isTrue}
+\global\exb@DisplayCurrentProblemtrue
 \gdef\@displayMetaCounter{\isFalse}
 
 %%%% NB: Difference between \DisplaySolution and \DisplaySolutions
@@ -46,11 +45,11 @@
 %
 % \exb@ifshowproblem{true}{false}
 \gdef\exb@ifshowproblem#1#2{%
-	% If \DisplayProblem==1 && exb@opthides==false, then show
+	% If exb@DisplayCurrentProblem==true && exb@opthides==false, then show
 	% Set displaying default to false
 	\exb@isdisplayingfalse%
-	% If \DisplayProblem==1
-	\ifnum\pdfstrcmp{\DisplayProblem}{\@isTrue}=\z@%
+	% If exb@DisplayCurrentProblem==true
+	\ifexb@DisplayCurrentProblem%
 		\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 	\ifexb@isdisplaying#1\else#2\fi%
 }
@@ -92,9 +91,9 @@
 		\fi%
 	}%
   % Special case: solutions only
-  \ifexb@solutionsonly\def\ProcessCutFile{}\if\DisplayProblem\@isTrue\relax\stepcounter{partproblemcounter}\fi\fi
+  \ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
 }{\@dinfo{Ending problem env}%
-	\if\DisplayProblem\@isTrue\relax%
+	\ifexb@DisplayCurrentProblem\relax%
 		\if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
 			\Trigger\EndPartproblem%
 			\tighten@paragraph\fi%
@@ -114,7 +113,7 @@
 	\Trigger\AtBeginSolutionHard
 	\begingroup
 	\ifexb@DisplaySolutions%
-		\if\DisplayProblem\isFalse%
+		\ifexb@DisplayCurrentProblem\isFalse%
 			\global\exb@DisplayCurrentSolutionfalse
 		\fi
 	\fi
