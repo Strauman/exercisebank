@@ -1,6 +1,7 @@
 \documentclass{article}\makeatletter\let\ea\expandafter\let\dlog\@latex@warning\def\insp#1{\dlog{\string#1:\meaning#1}}\def\csinsp#1{\edef\mcro{\unexpanded\expandafter{\csname #1\endcsname}}\def\tmp{{\mcro}}\expandafter\insp\mcro}
 \input{../exercises/mathcommands}
 \input{exbankpack}
+\usepackage{lipsum}
 
 \exercisebanksetup{%
   exercise directory=../exercises
@@ -10,8 +11,8 @@
 %% The \exclude{setname}{1,2,3,...,9} excludes partproblems 1,...,9 from setname
 \makeset{electro}{capacitance}
 \makeset{first}{firstexercise}
-\makeset{2}{firstexercise, \exclude{secondexercise}{1,2}, thirdexercise}
+\makeset{2}{firstexercise, \exclude{secondexercise}{1,2}, \select{thirdexercise}{1,2}, \exclude{thirdexercise}{1,2}}
 % \DisplaySolutions
 \begin{document}
-  \buildset{electro}
+  \buildset{2}
 \end{document}

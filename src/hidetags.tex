@@ -1,7 +1,7 @@
 %!TEX root = main.tex
 \def\exb@hidetaglist{}
 \At\DecideProblemDisplay{
-\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
+\ifexb@DisplayCurrentProblem\relax%
 \ifx\exb@hidetaglist\relax\else
 \exb@intersection@any{\exb@currentTags}{\exb@hidetaglist}{\global\exb@opthidestrue}{}%
 \fi
