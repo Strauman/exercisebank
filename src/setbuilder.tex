@@ -37,23 +37,22 @@
 \let\ipm\@ifppMode
 \let\T@\isTrue
 \let\F@\isFalse
-% \@dlog{tlist:\meaning\exb@tagList}
-% \ifnum\pdfstrcmp{\exb@tagList}{\exb@emptyList}=\z@\relax
-%   \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}\else%
-%   \isin{\exb@currentTags}{\exb@tagList}{}{\xdef\DisplayProblem{\F@}}%
-% \fi
+
+% Short hands for doing pp mode selection:
+\def\exb@DPT{\global\exb@DisplayCurrentProblemtrue}
+\def\exb@DPF{\global\exb@DisplayCurrentProblemfalse}
 \At\DecideProblemDisplay{%
     \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
-      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@}
+      \ipm\exclude\exb@DPT\ipm\select\exb@DPF
     \fi
     \exb@int@isin{\themetacounter}{\ppList}{
-      \xdef\DisplayProblem{\ipm\exclude\F@\ipm\select\T@\ipm\normal\T@}
+      \ipm\exclude\exb@DPF\ipm\select\exb@DPT\ipm\normal\exb@DPT
     }{
-      \xdef\DisplayProblem{\ipm\exclude\T@\ipm\select\F@\ipm\normal\T@}
+      \ipm\exclude\exb@DPT\ipm\select\exb@DPF\ipm\normal\exb@DPT
     }
 \ifexb@tagbuildmode
-\ifnum\pdfstrcmp{\DisplayProblem}{\T@}=\z@\relax%
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\xdef\DisplayProblem{0}}%
+\ifexb@DisplayCurrentProblem\relax%
+\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\exb@DisplayCurrentProblemfalse}%
 \fi
 \fi
 }
