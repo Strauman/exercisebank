@@ -17,7 +17,8 @@ ini_path=File.expand_path(ini_path)
 myini = IniFile.load(ini_path)
 version = myini[:global]['version']
 build = myini[:global]['build']
-tag = "#{version}b#{build}-prerelease"
+# tag = "#{version}b#{build}-prerelease"
+tag = "#{version}b#{build}-experimental"
 $current_commit=`git log --pretty=format:'%H' -n 1`
 r = Releaser.new(ENV['GH_TOKEN'], tag, 'Strauman/exercisebank')
 r.get_release
