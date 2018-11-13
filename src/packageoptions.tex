@@ -38,7 +38,7 @@
 \pgfkeys{
 /exbanksetup/.is family, /exbanksetup,
 default/.style = {
-  part problems = On,
+  part problems = true,
   tighten paragraphs = true,
   problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
@@ -46,7 +46,7 @@ default/.style = {
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
-  style margins=On,
+  style margins=true,
   problem needs space=0.2\paperheight,
   no needspace/.is if={exbank@if@needspace},
   no needspace/.default = false
