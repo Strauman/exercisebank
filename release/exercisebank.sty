@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/12) - build 109
+%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/13) - build 110
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/11/12 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/11/13 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-experimental - Build 109}
+\def\exercisebankversion{v0.2.3-experimental - Build 110}
 \PackageWarningNoLine{exercisebank-v0.2.3-experimental}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -24,17 +24,34 @@
 \@ifundefined{exercisesDir}{\gdef\@exercisesDir{.}
 }{}
 \global\let\incl = \input
+\def\g@newif#1{%
+  \count@\escapechar\escapechar\m@ne
+    \global\let#1\iffalse%
+    \g@if#1\iftrue%
+    \g@if#1\iffalse%
+\escapechar\count@}
+\def\g@if#1#2{%
+  \expandafter\def\csname\expandafter\@gobbletwo\string#1%
+  \expandafter\@gobbletwo\string#2\endcsname%
+  {\global\let#1#2}%
+}
 \global\newif\ifexbset@nextprob@header
 \global\exbset@nextprob@headertrue
 \newif\ifexb@opthides
-\global\newif\ifexb@b@nextprob@header
-\global\exb@b@nextprob@headerfalse
-\global\newif\ifexb@solutionsonly
-\global\newif\ifexb@isFirstProblem
-\global\newif\ifexb@opt@tightenparagraphs
-\global\newif\ifexb@DisplaySolutions
-\global\newif\ifexb@DisplayCurrentSolution
-\global\newif\ifexb@DisplayCurrentProblem
+\g@newif\ifexb@b@nextprob@header
+\g@newif\ifexb@solutionsonly
+\g@newif\ifexb@isFirstProblem
+\g@newif\ifexb@opt@tightenparagraphs
+\g@newif\ifexb@DisplaySolutions
+\g@newif\ifexb@DisplayCurrentSolution
+\g@newif\ifexb@DisplayCurrentProblem
+\g@newif\ifexbank@if@needspace
+\g@newif\ifexb@opt@partProblems
+\g@newif\ifexb@opt@doMargins
+\g@newif\ifexb@CountIntros
+\g@newif\ifexb@noheadArg
+\exb@b@nextprob@headerfalse
+\exbank@if@needspacetrue
 \usepackage{xstring}
 \usepackage{pgffor}
 \usepackage{scrextend}
@@ -166,10 +183,8 @@
 \gdef\DisplaySolutions{\global\exb@DisplaySolutionstrue\@latex@warning{Showing solutions}}
 \gdef\SolutionsOnly{\DisplaySolutions\global\exb@solutionsonlytrue}
 \gdef\exb@currentPoints{0}
-\newif\ifexbank@if@needspace
-\global\exbank@if@needspacetrue
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
-default/.style = {  part problems = On,
+default/.style = {  part problems = true,
   tighten paragraphs = true,
   problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
@@ -177,7 +192,7 @@ default/.style = {  part problems = On,
   solution header={\large{\textbf{\@tr{Solution}:}}},
   exercise directory=.,
   figure root directory=\@exercisesDir,
-  style margins=On,
+  style margins=true,
   problem needs space=0.2\paperheight,
   no needspace/.is if={exbank@if@needspace},
   no needspace/.default = false
@@ -191,9 +206,9 @@ part problem header/.store in = \exbank@opt@partProblemHeader,
 solution header/.store in = \exbank@opt@solutionHeader,
 problem needs space/.store in = \exbank@opt@problemneedspace,
 part problem header suffix/.store in=\exb@partproblem@header@suffix,
-part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
+part problems/.is if = {exb@opt@partProblems},
 tighten paragraphs/.is if = {exb@opt@tightenparagraphs},
-style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
+style margins/.is if ={exb@opt@doMargins},
 switches/.cd,
   On/.initial = \@isTrue,
   on/.initial = \@isTrue,
@@ -365,7 +380,7 @@ switches/.cd,
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
 	\vspace*{\pMarginAbove}%
-  \strut\vadjust{\vbox to 0pt{\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
+  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
 	\vspace*{\the\dimexpr\baselineskip+\pMarginBelow}%
 }
 \At\EndProblem{%
@@ -383,7 +398,7 @@ switches/.cd,
 	\if\exb@showtags\isTrue%
 		\gdef\exb@postPPHead{\exb@printCurrentTags}%
 	\fi%
-\ifnum\pdfstrcmp{\exbank@opt@doMargins}{\@isTrue}=\z@\relax%
+\ifexb@opt@doMargins%
 \newbox\nobox%
 \bgroup
 \let\exb@partProblemHeader\exbank@opt@partProblemHeader
@@ -456,7 +471,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\Trigger\DecideProblemDisplay%
 	\@dinfo{problem:Executing - \string\showhideproblem}%
 	\showhideproblem{%
-		\if\exbank@opt@partProblems\isTrue
+		\ifexb@opt@partProblems%
       \ifexb@solutionsonly\else
 			 \Trigger\BeginPartproblem%
 			 \Trigger\VeryBeginPartproblem%
@@ -469,7 +484,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
   \ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
 }{\@dinfo{Ending problem env}%
 	\ifexb@DisplayCurrentProblem\relax%
-		\if\exbank@opt@partProblems\@isTrue\relax%
+		\ifexb@opt@partProblems\relax%
 			\Trigger\EndPartproblem%
 			\tighten@paragraph\fi%
 	\else
@@ -504,14 +519,14 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 }
 \g@addto@macro\AftersolutionComment{\ignorespaces}
 \def\intromargin#1{%
-	\if\exbank@opt@doMargins\@isTrue%
+	\ifexb@opt@doMargins\relax%
 		\gdef\endintromargin{\endlist\endgroup}%
 		\begingroup\list{}{\leftmargin#1}\item[]%
 	\else%
 		\relax\global\let\endintromargin=\relax\fi%
 }
 \generalcomment{intro}{\@dinfo{START intro ENV}%
-	\if\@countIntros\isTrue%
+	\ifexb@CountIntros%
 		\stepcounter{metacounter}%
 		\Trigger\DecideProblemDisplay%
 		\gdef\exb@pre@intro{}%
@@ -538,7 +553,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 		\intromargin{-1em}
 	\fi%
   \ifexb@solutionsonly\def\ProcessCutFile{}\fi
-}{	\if\@countIntros\isTrue%
+}{	\ifexb@CountIntros%
 		\Trigger\EndIntro%
 		\exb@ifshowproblem{\endintromargin}{}
 	\else
@@ -620,15 +635,14 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 \fi
 }
 \gdef\introarg{\@isFalse}
-\gdef\noheadarg{\@isFalse}
 \pgfkeys{ /makeset/.is family, /makeset,
- default/.style = {noheadarg=\@isFalse},
+ default/.style = {noheadarg=false},
  intro/.style = {introarg=\@isTrue},
  nointro/.style = {introarg=\@isFalse},
- nohead/.style = {noheadarg=\@isTrue},
- head/.style = {noheadarg=\@isFalse},
+ nohead/.style = {noheadarg=true},
+ head/.style = {noheadarg=false},
  introarg/.estore in = \introarg,
- noheadarg/.estore in = \noheadarg
+ noheadarg/.is if = {exb@noheadArg},
 }
 \gdef\makesetdefaults#1{%
 \edef\exb@setpgfkeys{{\unexpanded\expandafter{/makeset/default/.style = {#1}}}}%
@@ -637,7 +651,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 \pgfkeys{/makeset/override/.cd,
 intro/.code = {\gdef\introarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isTrue}},
 nointro/.code = {\gdef\introarg{\@isFalse}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isFalse}},
-nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @nohead\endcsname{\@isTrue}}
+nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @nohead\endcsname{\@isTrue}}
 }
 \gdef\@listOfSets{}
 \gdef\@spriteMode{\isFalse}
@@ -652,7 +666,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
     \gdef\introarg{\isTrue}
     \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
   \fi
-  \if\noheadarg\isTrue%
+  \ifexb@noheadArg%
     \ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
   \fi
   \ea\gdef\csname setlist@#2\endcsname{\exlist@protect{#3}}
@@ -732,7 +746,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
 \gdef\buildex#1{  \makeset{#1}{#1}
   \buildset{#1}
 }
-\gdef\@countIntros{\isFalse}
+\exb@CountIntrosfalse
 \gdef\exb@setpgf#1{%
 \edef\keystring{{/makeset,default,#1}}%
 \ea\pgfkeys\keystring}
@@ -741,7 +755,7 @@ nohead/.code = {\gdef\noheadarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSet
   \pgfkeys{/makeset/override/.cd, #1}
   \global\let\setName\exb@currentSetID%
   \gdef\exb@buildset@oarg{#1}
-  \@ifundefined{setlist@#2@intro}{\gdef\@countIntros{\isFalse}}{\gdef\@countIntros{\isTrue}}%
+  \@ifundefined{setlist@#2@intro}{\exb@CountIntrosfalse}{\exb@CountIntrostrue}%
   \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
   \ifcsname setkeys@\setName\endcsname%
   \xdef\skeys{\csname setkeys@#2\endcsname}%
