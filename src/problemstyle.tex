@@ -72,7 +72,7 @@
 	\vspace*{\pMarginAbove}%
 		% \@dlog{YO}%
 		% \global\exbset@nextprob@headerfalse%
-  \strut\vadjust{\vbox to 0pt{\if\exbank@opt@doMargins\@isTrue\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
+  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
 	\vspace*{\the\dimexpr\baselineskip+\pMarginBelow}%
 }
 \At\EndProblem{%
@@ -97,7 +97,7 @@
 %:$triggers.=\Trigger\PartProblemHeaderSuffix:\\ Triggers after the part problem header.
 %:$triggers.= anything added to this trigger will happen within the header
 
-\ifnum\pdfstrcmp{\exbank@opt@doMargins}{\@isTrue}=\z@\relax%
+\ifexb@opt@doMargins%
 % \if\exbank@opt@doMargins\@isTrue
 %TODO: BADLINE BELOW:
 \newbox\nobox%

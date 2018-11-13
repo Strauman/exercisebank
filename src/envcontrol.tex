@@ -79,7 +79,7 @@
 	\@dinfo{problem:Executing - \string\showhideproblem}%
 	\showhideproblem{%
 		% If the user haven't turned off part problems
-		\if\exbank@opt@partProblems\isTrue
+		\ifexb@opt@partProblems%
       % Don't trigger part problem header if only solutions to be shown
       \ifexb@solutionsonly\else
 			 \Trigger\BeginPartproblem%
@@ -94,7 +94,7 @@
   \ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
 }{\@dinfo{Ending problem env}%
 	\ifexb@DisplayCurrentProblem\relax%
-		\if\exbank@opt@partProblems\@isTrue\relax%\ifexb@opthides\else
+		\ifexb@opt@partProblems\relax%\ifexb@opthides\else
 			\Trigger\EndPartproblem%
 			\tighten@paragraph\fi%
 	\else
@@ -145,7 +145,7 @@
 %\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
 %:-
 \def\intromargin#1{%
-	\if\exbank@opt@doMargins\@isTrue%
+	\ifexb@opt@doMargins\relax%
 		\gdef\endintromargin{\endlist\endgroup}%
 		\begingroup\list{}{\leftmargin#1}\item[]%
 	\else%
@@ -154,7 +154,7 @@
 \generalcomment{intro}{\@dinfo{START intro ENV}%
 	%% Decide wether to treat intro as problem in
 	%% include/exclude (except from \Trigger\BeginProblem ofc)
-	\if\@countIntros\isTrue%
+	\ifexb@CountIntros%
 		\stepcounter{metacounter}%
 		\Trigger\DecideProblemDisplay%
 		% \begingroup%
@@ -185,7 +185,7 @@
   % Special case: solutions only
   \ifexb@solutionsonly\def\ProcessCutFile{}\fi
 }{
-	\if\@countIntros\isTrue%
+	\ifexb@CountIntros%
 		\Trigger\EndIntro%
 		\exb@ifshowproblem{\endintromargin}{}
 	\else
