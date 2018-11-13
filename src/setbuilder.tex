@@ -61,11 +61,11 @@
 %% Makeset arg handler
 \pgfkeys{
  /makeset/.is family, /makeset,
- default/.style = {noheadarg=\@isFalse},
+ default/.style = {noheadarg=false},
  intro/.style = {introarg=\@isTrue},
  nointro/.style = {introarg=\@isFalse},
- nohead/.style = {noheadarg=\@isTrue},
- head/.style = {noheadarg=\@isFalse},
+ nohead/.style = {noheadarg=true},
+ head/.style = {noheadarg=false},
  introarg/.estore in = \introarg,
  noheadarg/.is if = {exb@noheadArg},
 }
