@@ -1,15 +1,31 @@
 %!TEX root = main.tex
-% TODO: check the @b@DisplaySolutions
 \makeatletter
+\def\g@newif#1{%
+  \count@\escapechar \escapechar\m@ne
+    \global\let#1\iffalse%
+    \g@if#1\iftrue%
+    \g@if#1\iffalse%
+\escapechar\count@}
+\def\g@if#1#2{%
+  \expandafter\def\csname\expandafter\@gobbletwo\string#1%
+  \expandafter\@gobbletwo\string#2\endcsname%
+  {\global\let#1#2}%
+}
 \global\newif\ifexbset@nextprob@header
 \global\exbset@nextprob@headertrue
 \newif\ifexb@opthides
 % \global\exb@opthidestrue
-\global\newif\ifexb@b@nextprob@header
-\global\exb@b@nextprob@headerfalse
-\global\newif\ifexb@solutionsonly
-\global\newif\ifexb@isFirstProblem
-\global\newif\ifexb@opt@tightenparagraphs
-\global\newif\ifexb@DisplaySolutions
-\global\newif\ifexb@DisplayCurrentSolution
-\global\newif\ifexb@DisplayCurrentProblem
+\g@newif\ifexb@b@nextprob@header
+\g@newif\ifexb@solutionsonly
+\g@newif\ifexb@isFirstProblem
+\g@newif\ifexb@opt@tightenparagraphs
+\g@newif\ifexb@DisplaySolutions
+\g@newif\ifexb@DisplayCurrentSolution
+\g@newif\ifexb@DisplayCurrentProblem
+\g@newif\ifexbank@if@needspace
+\g@newif\ifexb@opt@partProblems
+\g@newif\ifexb@opt@doMargins
+\g@newif\ifexb@CountIntros
+\g@newif\ifexb@noheadArg
+\exb@b@nextprob@headerfalse
+\exbank@if@needspacetrue

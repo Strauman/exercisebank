@@ -35,8 +35,6 @@
 %:§config
 %:-
 % ---- \exercisebanksetup ----- %
-\newif\ifexbank@if@needspace
-\global\exbank@if@needspacetrue
 \pgfkeys{
 /exbanksetup/.is family, /exbanksetup,
 default/.style = {
@@ -65,9 +63,9 @@ solution header/.store in = \exbank@opt@solutionHeader,
 problem needs space/.store in = \exbank@opt@problemneedspace,
 part problem header suffix/.store in=\exb@partproblem@header@suffix,
 % Bools
-part problems/.style = {switches/#1/.get = \exbank@opt@partProblems},
+part problems/.is if = {exb@opt@partProblems},
 tighten paragraphs/.is if = {exb@opt@tightenparagraphs},
-style margins/.style={switches/#1/.get = \exbank@opt@doMargins},
+style margins/.is if ={exb@opt@doMargins},
 % True/False
 switches/.cd,
 % True
