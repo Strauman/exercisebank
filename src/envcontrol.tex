@@ -30,7 +30,7 @@
 %%      ^ This should be fixed!
 %%NB: DOC for \DisplaySolutions are moved down
 \AtBeginDocument{
-	\ifexb@DisplaySolutions\isFalse
+	\ifexb@DisplaySolutions\else
 		\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
 	\fi
 }

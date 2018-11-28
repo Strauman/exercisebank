@@ -892,4 +892,5 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 \fi
 \fi
 }
-\gdef\HideTags#1{\xdef\exb@hidetaglist{#1}}
+\gdef\HideTags#1{\xdef\exb@hidetaglist{\unexpanded\expandafter{\exb@hidetaglist},#1}}
+\gdef\ShowAllTags#1{\gdef\exb@hidetaglist{}}
