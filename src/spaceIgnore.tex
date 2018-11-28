@@ -1,0 +1,29 @@
+%!TEX root = main.tex
+\makeatletter
+\def\exb@rememberCC#1{%
+	\edef\exbtmp@charcode{\the\numexpr#1}%
+	\expandafter\xdef\csname exb@remcc@\exbtmp@charcode\endcsname{\the\catcode#1}%
+}
+\def\exb@ignoreCC#1{%
+	\edef\exbtmp@charcode{\the\numexpr#1}
+	\exb@rememberCC{\exbtmp@charcode}%
+	\catcode\exbtmp@charcode=9%
+}
+\def\exb@resetCC#1{
+	\catcode#1=\csname exb@remcc@\the\numexpr#1\endcsname
+}
+% Ignores spaces that are not inline spaces
+% (newlines and tabs)
+\def\ignoreOutlineSpaces{%
+	\exb@ignoreCC{10}%   line feed (New line)
+	\exb@ignoreCC{11}%   Vertical Tab
+	\exb@ignoreCC{12}%   Form Feed
+	\exb@ignoreCC{13}%   Carriage Return
+}
+% Reset space ignore
+\def\obeyOutlineSpaces{%
+	\exb@resetCC{10}%
+	\exb@resetCC{11}%
+	\exb@resetCC{12}%
+	\exb@resetCC{13}\ignorespaces%
+}

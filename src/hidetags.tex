@@ -11,4 +11,8 @@
 %:=\HideTags{list}
 %:Hide all exercises containing the list of tags when building a set.
 %:-
-\gdef\HideTags#1{\xdef\exb@hidetaglist{#1}}
+\gdef\HideTags#1{\xdef\exb@hidetaglist{\unexpanded\expandafter{\exb@hidetaglist},#1}}
+%:=\ShowAllTags
+%:Reset tags set by \HideTags
+%:-
+\gdef\ShowAllTags{\gdef\exb@hidetaglist{}}
