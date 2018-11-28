@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3-experimentalb110 - 2018/11/13
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/13) build 110
+%% exercisebank v0.2.3-experimentalb111 - 2018/11/28
+%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/28) build 111
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -98,6 +98,7 @@
 \begingroup\lccode`\|=`\\
 \lowercase{\endgroup\def\removebs#1{\if#1|\else#1\fi}}
 \newcommand{\macroname}[1]{\expandafter\removebs\string#1}
+% \def\obeyifnextspace{\ltx@ifnextchar{ }\relax\relax}
 \def\dac#1{\docAuxCommand{\macroname{#1}}}
 \let\mdac\dac
 
@@ -119,7 +120,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3-experimental{\\[-0.5em]\footnotesize(build 110)}}}
+\title{{exercisebank - manual\\ v0.2.3-experimental{\\[-0.5em]\footnotesize(build 111)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -308,7 +309,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3-experimental\\2018/11/13 }
+\defnew{v0.2.3-experimental\\2018/11/28 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -413,7 +414,7 @@ To be used in \refCom{makeset}
 \defnew{v0.2.1\\2018/09/24 }
 \end{docCommand}
 \begin{docCommand}{buildset}{\oarg{intro|nohead|nointro}\marg{setname}}\addcontentsline{toc}{subsubsection}{\refCom{buildset}}
-\updated{v0.2.3-experimental\\2018/11/13 }
+\updated{v0.2.3-experimental\\2018/11/28 }
 This command runs the set given. The set has do be defined by \dac{makeset}. E.eg
 \begin{dispListing}
 \makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -466,6 +467,10 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
 \begin{docCommand}{HideTags}{\marg{list}}\addcontentsline{toc}{subsubsection}{\refCom{HideTags}}
 \defnew{v0.2.1\\2018/09/24 }
 Hide all exercises containing the list of tags when building a set.
+\end{docCommand}
+\begin{docCommand}{ShowAllTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowAllTags}}
+
+Reset tags set by \dac{HideTags}
 \end{docCommand}
 \filbreak\subsection{Configuration and options}
 You can do a lot of configurations on this package, and probably
@@ -591,7 +596,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3-experimental\\2018/11/13 }
+\updated{v0.2.3-experimental\\2018/11/28 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -660,7 +665,7 @@ has been printed. It is also triggered after the PP header for SolutionsOnly.
 
 \end{docCommand}
 \begin{docCommand}{ClearHook}{}\addcontentsline{toc}{subsubsection}{\refCom{ClearHook}}
-\defnew{v0.2.3-experimental\\2018/11/13 }
+\defnew{v0.2.3-experimental\\2018/11/28 }
  Deletes all information from a hook.
  Note that if preceded by \dac{rigid}, then the
  ENTIRE hook will be cleared.
@@ -750,6 +755,7 @@ Distance above Problem \# header
 \addcontentsline{mac}{macro}{\refCom{DeclareExerciseCommand}}{}
 \addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
 \addcontentsline{mac}{macro}{\refCom{HideTags}}{}
+\addcontentsline{mac}{macro}{\refCom{ShowAllTags}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowFilenames}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowNumbers}}{}
 \addcontentsline{mac}{macro}{\refCom{ShowTags}}{}
@@ -854,7 +860,7 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3-experimental 2018/11/13}
+\newversion{v0.2.3-experimental 2018/11/28}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
@@ -863,6 +869,9 @@ Distance above Problem \# header
     \change{Fixed bug where part problem header repeats if solution is itemize.}
     \change{Introduced the \dac\rigid command for the \dac\At functionality. Also the \dac\ClearHook for deleting a hook}
     \change{\dac\buildset now gives error if set does not exist.}
+    \change{Made \dac\HideTags cummulative.}
+    \change{Created \dac\ShowAllTags for clearing tags list}
+    \change{Raises error when pdfTeX(or pdfLaTeX) is not used}
 \chlogtable
 
 

@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/13) - build 110
+%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/28) - build 111
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,17 +13,43 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/11/13 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/11/28 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-experimental - Build 110}
+\def\exercisebankversion{v0.2.3-experimental - Build 111}
 \PackageWarningNoLine{exercisebank-v0.2.3-experimental}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
+\ifcsname pdfstrcmp\endcsname\else
+\PackageError{exercisebank-v0.2.3-experimental}{Exercisebank currently only works with pdfLaTeX}{}\stop
+\fi
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
 }
 \@ifundefined{exercisesDir}{\gdef\@exercisesDir{.}
 }{}
 \global\let\incl = \input
+\def\exb@rememberCC#1{%
+	\edef\exbtmp@charcode{\the\numexpr#1}%
+	\expandafter\xdef\csname exb@remcc@\exbtmp@charcode\endcsname{\the\catcode#1}%
+}
+\def\exb@ignoreCC#1{%
+	\edef\exbtmp@charcode{\the\numexpr#1}
+	\exb@rememberCC{\exbtmp@charcode}%
+	\catcode\exbtmp@charcode=9%
+}
+\def\exb@resetCC#1{	\catcode#1=\csname exb@remcc@\the\numexpr#1\endcsname
+}
+\def\ignoreOutlineSpaces{%
+	\exb@ignoreCC{10}%
+	\exb@ignoreCC{11}%
+	\exb@ignoreCC{12}%
+	\exb@ignoreCC{13}%
+}
+\def\obeyOutlineSpaces{%
+	\exb@resetCC{10}%
+	\exb@resetCC{11}%
+	\exb@resetCC{12}%
+	\exb@resetCC{13}\ignorespaces%
+}
 \def\g@newif#1{%
   \count@\escapechar\escapechar\m@ne
     \global\let#1\iffalse%
@@ -447,7 +473,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 \gdef\isTrue{1}
 \global\exb@DisplayCurrentProblemtrue
 \gdef\@displayMetaCounter{\isFalse}
-\AtBeginDocument{	\ifexb@DisplaySolutions\isFalse
+\AtBeginDocument{	\ifexb@DisplaySolutions\else
 		\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
 	\fi
 }
@@ -893,4 +919,4 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 \fi
 }
 \gdef\HideTags#1{\xdef\exb@hidetaglist{\unexpanded\expandafter{\exb@hidetaglist},#1}}
-\gdef\ShowAllTags#1{\gdef\exb@hidetaglist{}}
+\gdef\ShowAllTags{\gdef\exb@hidetaglist{}}
