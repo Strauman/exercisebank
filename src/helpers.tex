@@ -116,6 +116,7 @@
 	\global\exb@isintersectionfalse%
 	\edef\listarg{#1}%
 	\ifx\listarg\empty\@dlog{RELAX}#4\else%
+	% \ifnum\pdfstrcmp{\listarg}{}=\z@\relax\@dlog{RELAX}#4\else
 	\readlist*\needlelist{#1}%
 		\foreachitem\needle\in\needlelist{%
 			\exb@isin{\needle}{#2}{\global\exb@isintersectiontrue}{}%
