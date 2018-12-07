@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/11/28) - build 111
+%% The LaTeX package exercisebank - version v0.2.3 (2018/12/03) - build 112
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,14 +13,14 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/11/28 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2018/12/03 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-experimental - Build 111}
-\PackageWarningNoLine{exercisebank-v0.2.3-experimental}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\def\exercisebankversion{v0.2.3 - Build 112}
+\PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \ifcsname pdfstrcmp\endcsname\else
-\PackageError{exercisebank-v0.2.3-experimental}{Exercisebank currently only works with pdfLaTeX}{}\stop
+\PackageError{exercisebank-v0.2.3}{Exercisebank currently only works with pdfLaTeX}{}\stop
 \fi
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
 }
@@ -50,6 +50,8 @@
 	\exb@resetCC{12}%
 	\exb@resetCC{13}\ignorespaces%
 }
+\let\ignoreOutlineSpaces\relax
+\let\obeyOutlineSpaces\relax
 \def\g@newif#1{%
   \count@\escapechar\escapechar\m@ne
     \global\let#1\iffalse%
@@ -114,7 +116,7 @@
 			\fi%
 }%
 	\fi}
-\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-experimental}}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3}}
 \gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
@@ -171,7 +173,7 @@
 \def\exb@intersection@any#1#2#3#4{%
 	\global\exb@isintersectionfalse%
 	\edef\listarg{#1}%
-	\ifx\listarg\empty\@dlog{RELAX}#4\else%
+	\ifnum\pdfstrcmp{\listarg}{}=\z@\relax\@dlog{RELAX}#4\else
 	\readlist*\needlelist{#1}%
 		\foreachitem\needle\in\needlelist{%
 			\exb@isin{\needle}{#2}{\global\exb@isintersectiontrue}{}%
@@ -458,6 +460,9 @@ reset pp head/.code={\global\exb@b@nextprob@headerfalse},
 solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/hide=true}\fi}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}
+\newcounter{exb@cutfilecounter}
+\gdef\CommentCutFile{exb-\theexb@cutfilecounter.cut}
+\gdef\do@ProcessCutFile{\input{\CommentCutFile}\global\stepcounter{exb@cutfilecounter}\theexb@cutfilecounter\relax}
 \At\EndProblem{%
 	\ifexb@opt@tightenparagraphs\relax%
 		\ifexb@DisplaySolutions%
@@ -477,7 +482,6 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 		\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
 	\fi
 }
-\global\let\do@ProcessCutFile = \ProcessCutFile
 \newif\ifexb@isdisplaying
 \newif\ifexb@hidenextsol
 \global\exb@hidenextsolfalse
@@ -491,7 +495,9 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
 }
 \generalcomment{problem}{%
-	\let\ifexb@DisplayCurrentSolution\ifexb@DisplaySolutions
+	\ifexb@DisplaySolutions
+	\global\exb@DisplayCurrentSolutiontrue\else\global\exb@DisplayCurrentSolutionfalse
+	\fi
 	\stepcounter{metacounter}%
 	\@dinfo{problem: Triggering \string\DecideProblemDisplay}%
 	\Trigger\DecideProblemDisplay%
