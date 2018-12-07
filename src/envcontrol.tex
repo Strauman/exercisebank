@@ -3,7 +3,10 @@
 % except from outsourcing stuff with \At and \Trigger:
 % Namely deciding whether or not a problem, intro and/or solution should
 % displayed
-
+\newcounter{exb@cutfilecounter}
+\gdef\CommentCutFile{exb-\theexb@cutfilecounter.cut}
+\gdef\do@ProcessCutFile{\input{\CommentCutFile}\global\stepcounter{exb@cutfilecounter}\theexb@cutfilecounter\relax}
+% \global\let\do@ProcessCutFile = \ProcessCutFile
 \makeatletter
 % \At\EndProblem{\tighten@paragraph@solutions\tighten@paragraph}
 \At\EndProblem{%
@@ -34,8 +37,6 @@
 		\@latex@warning{Hiding solutions. Show them with \string\DisplaySolutions}
 	\fi
 }
-
-\global\let\do@ProcessCutFile = \ProcessCutFile
 %% Problems
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
@@ -69,7 +70,9 @@
 % :-
 \generalcomment{problem}{%
 	\makeatletter
-	\let\ifexb@DisplayCurrentSolution\ifexb@DisplaySolutions
+	\ifexb@DisplaySolutions
+	\global\exb@DisplayCurrentSolutiontrue\else\global\exb@DisplayCurrentSolutionfalse
+	\fi
 	\stepcounter{metacounter}%
 	%% BeginProblemHard is before regardless whether
 	%% the problem is included or not.
