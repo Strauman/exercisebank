@@ -4,9 +4,9 @@
 % Namely deciding whether or not a problem, intro and/or solution should
 % displayed
 \newcounter{exb@cutfilecounter}
-\gdef\CommentCutFile{exb-\theexb@cutfilecounter.cut}
-\gdef\do@ProcessCutFile{\input{\CommentCutFile}\global\stepcounter{exb@cutfilecounter}\theexb@cutfilecounter\relax}
-% \global\let\do@ProcessCutFile = \ProcessCutFile
+% \gdef\CommentCutFile{exb-\theexb@cutfilecounter.cut}
+% \gdef\do@ProcessCutFile{\input{\CommentCutFile}\global\stepcounter{exb@cutfilecounter}\theexb@cutfilecounter\relax}
+\global\let\do@ProcessCutFile = \ProcessCutFile
 \makeatletter
 % \At\EndProblem{\tighten@paragraph@solutions\tighten@paragraph}
 \At\EndProblem{%
@@ -95,7 +95,8 @@
 	}%
   % Special case: solutions only
   \ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
-}{\@dinfo{Ending problem env}%
+}{%
+\@dinfo{Ending problem env}%
 	\ifexb@DisplayCurrentProblem\relax%
 		\ifexb@opt@partProblems\relax%\ifexb@opthides\else
 			\Trigger\EndPartproblem%
@@ -112,11 +113,12 @@
 %: \!begin{marker}\end{solution} has to be on it's own line without any leading spaces!\!end{marker}
 %:-
 %% Solutions
-\generalcomment{solution}{\@dinfo{START solution ENV}%
+\generalcomment{solution}{%
+\@dinfo{START solution ENV}%
 	\Trigger\AtBeginSolutionHard
 	\begingroup
 	\ifexb@DisplaySolutions%
-		\ifexb@DisplayCurrentProblem%
+		\ifexb@DisplayCurrentProblem\else%
 			\global\exb@DisplayCurrentSolutionfalse
 		\fi
 	\fi
