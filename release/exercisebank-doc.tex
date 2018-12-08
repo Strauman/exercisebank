@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3-experimentalb114 - 2018/12/08
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2018/12/08) build 114
+%% exercisebank v0.2.3-prereleaseb115 - 2018/12/08
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/12/08) build 115
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -120,7 +120,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3-experimental{\\[-0.5em]\footnotesize(build 114)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 115)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -309,7 +309,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3-experimental\\2018/12/08 }
+\defnew{v0.2.3-prerelease\\2018/12/08 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -414,7 +414,7 @@ To be used in \refCom{makeset}
 \defnew{v0.2.1\\2018/09/24 }
 \end{docCommand}
 \begin{docCommand}{buildset}{\oarg{intro|nohead|nointro}\marg{setname}}\addcontentsline{toc}{subsubsection}{\refCom{buildset}}
-\updated{v0.2.3-experimental\\2018/12/08 }
+\updated{v0.2.3-prerelease\\2018/12/08 }
 This command runs the set given. The set has do be defined by \dac{makeset}. E.eg
 \begin{dispListing}
 \makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -596,7 +596,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3-experimental\\2018/12/08 }
+\updated{v0.2.3-prerelease\\2018/12/08 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -665,7 +665,7 @@ has been printed. It is also triggered after the PP header for SolutionsOnly.
 
 \end{docCommand}
 \begin{docCommand}{ClearHook}{}\addcontentsline{toc}{subsubsection}{\refCom{ClearHook}}
-\defnew{v0.2.3-experimental\\2018/12/08 }
+\defnew{v0.2.3-prerelease\\2018/12/08 }
  Deletes all information from a hook.
  Note that if preceded by \dac{rigid}, then the
  ENTIRE hook will be cleared.
@@ -860,7 +860,7 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3-experimental 2018/12/08}
+\newversion{v0.2.3-prerelease 2018/12/08}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
