@@ -2,7 +2,7 @@
 \def\exb@hidetaglist{}
 \At\DecideProblemDisplay{
 \ifexb@DisplayCurrentProblem\relax%
-\ifx\exb@hidetaglist\relax\else
+\ifx\exb@hidetaglist\empty\relax\else
 \exb@intersection@any{\exb@currentTags}{\exb@hidetaglist}{\global\exb@opthidestrue}{}%
 \fi
 \fi
