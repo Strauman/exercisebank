@@ -80,7 +80,9 @@ function finalize_paths(){
 
 cd $sourceDir
 rm -rf "$mainDir/$packagename/"
+if [ $build_examples = true ]; then
 make_example
+fi
 readme_tree
 make_github_readme
 finalize_paths
