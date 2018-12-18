@@ -116,7 +116,7 @@
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\ignorespaces}%
+\par\ignorespaces}%
 
 \At\EndPartproblem{%
 	% \egroup%
