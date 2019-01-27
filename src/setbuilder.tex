@@ -111,7 +111,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %: \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
 %:! \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
 %:-
-\global\let\exlist@protect\noexpand
+\global\let\exlist@protect\unexpanded
 \newcommand\makeset[3][]{
   \xdef\thissetid{#2}
   \ea\xdef\csname setkeys@\thissetid\endcsname{#1}
@@ -191,6 +191,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %:!  \buildset{myExerciseSet}
 %:!\!end{document}
 %:-
+
 \newcommand\buildset[2][]{%
   \xdef\exb@currentSetID{#2}%
   \pgfkeys{/makeset/override/.cd, #1}
@@ -226,7 +227,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
   %% generated in makeset
   \let\exlist@protect\unexpanded%
   \edef\exbank@setlist{\csname setlist@#2\endcsname}%
-  \let\exlist@protect\noexpand%
+  \let\exlist@protect\unexpanded%
   \if\@spriteMode\isFalse%
     \if\exb@frontpage\@isFalse\else\input{\exb@frontpage}\fi
     \Trigger\StartBuildset%
@@ -275,6 +276,14 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %% Loop through list
   \readlist*\setlist\exbank@setlist%
   \foreachitem\exerciseFileInfo\in\setlist{%
+    %% Sanitize \exerciseFileInfo (e.g. for underscores)
+    %% because \exerciseFileInfo will be printed (with \nullfont)
+    %% TODO: Remove this when \@delegateFileInfo is tidied up
+    \bgroup%
+      \catcode`\_=11%
+      \edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
+      \scantokens\expandafter{\redef}%
+    \egroup%
     \def\continueLoop{\isTrue}%
     %% ppList is \emptyList (0) if it's not a list
     \gdef\ppList{\emptyList}%
@@ -288,6 +297,8 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
     %that are to be sent to \exbank@setEnv. That is from \exclude or \select
     \let\ex@protect\unexpanded%
     \edef\exerciseFileInfo{\exerciseFileInfo}%
+    % Note that this command will _print_ \exerciseFileInfo (with \nullfont)
+    % Which is why \exerciseFileInfo needs to be sanitized
     \ea\@delegateFileInfo\exerciseFileInfo\egroup%
     \Trigger\InputExercise%
     \if\continueLoop\isTrue%
@@ -304,6 +315,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
         \Trigger\BeginProblem%
       \fi%
     \fi%
+
     %% \VeryBeginProblem is only for stuff that
     %% is intended to be a part of the problem
     %% e.g. problem header is using this.
