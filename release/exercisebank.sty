@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2018/12/18) - build 116
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/01/27) - build 117
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2018/12/18 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/01/27 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 116}
+\def\exercisebankversion{v0.2.3-prerelease - Build 117}
 \PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -691,7 +691,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 \gdef\exbank@spriteSets{\emptyList}
 \long\gdef\spritesets#1{  \gdef\exbank@spriteSets{#1}
 }
-\global\let\exlist@protect\noexpand
+\global\let\exlist@protect\unexpanded
 \newcommand\makeset[3][]{  \xdef\thissetid{#2}
   \ea\xdef\csname setkeys@\thissetid\endcsname{#1}
   \pgfkeys{/makeset, default, #1}%
@@ -800,7 +800,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 }{}
   \let\exlist@protect\unexpanded%
   \edef\exbank@setlist{\csname setlist@#2\endcsname}%
-  \let\exlist@protect\noexpand%
+  \let\exlist@protect\unexpanded%
   \if\@spriteMode\isFalse%
     \if\exb@frontpage\@isFalse\else\input{\exb@frontpage}\fi
     \Trigger\StartBuildset%
@@ -827,6 +827,11 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 }
   \readlist*\setlist\exbank@setlist%
   \foreachitem\exerciseFileInfo\in\setlist{%
+    \bgroup%
+      \catcode`\_=11%
+      \edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
+      \scantokens\expandafter{\redef}%
+    \egroup%
     \def\continueLoop{\isTrue}%
     \gdef\ppList{\emptyList}%
     \setcounter{metacounter}{0}%
