@@ -10,14 +10,23 @@
 %% The \makeset{setname}{exercises,to,include} picks exercises from the exercises-folder
 %% The \exclude{setname}{1,2,3,...,9} excludes partproblems 1,...,9 from setname
 \makeset{electro}{capacitance}
-\makeset{first}{firstexercise}
+\makeset{first}{secondexercise}
 % \DeclareExerciseCommand\extitle[1]{\strut{\vadjust{\vbox to 0pt{\hskip\pMarginLeft{\Large\bfseries #1}}}}%}
-\DeclareExerciseCommand\problemtitle[1]{\stepcounter{problemcounter}%
-	\strut{\vadjust{\vbox to 0pt{\hskip\pMarginLeft{\Large{\bfseries Exercice \theproblemcounter.} #1}}}}%
+% \DisplaySolutions
+\newcommand\exercise{
+\ifexb@isFirstProblem%
+    \global\exb@isFirstProblemfalse%
+  \else%
+    \Trigger\EndProblem%
+  \fi%
+\par
+  \Trigger\BeginProblem%
+  \Trigger\VeryBeginProblem%
 }
-\DisplaySolutions
-% \makeset[nohead]{2}{firstexercise, \exclude{secondexercise}{1,2}, \select{thirdexercise}{1,2}, \exclude{thirdexercise}{1,2}}
-\makeset{2}{firstexercise}
+\xdef\problem{\unexpanded{\exercise}\unexpanded\expandafter{\problem}}
+\makeset[nohead]{2}{first_exercise}
+% \makeset[nohead]{2}{secondexercise}
 \begin{document}
 	\buildset{2}
+~
 \end{document}
