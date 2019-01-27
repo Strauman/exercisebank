@@ -9,7 +9,7 @@ This is the documentation for version v0.2.3-prerelease, and might not be the sa
 
 # Versions
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
-GitHub at version: v0.2.3-prerelease (2018/12/18) build 116
+GitHub at version: v0.2.3-prerelease (2019/01/27) build 117
 
 CTAN at version: v0.2.2 (2018/10/04) build 97
 
@@ -25,20 +25,24 @@ A build has no major changes in the core code (could be changes in documentation
 Check out [`documentation-doc.tex`](https://github.com/Strauman/exerciseBank/blob/master/documentation-doc.tex) for instructions on how to document the code. All the documentation is automatically generated from the comments in the code using a custom `perl`-script. This file shows examples on how to document the code so that it shows up in the documentation properly.
 All of the code are distributed within the `src`-folder. Here is an overview. The `src/packaging/` directory only contains info for building the package, but used for "compiling" it down to `exercisebank.sty` and documenting.
 ### `src/`:
-- [`at.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/at.tex) contains definitions of the `\At` and `\Trigger` command
+- [`at.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/at.tex) contains definitions of the `\At` and `\Trigger` commands
 - [`envcontrol.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/envcontrol.tex) contains everything to do with controlling environments except from "outsourcing" stuff with `\At` and `\Trigger`: Namely deciding whether or not a problem, intro and/or solution should displayed (which is done in `setbuilder.tex`)
-- [`helpers.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/helpers.tex) contains the definition of the `\strif` and `\isin` macro
-- [`i18n.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/i18n.tex) contains everything to do with translation logic.
-- [`main.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/main.tex) is the main file for building during development
+- [`exercisebank.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/exercisebank.tex) is the "main" file. It does most of the including of other files.
+- [`exercisecommands.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/exercisecommands.tex) contains the definition for `\DeclareExerciseCommand`, which are commands that can be used in the `\makeset` when including problems. Like e.g. `\phead`.
+- [`helpers.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/helpers.tex) contains helping "functions". For example the definition of the `\strif`, `\exb@isin` and `\exb@intersetion@any` macro
+- [`hidetags.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/hidetags.tex) contains the code for `\HideTags` and `\ShowAllTags` commands.
+- [`i18n.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/i18n.tex) contains everything to do with translation logic (`\translateExBank`).
+- [`ifs.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/ifs.tex) contains definitions and default value for every `\if`-statement.
+- [`main.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/main.tex) is the main file for building during development.
 - [`packageoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packageoptions.tex) contains all the macros that are intended for user configuration
 - [`packages.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packages.tex) contains all the external packages used.
 - [`pathcontrol.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pathcontrol.tex) contains the logic that makes figures available within scope of exercise folder.
 - [`pointsystem.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pointsystem.tex) contains the logic and definition of the point system.
 - [`pplabel.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/pplabel.tex)  contains definition of custom labeling and referring of problems.
-- [`preamble.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/preamble.tex) contains the preamble logic. Mostly including other files.
 - [`problemoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/problemoptions.tex) contains definition of the `\nextproblem`-command and it's options.
 - [`problemstyle.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/problemstyle.tex)  contains `\At`-commands that are responsible for formatting exercise headers and exercise-related styles.
 - [`setbuilder.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/setbuilder.tex) contains the logic of the set making and set building. It also decides whether or not a problem,intro and/or solution should be built
+- [`spaceignore.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/spaceignore.tex) contains the code for ignoring newline spaces in the code. Not active yet though.
 - [`squeeze.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/squeeze.tex) contains the style for which `\sprite` applies with `\squeeze`. It "squeezes" everything so that more stuff fits on the pages
 - (`exbankpack.tex`) is the file that is built when making all these files into packaging
 #### `src/packaging`
