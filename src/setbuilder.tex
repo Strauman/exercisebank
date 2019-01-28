@@ -282,7 +282,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
     \bgroup%
       \catcode`\_=11%
       \edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
-      \scantokens\expandafter{\redef}%
+      % \scantokens\expandafter{\redef}%
     \egroup%
     \def\continueLoop{\isTrue}%
     %% ppList is \emptyList (0) if it's not a list
