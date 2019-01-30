@@ -24,7 +24,7 @@ https://github.com/Strauman/exercisebank/
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.3-prerelease (2019/01/28) - build 118
+The LaTeX package exercisebank - version v0.2.3 (2019/01/30) - build 119
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman
