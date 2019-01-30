@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/01/28) - build 118
+%% The LaTeX package exercisebank - version v0.2.3 (2019/01/30) - build 119
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,14 +13,14 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2019/01/28 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/01/30 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 118}
-\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\def\exercisebankversion{v0.2.3 - Build 119}
+\PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \ifcsname pdfstrcmp\endcsname\else
-\PackageError{exercisebank-v0.2.3-prerelease}{Exercisebank currently only works with pdfLaTeX}{}\stop
+\PackageError{exercisebank-v0.2.3}{Exercisebank currently only works with pdfLaTeX}{}\stop
 \fi
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
 }
@@ -116,7 +116,7 @@
 			\fi%
 }%
 	\fi}
-\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3}}
 \gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
@@ -920,8 +920,27 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 \setcounter{exb@points}{0}
 \providecommand\totalpoints{}
 \nextproblem{points/.store in=\exb@currentPoints}
-\At\BeginPartproblem{\addtocounter{exb@points}\exb@currentPoints}
+\At\BeginPartproblem{%
+\addtocounter{exb@points}{\exb@currentPoints}%
+}
 \At\EndPartproblem{\gdef\exb@currentPoints{0}}
+\providecommand\exercisepoints{}
+\newcounter{exb@tmp@exercisepoints}
+\setcounter{exb@tmp@exercisepoints}{0}
+\At\VeryBeginProblem{	\xdef\exb@expoints@macname{exb@exercisepoints@\the\c@problemcounter}
+	\ifcsname\exb@expoints@macname\endcsname%
+		\xdef\exercisepoints{\csname\exb@expoints@macname\endcsname}
+	\else%
+		\gdef\exercisepoints{}
+	\fi
+	\setcounter{exb@tmp@exercisepoints}{0}
+}
+\At\BeginPartproblem{%
+\addtocounter{exb@tmp@exercisepoints}{\exb@currentPoints}%
+}
+\At\EndProblem{%
+\immediate\write\@auxout{\string\expandafter\string\gdef\string\csname\space exb@exercisepoints@\the\numexpr\the\c@problemcounter\endcsname{\the\c@exb@tmp@exercisepoints}}%
+}
 \def\exb@hidetaglist{}
 \At\DecideProblemDisplay{\ifexb@DisplayCurrentProblem\relax%
 \ifx\exb@hidetaglist\empty\relax\else
