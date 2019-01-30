@@ -40,7 +40,44 @@
 %:$problemKeys.= you can retrieve the total points using \totalpoints
 %:$problemKeys.=}
 %:-
+%:§problemopts
+%:=\totalpoints
+%:Contains the total number of points for all exercises in the current set
+%:-
 \nextproblem{points/.store in=\exb@currentPoints}
 % \@dlog{\string\exbank@opt@partProblemHeader\meaning\exbank@opt@partProblemHeader}
-\At\BeginPartproblem{\addtocounter{exb@points}\exb@currentPoints}
+\At\BeginPartproblem{%
+\addtocounter{exb@points}{\exb@currentPoints}%
+}
 \At\EndPartproblem{\gdef\exb@currentPoints{0}}
+
+%:=\exercisepoints
+%: Contains the total number of points in the current exercise (or "Problem")
+%:-
+\providecommand\exercisepoints{}
+% Setting up \exercisepoints (for getting sum of part problem points in exercise)
+\newcounter{exb@tmp@exercisepoints}
+\setcounter{exb@tmp@exercisepoints}{0}
+% First reset counters and check if the aux file has defined these current
+% exercisepoints. Points for a given exercise is saved in the auxfile
+% under \exb@exercisepoint@\theproblemcounter.
+\At\VeryBeginProblem{
+	\xdef\exb@expoints@macname{exb@exercisepoints@\the\c@problemcounter}
+	\ifcsname \exb@expoints@macname\endcsname%
+		\xdef\exercisepoints{\csname\exb@expoints@macname\endcsname}
+	\else%
+		\gdef\exercisepoints{}
+	\fi
+	\setcounter{exb@tmp@exercisepoints}{0}
+}
+\At\BeginPartproblem{%
+\addtocounter{exb@tmp@exercisepoints}{\exb@currentPoints}%
+}
+\At\EndProblem{%
+% Now write the total number of points to the .aux file
+\immediate\write\@auxout{\string\expandafter\string\gdef\string\csname\space exb@exercisepoints@\the\numexpr\the\c@problemcounter\endcsname{\the\c@exb@tmp@exercisepoints}}%
+}
+%
+% \At\VeryBeginProblem{%
+%
+% }
