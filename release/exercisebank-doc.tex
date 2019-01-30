@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3b119 - 2019/01/30
-%% The LaTeX package exercisebank - version v0.2.3 (2019/01/30) build 119
+%% exercisebank v0.2.3-prereleaseb119 - 2019/01/30
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/01/30) build 119
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -120,7 +120,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 119)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 119)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -309,7 +309,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3\\2019/01/30 }
+\defnew{v0.2.3-prerelease\\2019/01/30 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -414,7 +414,7 @@ To be used in \refCom{makeset}
 \defnew{v0.2.1\\2018/09/24 }
 \end{docCommand}
 \begin{docCommand}{buildset}{\oarg{intro|nohead|nointro}\marg{setname}}\addcontentsline{toc}{subsubsection}{\refCom{buildset}}
-\updated{v0.2.3\\2019/01/30 }
+\updated{v0.2.3-prerelease\\2019/01/30 }
 This command runs the set given. The set has do be defined by \dac{makeset}. E.eg
 \begin{dispListing}
 \makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -465,11 +465,11 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.
  Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
 \end{docCommand}
 \begin{docCommand}{HideTags}{\marg{list}}\addcontentsline{toc}{subsubsection}{\refCom{HideTags}}
-\updated{v0.2.3\\2019/01/30 }
+\updated{v0.2.3-prerelease\\2019/01/30 }
 Hide all exercises containing the list of tags when building a set.
 \end{docCommand}
 \begin{docCommand}{ShowAllTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowAllTags}}
-\defnew{v0.2.3\\2019/01/30 }
+\defnew{v0.2.3-prerelease\\2019/01/30 }
 Reset tags set by \dac{HideTags}
 \end{docCommand}
 \filbreak\subsection{Configuration and options}
@@ -485,7 +485,7 @@ You can do a lot of configurations on this package, and probably
  Shows the tags in front of the part problems much like \dac{ShowNumbers}
 \end{docCommand}
 \begin{docCommand}{ShowFilenames}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowFilenames}}
-\updated{v0.2.3\\2019/01/30 }
+\updated{v0.2.3-prerelease\\2019/01/30 }
  Shows the path+filename to the current exercise file
 \end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{\oarg{key/values}}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
@@ -596,7 +596,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options: points and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3\\2019/01/30 }
+\updated{v0.2.3-prerelease\\2019/01/30 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -650,7 +650,7 @@ Here are the \dac{nextproblem} keys:
 Contains the total number of points for all exercises in the current set
 \end{docCommand}
 \begin{docCommand}{exercisepoints}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisepoints}}
-\defnew{v0.2.3\\2019/01/30 }
+\defnew{v0.2.3-prerelease\\2019/01/30 }
  Contains the total number of points in the current exercise (or "Problem")
 \end{docCommand}
 \filbreak\subsection{Triggers}
@@ -673,7 +673,7 @@ has been printed. It is also triggered after the PP header for SolutionsOnly.
 
 \end{docCommand}
 \begin{docCommand}{ClearHook}{}\addcontentsline{toc}{subsubsection}{\refCom{ClearHook}}
-\defnew{v0.2.3\\2019/01/30 }
+\defnew{v0.2.3-prerelease\\2019/01/30 }
  Deletes all information from a hook.
  Note that if preceded by \dac{rigid}, then the
  ENTIRE hook will be cleared.
@@ -709,7 +709,7 @@ This package also includes some extra stuff. For example the \dac{At} and \dac{T
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{@rigid}{}\addcontentsline{toc}{subsubsection}{\refCom{@rigid}}
-\defnew{v0.2.3\\2019/01/30 }
+\defnew{v0.2.3-prerelease\\2019/01/30 }
 Used to make \dac{At} so that the contents won't be deleted
 with \dac{ClearHook}. Note that the necessary hooks might not be
  registered as rigid. Thus show caution when deleting hooks
@@ -870,7 +870,7 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3 2019/01/30}
+\newversion{v0.2.3-prerelease 2019/01/30}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
