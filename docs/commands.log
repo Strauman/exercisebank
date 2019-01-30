@@ -70,7 +70,11 @@
 \buildtags
 :@@VERSION:@@DATE
 \nextproblem
+\@rigid
+\ShowFilenames
 \SolutionsOnly
-\rigid
 \ClearHook
 \buildset
+\exercisepoints
+\HideTags
+\ShowAllTags
