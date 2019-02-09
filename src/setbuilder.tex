@@ -14,20 +14,20 @@
 \global\let\exb@tagList\exb@emptyList
 %
 \gdef\ifppMode#1{
-  \def\mname{\exbank@macroname{#1}}
-  \strif\mname\ppMode
-}
-\gdef\isppMode#1#2{
-  \edef\mname{\exbank@macroname{#1}}
-  \strif{\exbank@macroname{#1}}{\ppMode}\relax#2\fi
+	\def\mname{\exbank@macroname{#1}}
+	\strif\mname\ppMode
+	}
+	\gdef\isppMode#1#2{
+	\edef\mname{\exbank@macroname{#1}}
+	\strif{\exbank@macroname{#1}}{\ppMode}\relax#2\fi
 }
 % \ppMode is what list mode we're in. Either it's \pm@Exclude or \pm@Select
 \gdef\@ifppMode#1{%
-\ifnum\pdfstrcmp{\exbank@macroname{#1}}{\ppMode}=\z@%
-\expandafter\@firstofone%
-\else%
-\expandafter\@noneofone%
-\fi%
+	\ifnum\pdfstrcmp{\exbank@macroname{#1}}{\ppMode}=\z@%
+		\expandafter\@firstofone%
+	\else%
+		\expandafter\@noneofone%
+	\fi%
 }%
 \def\pm@Exclude{exclude}
 \def\pm@Select{select}
@@ -42,32 +42,32 @@
 \def\exb@DPT{\global\exb@DisplayCurrentProblemtrue}
 \def\exb@DPF{\global\exb@DisplayCurrentProblemfalse}
 \At\DecideProblemDisplay{%
-    \ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
-      \ipm\exclude\exb@DPT\ipm\select\exb@DPF
-    \fi
-    \exb@int@isin{\themetacounter}{\ppList}{
-      \ipm\exclude\exb@DPF\ipm\select\exb@DPT\ipm\normal\exb@DPT
-    }{
-      \ipm\exclude\exb@DPT\ipm\select\exb@DPF\ipm\normal\exb@DPT
-    }
-\ifexb@tagbuildmode
-\ifexb@DisplayCurrentProblem\relax%
-\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\exb@DisplayCurrentProblemfalse}%
-\fi
-\fi
+	\ifnum\pdfstrcmp{\ppList}{\emptyList}=\z@\relax%
+		\ipm\exclude\exb@DPT\ipm\select\exb@DPF
+	\fi
+	\exb@int@isin{\themetacounter}{\ppList}{
+		\ipm\exclude\exb@DPF\ipm\select\exb@DPT\ipm\normal\exb@DPT
+	}{
+		\ipm\exclude\exb@DPT\ipm\select\exb@DPF\ipm\normal\exb@DPT
+	}
+	\ifexb@tagbuildmode
+		\ifexb@DisplayCurrentProblem\relax%
+			\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\exb@DisplayCurrentProblemfalse}%
+		\fi
+	\fi
 }
 
 \gdef\introarg{\@isFalse}
 %% Makeset arg handler
 \pgfkeys{
- /makeset/.is family, /makeset,
- default/.style = {noheadarg=false},
- intro/.style = {introarg=\@isTrue},
- nointro/.style = {introarg=\@isFalse},
- nohead/.style = {noheadarg=true},
- head/.style = {noheadarg=false},
- introarg/.estore in = \introarg,
- noheadarg/.is if = {exb@noheadArg},
+	/makeset/.is family, /makeset,
+	default/.style = {noheadarg=false},
+	intro/.style = {introarg=\@isTrue},
+	nointro/.style = {introarg=\@isFalse},
+	nohead/.style = {noheadarg=true},
+	head/.style = {noheadarg=false},
+	introarg/.estore in = \introarg,
+	noheadarg/.is if = {exb@noheadArg},
 }
 %:=\makesetdefaults{nohead|intro}
 %: Sets the default arguments to all makeset-keys.
@@ -83,13 +83,13 @@
 %:(the \oarg{nointro} overrides the default \meta{intro} setting)
 %:-
 \gdef\makesetdefaults#1{%
-\edef\exb@setpgfkeys{{\unexpanded\expandafter{/makeset/default/.style = {#1}}}}%
-\expandafter\pgfkeys\exb@setpgfkeys%
+	\edef\exb@setpgfkeys{{\unexpanded\expandafter{/makeset/default/.style = {#1}}}}%
+	\expandafter\pgfkeys\exb@setpgfkeys%
 }
 \pgfkeys{/makeset/override/.cd,
-intro/.code = {\gdef\introarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isTrue}},
-nointro/.code = {\gdef\introarg{\@isFalse}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isFalse}},
-nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @nohead\endcsname{\@isTrue}}
+	intro/.code = {\gdef\introarg{\@isTrue}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isTrue}},
+	nointro/.code = {\gdef\introarg{\@isFalse}\ea\gdef\csname setlist@\exb@currentSetID @intro\endcsname{\@isFalse}},
+	nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @nohead\endcsname{\@isTrue}}
 }
 % When a \makeset is made, it adds the set name to the
 % \@listOfSets for use in \sprite
@@ -100,7 +100,7 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %: This is a command that is used by sprite to determine what sets are shown in sprite. If this is not given, sprite uses all sets given in \makset
 %:-
 \long\gdef\spritesets#1{
-  \gdef\exbank@spriteSets{#1}
+	\gdef\exbank@spriteSets{#1}
 }
 %% Generates sets that can be iterated over
 %% \makeset[intro|nohead]{\select{path/to/file}{1,2}, \exclude{file}{1,2}, file}
@@ -113,21 +113,21 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %:-
 \global\let\exlist@protect\unexpanded
 \newcommand\makeset[3][]{
-  \xdef\thissetid{#2}
-  \ea\xdef\csname setkeys@\thissetid\endcsname{#1}
-  \pgfkeys{/makeset, default, #1}%
-  % Is intro sent?
-  \if\introarg\isTrue%
-    \gdef\introarg{\isTrue}
-    \ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
-  \fi
-  \ifexb@noheadArg%
-    \ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
-  \fi
-  \ea\gdef\csname setlist@#2\endcsname{\exlist@protect{#3}}
-  \def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
-  % \g@addto@macro\@listOfSets{\csname setlist@#2\endcsname,}
-  \g@addto@macro\@listOfSets{,#2}
+	\xdef\thissetid{#2}
+	\ea\xdef\csname setkeys@\thissetid\endcsname{#1}
+	\pgfkeys{/makeset, default, #1}%
+	% Is intro sent?
+	\if\introarg\isTrue%
+		\gdef\introarg{\isTrue}
+		\ea\gdef\csname setlist@#2@intro\endcsname{\isTrue}
+	\fi
+	\ifexb@noheadArg%
+		\ea\gdef\csname setlist@#2@nohead\endcsname{\isTrue}
+	\fi
+	\ea\gdef\csname setlist@#2\endcsname{\exlist@protect{#3}}
+	\def\setmacro{\unexpanded\expandafter{\csname setlist@#2\endcsname}}
+	% \g@addto@macro\@listOfSets{\csname setlist@#2\endcsname,}
+	\g@addto@macro\@listOfSets{,#2}
 }
 %:=\about{text}
 %:This contains information about an exercise set. It is intended to be on the top of an
@@ -148,24 +148,24 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
 \pgfpagesuselayout{#1 on 1}[a4paper,border shrink=5mm]
 \ifnum\pdfstrcmp{\exbank@spriteSets}{\emptyList}=\z@\relax%
-  \edef\sprite@setlist{\ea\@secondoftwo\@listOfSets}
-  %readlist with star removes whitespaces in the items
-  \readlist*\list@sprite@setlist\sprite@setlist
-  \foreachitem\set\in\list@sprite@setlist{
-    \edef\theset{{\set}}
-    \if\theset\empty\relax\else%
-    \buildset{\set}%
-    \fi%
-  }
+	\edef\sprite@setlist{\ea\@secondoftwo\@listOfSets}
+	%readlist with star removes whitespaces in the items
+	\readlist*\list@sprite@setlist\sprite@setlist
+	\foreachitem\set\in\list@sprite@setlist{
+		\edef\theset{{\set}}
+		\if\theset\empty\relax\else%
+			\buildset{\set}%
+		\fi%
+	}
 \else
-  \edef\sprite@setlist{\exbank@spriteSets}
-  \readlist*\list@sprite@setlist\sprite@setlist
-  \foreachitem\set\in\list@sprite@setlist{
-    \edef\theset{{\set}}
-    \if\theset\empty\relax\else%
-    \buildex{\set}%
-    \fi%
-  }
+	\edef\sprite@setlist{\exbank@spriteSets}
+	\readlist*\list@sprite@setlist\sprite@setlist
+	\foreachitem\set\in\list@sprite@setlist{
+		\edef\theset{{\set}}
+		\if\theset\empty\relax\else%
+			\buildex{\set}%
+		\fi%
+	}
 \fi
 }
 %:§ref
@@ -176,14 +176,65 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 \input{exercisecommands}
 %% Build one exercise
 \gdef\buildex#1{
-  \makeset{#1}{#1}
-  \buildset{#1}
+	\makeset{#1}{#1}
+	\buildset{#1}
 }
 %%Logic for building a set
 \exb@CountIntrosfalse
 \gdef\exb@setpgf#1{%
-\edef\keystring{{/makeset,default,#1}}%
-\ea\pgfkeys\keystring}
+	\edef\keystring{{/makeset,default,#1}}%
+	\ea\pgfkeys\keystring}
+
+% ---- BEGIN setlist divider ----%
+% The following code distinguish between the different things that can be sent to \makeset.
+% At time of writing that is:
+% \select, \exclude, \exec, or ExerciseCommands: e.g. \pbreak and \phead (included customs)
+% \select and \exclude expands to [#2]{#1}{select|exclude} i.e. \exclude{file}{1,2,3} -> [1,2,3]{file}{exclude}
+% and are se to exbank@setEnv for parsing. The last expanded "argument" is the \@ppmode
+% or exclude / select eg [1,3]{some,ex}{select}
+% makesetcommands are expanded to ?{@somecommand}, where @somecommand is to be executed.
+% e.g. \phead -> ?{@phead} and the code runs \@phead at appropriate time.
+% For \exec, it expands to :{#1}, and the code runs #1 at appropriate time.
+% e.g. \exec{\textbf{HELLO}} -> :{\textbf{HELLO}}.
+% So if the first character of the current item in the list is a ? or :
+% then execute makeset@command or exec respectively.
+% However, if it's a [, then \select or \exclude is invoked and send this to exbank@setEnv with the args.
+% else it's a normal filename and should be sent as \exbank@setEnv{THEFILENAME}{normal}, where normal
+% tells the rest of the program that all exercises should be included.
+\long\def\getnextchar#1#2\endstr{\gdef\exb@nextchar{#1}\gdef\exb@restchars{#2}}
+\long\gdef\@execute@makeset@command#1{%
+	\@dinfo{Executing macro \@backslashchar\@gobble##1}%
+	\csname #1\endcsname%
+	\def\continueLoop{\isFalse}%
+}
+\long\def\@execute@exec#1{%
+	\def\continueLoop{\isFalse}\@dinfo{Executing custom command stuff}{#1}%
+}
+\long\gdef\X@exb@setEnv#1{%
+	\def\continueLoop{\isTrue}%
+	\@dinfo{Processing normal file "\exerciseFileInfo.tex"}%
+	\exbank@setEnv@normal{#1}%
+}
+
+\long\gdef\exb@setEnv@withOptargs#1{%
+  \def\continueLoop{\isTrue}
+  \edef\firstarg{#1}
+	\expandafter\exbank@setEnv\firstarg%
+}
+\long\def\@delegateFileInfo#1{%
+	\expandafter\getnextchar#1\endstr%
+	\ifnum\pdfstrcmp{\exb@nextchar}{?}=\z@%
+		\@execute@makeset@command\exb@restchars
+	\else\ifnum\pdfstrcmp{\exb@nextchar}{:}=\z@%
+			\@execute@exec\exb@restchars
+		\else\ifnum\pdfstrcmp{\exb@nextchar}{[}=\z@%
+				\exb@setEnv@withOptargs{\exb@nextchar\exb@restchars}
+			\else%
+				\X@exb@setEnv{\exb@nextchar\exb@restchars}
+			\fi
+		\fi
+	\fi
+}
 %:=\buildset[intro|nohead|nointro]{setname}
 %:This command runs the set given. The set has do be defined by \makeset. E.eg
 %:!\makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -191,158 +242,116 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %:!  \buildset{myExerciseSet}
 %:!\!end{document}
 %:-
-
 \newcommand\buildset[2][]{%
-  \xdef\exb@currentSetID{#2}%
-  \pgfkeys{/makeset/override/.cd, #1}
-  \global\let\setName\exb@currentSetID%
-  \gdef\exb@buildset@oarg{#1}
-  \@ifundefined{setlist@#2@intro}{\exb@CountIntrosfalse}{\exb@CountIntrostrue}%
-  \@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
-  %% Setting the global setName
-%:=\setName
-%:This variable prints out the name of your set that you sent to \buildset.
-%:The following example prints "Exercise set number 1" and "Exercise set number 2" on the top of each set
-%:!\At\StartBuildset{
-%:! Exercise set number \setName
-%:!}
-%:! %... \makesets here ...%
-%:!\begin{document}
-%:! \buildset{1}{myexercise}
-%:! \buildset{2}{myexercise}
-%:!\end{document}
-%:-
-  % Set keys for this set in case user set some keys
-  \ifcsname setkeys@\setName\endcsname%
-  \xdef\skeys{\csname setkeys@#2\endcsname}%
-  % \xdef\skeys{default, \skeys}
-  \exb@setpgf\skeys%
-  \fi%
-  %% Warnins if the set doesn't exist
-  \@ifundefined{setlist@#2}{%
-    \exb@err{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
-    \stop\bye
-  }{}
-  %% Sets the current setlist from the variable
-  %% generated in makeset
-  \let\exlist@protect\unexpanded%
-  \edef\exbank@setlist{\csname setlist@#2\endcsname}%
-  \let\exlist@protect\unexpanded%
-  \if\@spriteMode\isFalse%
-    \if\exb@frontpage\@isFalse\else\input{\exb@frontpage}\fi
-    \Trigger\StartBuildset%
-  \fi%
-  % ---- BEGIN setlist divider ----%
-  % The following code distinguish between the different things that can be sent to \makeset.
-  % At time of writing that is:
-  % \select, \exclude, \exec, or ExerciseCommands: e.g. \pbreak and \phead (included customs)
-  % \select and \exclude expands to [#2]{#1}{select|exclude} i.e. \exclude{file}{1,2,3} -> [1,2,3]{file}{exclude}
-  % and are se to exbank@setEnv for parsing. The last expanded "argument" is the \@ppmode
-  % or exclude / select eg [1,3]{some,ex}{select}
-  % makesetcommands are expanded to ?{@somecommand}, where @somecommand is to be executed.
-  % e.g. \phead -> ?{@phead} and the code runs \@phead at appropriate time.
-  % For \exec, it expands to :{#1}, and the code runs #1 at appropriate time.
-  % e.g. \exec{\textbf{HELLO}} -> :{\textbf{HELLO}}.
-  % So if the first character of the current item in the list is a ? or :
-  % then execute makeset@command or exec respectively.
-  % However, if it's a [, then \select or \exclude is invoked and send this to exbank@setEnv with the args.
-  % else it's a normal filename and should be sent as \exbank@setEnv{THEFILENAME}{normal}, where normal
-  % tells the rest of the program that all exercises should be included.
-  %
-  % Is it a makeset@command?
-  \gdef\@delegateFileInfo{\@ifnextchar?\@execute@makeset@command\@is@exec}%
-  % Is it an exec command?%
-  \def\@is@exec{\@ifnextchar:\@execute@exec\@is@file}%
-  % Is it a \select/\exclude or is it just a filename?%
-  \gdef\@is@file{\@ifnextchar[\exb@setEnv@withOptargs\X@exb@setEnv}%
-  \gdef\X@exb@setEnv##1{%
-    \def\continueLoop{\isTrue}%
-    \@dinfo{Processing normal file "\exerciseFileInfo.tex"}%
-    \exbank@setEnv@normal{\exerciseFileInfo}\bgroup\nullfont%
-  }
-  \gdef\exb@setEnv@withOptargs{%
-    \def\continueLoop{\isTrue}\ea\exbank@setEnv\exerciseFileInfo\bgroup\nullfont%
-  }
+	\xdef\exb@currentSetID{#2}%
+	\pgfkeys{/makeset/override/.cd, #1}
+	\global\let\setName\exb@currentSetID%
+	\gdef\exb@buildset@oarg{#1}
+	\@ifundefined{setlist@#2@intro}{\exb@CountIntrosfalse}{\exb@CountIntrostrue}%
+	\@ifundefined{setlist@#2@nohead}{\gdef\nohead{\isFalse}}{\gdef\nohead{\isTrue}}%
+	%% Setting the global setName
+	%:=\setName
+	%:This variable prints out the name of your set that you sent to \buildset.
+	%:The following example prints "Exercise set number 1" and "Exercise set number 2" on the top of each set
+	%:!\At\StartBuildset{
+	%:! Exercise set number \setName
+	%:!}
+	%:! %... \makesets here ...%
+	%:!\begin{document}
+	%:! \buildset{1}{myexercise}
+	%:! \buildset{2}{myexercise}
+	%:!\end{document}
+	%:-
+	% Set keys for this set in case user set some keys
+	\ifcsname setkeys@\setName\endcsname%
+		\xdef\skeys{\csname setkeys@#2\endcsname}%
+		% \xdef\skeys{default, \skeys}
+		\exb@setpgf\skeys%
+	\fi%
+	%% Warnins if the set doesn't exist
+	\@ifundefined{setlist@#2}{%
+		\exb@err{Couldn't find set #2. Did you remember to do \string\makeset{#2}{}? }
+		\stop\bye
+	}{}
+	%% Sets the current setlist from the variable
+	%% generated in makeset
+	\let\exlist@protect\unexpanded%
+	\edef\exbank@setlist{\csname setlist@#2\endcsname}%
+	\let\exlist@protect\unexpanded%
+	\if\@spriteMode\isFalse%
+		\if\exb@frontpage\@isFalse\else\input{\exb@frontpage}\fi
+		\Trigger\StartBuildset%
+	\fi%
+	%% Loop through list
+	\readlist*\setlist\exbank@setlist%
+	\foreachitem\exerciseFileInfo\in\setlist{%
+		%% Sanitize \exerciseFileInfo (e.g. for underscores)
+		%% because \exerciseFileInfo will be printed (with \nullfont)
+		%% TODO: Remove this when \@delegateFileInfo is tidied up
+		\bgroup%
+		\catcode`\_=11%
+		\edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
+		% \scantokens\expandafter{\redef}%
+		\egroup%
+		\def\continueLoop{\isTrue}%
+		%% ppList is \emptyList (0) if it's not a list
+		\gdef\ppList{\emptyList}%
+		%% Counter used for iterating over partproblems
+		%% (Cant' use partproblemcounter since some of them might be excluded)
+		\setcounter{metacounter}{0}%
+		%% Checking whether we have optional args
+		%% I.e. one of the arguments are sent via \exclude
+		%% And then send it to \exbank@setEnv
+		%If \exerciseFileInfo starts with a [, then optional arguments
+		%that are to be sent to \exbank@setEnv. That is from \exclude or \select
+		\let\ex@protect\unexpanded%
+		\edef\exerciseFileInfo{\exerciseFileInfo}%
+		% Note that this command will _print_ \exerciseFileInfo (with \nullfont)
+		% Which is why \exerciseFileInfo needs to be sanitized
+		\@delegateFileInfo\exerciseFileInfo%
+		\Trigger\InputExercise%
+		\if\continueLoop\isTrue%
+			\let\ex@protect\noexpand%
+			%% TRIGGER EVERTYHING
+			\Trigger\PathControl%
+			%:$triggers.=\Trigger\InputExercise:\\ Triggers before a file is included\\\
+			%:$triggers.=\Trigger\BeginProblem:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
+			%:$triggers.=\Trigger\EndProblem:\\ Triggers right after problem is included if [nohead] \emph{not} given\\
+			%:$triggers.=\Trigger\BeginBuildset:\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
+			%:$triggers.=\Trigger\EndBuildset:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
+			\if\nohead\isFalse%
+				\if\@spriteMode\isFalse%
+					\Trigger\BeginProblem%
+				\fi%
+			\fi%
 
-  \gdef\@execute@makeset@command ?##1{%
-    \edef\inner{\@firstofone##1}%
-    \@dinfo{Executing macro \@backslashchar\@gobble##1}%
-    \csname \inner\endcsname%
-    #1\def\continueLoop{\isFalse}\ea\bgroup%
-  }
-  \def\@execute@exec:{%
-    \def\continueLoop{\isFalse}\@dinfo{Executing custom command}\bgroup%
-  }
-%% Loop through list
-  \readlist*\setlist\exbank@setlist%
-  \foreachitem\exerciseFileInfo\in\setlist{%
-    %% Sanitize \exerciseFileInfo (e.g. for underscores)
-    %% because \exerciseFileInfo will be printed (with \nullfont)
-    %% TODO: Remove this when \@delegateFileInfo is tidied up
-    \bgroup%
-      \catcode`\_=11%
-      \edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
-      % \scantokens\expandafter{\redef}%
-    \egroup%
-    \def\continueLoop{\isTrue}%
-    %% ppList is \emptyList (0) if it's not a list
-    \gdef\ppList{\emptyList}%
-    %% Counter used for iterating over partproblems
-    %% (Cant' use partproblemcounter since some of them might be excluded)
-    \setcounter{metacounter}{0}%
-    %% Checking whether we have optional args
-    %% I.e. one of the arguments are sent via \exclude
-    %% And then send it to \exbank@setEnv
-    %If \exerciseFileInfo starts with a [, then optional arguments
-    %that are to be sent to \exbank@setEnv. That is from \exclude or \select
-    \let\ex@protect\unexpanded%
-    \edef\exerciseFileInfo{\exerciseFileInfo}%
-    % Note that this command will _print_ \exerciseFileInfo (with \nullfont)
-    % Which is why \exerciseFileInfo needs to be sanitized
-    \ea\@delegateFileInfo\exerciseFileInfo\egroup%
-    \Trigger\InputExercise%
-    \if\continueLoop\isTrue%
-    \let\ex@protect\noexpand%
-%% TRIGGER EVERTYHING
-  \Trigger\PathControl%
-%:$triggers.=\Trigger\InputExercise:\\ Triggers before a file is included\\\
-%:$triggers.=\Trigger\BeginProblem:\\ Triggers before a file is included, but only if problem headers are to be written (no [nohead] given)\\
-%:$triggers.=\Trigger\EndProblem:\\ Triggers right after problem is included if [nohead] \emph{not} given\\
-%:$triggers.=\Trigger\BeginBuildset:\\ Triggers right before a set has begun building (not if \dac{sprite} is used). You might want to put your set-header here\\
-%:$triggers.=\Trigger\EndBuildset:\\ Triggers when a set has stopped building (not if \dac{sprite} is used)\\
-    \if\nohead\isFalse%
-      \if\@spriteMode\isFalse%
-        \Trigger\BeginProblem%
-      \fi%
-    \fi%
-
-    %% \VeryBeginProblem is only for stuff that
-    %% is intended to be a part of the problem
-    %% e.g. problem header is using this.
-    \if\nohead\isFalse\Trigger\VeryBeginProblem\fi%
-    \if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi%
-    %% \incl = \ input because otherwise latexpanded would try.
-    %% to input the file
-    \IfFileExists{\@exercisesDir/\exerciseFile}{%
-      \Trigger\InputExerciseFile
-      \incl{\@exercisesDir/\exerciseFile}%
-      \if\@spriteMode\isTrue%
-        \setcounter{partproblemcounter}{0}%
-      \fi%
-    }{
-      \@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
-      \stop\bye
-    }
-    %% More triggers
-    \if\nohead\isFalse\Trigger\EndProblem\fi%
-    \fi%<- End \continueLoop
-  }
-  \if\@spriteMode\isFalse%
-    \Trigger\EndBuildset%
-  \fi%
-  \setcounter{problemcounter}{0}%
-  \setcounter{partproblemcounter}{0}%
-  \clearpage%
+			%% \VeryBeginProblem is only for stuff that
+			%% is intended to be a part of the problem
+			%% e.g. problem header is using this.
+			\if\nohead\isFalse\Trigger\VeryBeginProblem\fi%
+			\if\@spriteMode\isTrue\textbf{\exerciseFile.tex\\}\fi%
+			%% \incl = \ input because otherwise latexpanded would try.
+			%% to input the file
+			\IfFileExists{\@exercisesDir/\exerciseFile}{%
+				\Trigger\InputExerciseFile
+				\incl{\@exercisesDir/\exerciseFile}%
+				\if\@spriteMode\isTrue%
+					\setcounter{partproblemcounter}{0}%
+				\fi%
+			}{
+				\@latex@error{Could not find \@exercisesDir/\exerciseFile. Maybe it is because the default exercise directory is now changed to the same directory that your main file is in. To set default exercise directory to exercises, do \string\exercisebanksetup{exercise directory=exercises}}{}
+				\stop\bye
+			}
+			%% More triggers
+			\if\nohead\isFalse\Trigger\EndProblem\fi%
+		\fi%<- End \continueLoop
+	}
+	\if\@spriteMode\isFalse%
+		\Trigger\EndBuildset%
+	\fi%
+	\setcounter{problemcounter}{0}%
+	\setcounter{partproblemcounter}{0}%
+	\clearpage%
 }
 %:=\buildsets[intro|nohead|nointro]{list}
 %:This command will generate multiple sets:
@@ -360,15 +369,15 @@ nohead/.code = {\exb@noheadArgtrue\ea\gdef\csname setlist@\exb@currentSetID @noh
 %:!\buildsets{tag,tag2,tag3}{set,set2,set3}
 %:-
 \newcommand\buildtags[2]{%
-  \global\exb@tagbuildmodetrue
-  \xdef\csvtags{#1}%
-  \xdef\csvlist{#2}
+	\global\exb@tagbuildmodetrue
+	\xdef\csvtags{#1}%
+	\xdef\csvlist{#2}
 	\xdef\csvsets{#2}%
 	\readlist*\tagsItems\csvtags%
-  \readlist*\setsItems\csvsets%
+	\readlist*\setsItems\csvsets%
 	\foreachitem\set\in\setsItems{%
-    \xdef\exb@tagList{\csvtags}
+		\xdef\exb@tagList{\csvtags}
 		\buildset{\set}%
 	}
-  \global\exb@tagbuildmodefalse
+	\global\exb@tagbuildmodefalse
 }
