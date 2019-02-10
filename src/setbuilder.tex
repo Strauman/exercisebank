@@ -201,14 +201,14 @@
 % However, if it's a [, then \select or \exclude is invoked and send this to exbank@setEnv with the args.
 % else it's a normal filename and should be sent as \exbank@setEnv{THEFILENAME}{normal}, where normal
 % tells the rest of the program that all exercises should be included.
-\long\def\getnextchar#1#2\endstr{\gdef\exb@nextchar{#1}\gdef\exb@restchars{#2}}
+\long\def\exb@getnextchar#1#2\endstr{\gdef\exb@nextchar{#1}\gdef\exb@restchars{#2}}
 \long\gdef\@execute@makeset@command#1{%
 	\@dinfo{Executing macro \@backslashchar\@gobble##1}%
 	\csname #1\endcsname%
 	\def\continueLoop{\isFalse}%
 }
 \long\def\@execute@exec#1{%
-	\def\continueLoop{\isFalse}\@dinfo{Executing custom command stuff}{#1}%
+	\def\continueLoop{\isFalse}\@dinfo{Executing custom (\string\exec) command}{#1}%
 }
 \long\gdef\X@exb@setEnv#1{%
 	\def\continueLoop{\isTrue}%
@@ -217,17 +217,19 @@
 }
 
 \long\gdef\exb@setEnv@withOptargs#1{%
-  \def\continueLoop{\isTrue}
-  \edef\firstarg{#1}
+	\def\continueLoop{\isTrue}
+	\edef\firstarg{#1}
 	\expandafter\exbank@setEnv\firstarg%
 }
+\def\set@charcode#1{\edef\testcode{\unexpanded{\the\numexpr`}#1}}
 \long\def\@delegateFileInfo#1{%
-	\expandafter\getnextchar#1\endstr%
-	\ifnum\pdfstrcmp{\exb@nextchar}{?}=\z@%
-		\@execute@makeset@command\exb@restchars
-	\else\ifnum\pdfstrcmp{\exb@nextchar}{:}=\z@%
+	\expandafter\exb@getnextchar#1\endstr%
+  \set@charcode\exb@nextchar\relax
+	\ifnum\testcode=\the\numexpr`?\relax
+		\relax\@execute@makeset@command\exb@restchars%
+	\else\ifnum\testcode = \the\numexpr`:\relax%
 			\@execute@exec\exb@restchars
-		\else\ifnum\pdfstrcmp{\exb@nextchar}{[}=\z@%
+		\else\ifnum\testcode = \the\numexpr`[\relax%
 				\exb@setEnv@withOptargs{\exb@nextchar\exb@restchars}
 			\else%
 				\X@exb@setEnv{\exb@nextchar\exb@restchars}
@@ -289,8 +291,7 @@
 		%% because \exerciseFileInfo will be printed (with \nullfont)
 		%% TODO: Remove this when \@delegateFileInfo is tidied up
 		\bgroup%
-		\catcode`\_=11%
-		\edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
+		% \edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
 		% \scantokens\expandafter{\redef}%
 		\egroup%
 		\def\continueLoop{\isTrue}%
@@ -305,6 +306,7 @@
 		%If \exerciseFileInfo starts with a [, then optional arguments
 		%that are to be sent to \exbank@setEnv. That is from \exclude or \select
 		\let\ex@protect\unexpanded%
+		\edef\exb@execChar{:}% This makes the \exec commands have a : in front so that we can distinguish it from e.g. \select commands and normal file names.
 		\edef\exerciseFileInfo{\exerciseFileInfo}%
 		% Note that this command will _print_ \exerciseFileInfo (with \nullfont)
 		% Which is why \exerciseFileInfo needs to be sanitized
@@ -334,6 +336,8 @@
 			%% to input the file
 			\IfFileExists{\@exercisesDir/\exerciseFile}{%
 				\Trigger\InputExerciseFile
+				% Temporary reset the \exb@execChar
+				\let\exb@execChar\relax
 				\incl{\@exercisesDir/\exerciseFile}%
 				\if\@spriteMode\isTrue%
 					\setcounter{partproblemcounter}{0}%
