@@ -22,8 +22,9 @@
 %:E.g. to insert a new page in between two problems when using nohead:
 %:!\makeset[nohead]{2}{\phead,my/exercise,\exec{\clearpage},next/exercise}
 %:-
+\global\let\exb@execChar\relax
 \global\let\ex@protect\noexpand
-\long\gdef\exec#1{:\ex@protect{#1}}
+\long\gdef\exec#1{\exb@execChar\ex@protect{#1}}
 % Documented as \DeclareExerciseCommand
 \long\gdef\exb@def@makeset@cmd#1{\@ifnextchar[{\@exb@def@makeset@cmd{#1}}{\@exb@def@makeset@cmd{#1}[0]}}
 \long\gdef\@exb@def@makeset@cmd#1[#2]#3{
