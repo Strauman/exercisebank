@@ -11,8 +11,8 @@
 %:Labels a partproblem. You can reference to it later using \ppref{\meta{label}}
 %:-
 \DeclareRobustCommand{\pplabel}[1]{
-	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}
-	\refcounter{\alph{partproblemcounter}}\label{pp:\exerciseFile:#1}
+	\refcounter{\theproblemcounter}\label{pr:\exerciseFile:#1}\label{pr:global:#1}
+	\refcounter{\alph{partproblemcounter}}\label{pp:\exerciseFile:#1}\label{pp:global:#1}
 }
 
 \let\pptag = \pplabel
@@ -25,9 +25,21 @@
 \newcommand\ppref[1]{%
 (\ref{pr:\exerciseFile:#1}\ref{pp:\exerciseFile:#1})\relax%
 }
+%:=\ppgref{label}
+%:Reference a partproblem created by \pplabel{\meta{label}}. This can be used for \emph{global} exercises.
+%:-
+\newcommand\ppgref[1]{%
+(\ref{pr:global:#1}\ref{pp:global:#1})\relax%
+}
 %:=\pref{label}
 %: Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1
 %:-
 \newcommand\pref[1]{%
 \ref{pr:\exerciseFile:#1}\relax%
+}
+%:=\pgref{label}
+%: Reference a partproblem created by \pplabel{\meta{label}}. This prints e.g. 1, but have global search.
+%:-
+\newcommand\pgref[1]{%
+\ref{pr:global:#1}\relax%
 }

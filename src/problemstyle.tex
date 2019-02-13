@@ -40,7 +40,7 @@
 \setlength{\pMarginLeft}{-\ppMargin-2.5em}
 \setlength{\solutionMarginLeft}{\ppMargin}
 \setlength{\solutionMarginAbove}{1em}
-\setlength{\pMarginBelow}{0em}
+\setlength{\pMarginBelow}{1em}
 \setlength{\pMarginAbove}{\baselineskip}
 \setlength{\introMargin}{-1.5em}
 \setlength{\ppMarginBelow}{0em}
@@ -69,11 +69,11 @@
 	\fi%
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
-	\vspace*{\pMarginAbove}%
+	\vskip\pMarginAbove%
 		% \@dlog{YO}%
 		% \global\exbset@nextprob@headerfalse%
   \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
-	\vspace*{\the\dimexpr\baselineskip+\pMarginBelow}%
+	\vskip \pMarginBelow\relax%
 }
 \At\EndProblem{%
 \tighten@paragraph%
