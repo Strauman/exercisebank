@@ -7,7 +7,9 @@
 \gdef\fileInputPath{}
 \gdef\fileInputBase{}
 \providecommand*{\input@path}{}
+\providecommand*{\Ginput@path}{}
 \g@addto@macro\input@path{{\fileInputBase}{\fileInputPath}}
+\g@addto@macro\Ginput@path{{\fileInputBase}{\fileInputPath}}
 \At\PathControl{
   \makeatletter
   \xdef\figuresPath{\@figrootDir/}
@@ -17,7 +19,6 @@
   \expandafter\filename@parse{\exfile}
   \xdef\fileInputPath{\figuresPath\filename@area}
   \xdef\fileInputBase{\figuresPath\filename@area\filename@base/}
-  \graphicspath{{\fileInputBase}{\fileInputPath}}
-  \@ifundefined{input@path}{\gdef\input@path{{\fileInputBase}{\fileInputPath}}}{}
+
   \makeatother
 }
