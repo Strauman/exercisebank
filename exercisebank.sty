@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2019/02/13) - build 124
+%% The LaTeX package exercisebank - version v0.2.3-experimental (2019/02/13) - build 125
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -15,7 +15,7 @@
 %% This work consists of all files listed in README
 \ProvidesPackage{exercisebank}[2019/02/13 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-experimental - Build 124}
+\def\exercisebankversion{v0.2.3-experimental - Build 125}
 \PackageWarningNoLine{exercisebank-v0.2.3-experimental}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -361,10 +361,13 @@ switches/.cd,
 \xdef\figuresPath{\@figrootDir/}
 \gdef\fileInputPath{}
 \gdef\fileInputBase{}
+\@ifundefined{input@path}{\gdef\input@path{}}{}
+\AtBeginDocument{%
 \providecommand*{\input@path}{}
 \providecommand*{\Ginput@path}{}
-\g@addto@macro\input@path{{\fileInputBase}{\fileInputPath}}
-\g@addto@macro\Ginput@path{{\fileInputBase}{\fileInputPath}}
+\g@addto@macro\input@path{{\fileInputBase}{\fileInputPath}}%
+\g@addto@macro\Ginput@path{{\fileInputBase}{\fileInputPath}}%
+}
 \At\PathControl{  \xdef\figuresPath{\@figrootDir/}
   \edef\exfile{\exerciseFile}
   \expandafter\filename@parse{\exfile}
