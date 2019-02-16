@@ -14,8 +14,8 @@
 %:=\ShowTags
 %: Shows the tags in front of the part problems much like \ShowNumbers
 %:-
-\gdef\exb@showtags{\isFalse}
-\gdef\ShowTags{\gdef\exb@showtags{\isTrue}}
+\global\exb@showtagsfalse
+\gdef\ShowTags{\global\exb@showtagstrue}
 \gdef\exb@printCurrentTags{Tags: \exb@currentTags~}
 %:=\ShowFilenames
 %: Shows the path+filename to the current exercise file
@@ -42,7 +42,7 @@
 default/.style = {
   part problems = true,
   tighten paragraphs = true,
-  problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
+  problem header={\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
   part problem header suffix={},
   solution header={\large{\textbf{\@tr{Solution}:}}},

@@ -41,8 +41,6 @@
 %:$triggers.=\Trigger\BeginPartproblem:\\ Triggers before a partproblem is inserted\\
 %:$triggers.=\Trigger\VeryBeginPartproblem:\\ Triggers right after \BeginPartproblem. This is so that the user can do stuff before the actual headers start. The partproblem headers are invoked by \At\VeryBeginPartproblem\\
 \newif\ifexb@isdisplaying
-\newif\ifexb@hidenextsol
-\global\exb@hidenextsolfalse
 %
 % \exb@ifshowproblem{true}{false}
 \gdef\exb@ifshowproblem#1#2{%
@@ -58,7 +56,7 @@
 % If problem is to show, then set ProcessCutFile and execute first arg
 % else remove ProcessCutFile.
 \gdef\showhideproblem#1{%
-	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
+	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@DisplayCurrentSolutiontrue}{\def\ProcessCutFile{}\global\exb@DisplayCurrentSolutionfalse}%
 }
 % Is \ifexb@hidenextsol in use?
 % \At\BeginProblem{\if\@SolutionsOnly\@isFalse\relax\tighten@paragraph\fi}
@@ -121,13 +119,15 @@
 		\ifexb@DisplayCurrentProblem\else%
 			\global\exb@DisplayCurrentSolutionfalse
 		\fi
+	\else
+			\global\exb@DisplayCurrentSolutionfalse
 	\fi
 	\ifexb@DisplayCurrentSolution%
     \let\ProcessCutFile\do@ProcessCutFile%
     % If solutions only, then since there is a solution, we
     % will trigger the part problem header
     \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
-		\ifexb@hidenextsol\else\Trigger\BeginSolution\fi%
+		\ifexb@DisplayCurrentSolution\Trigger\BeginSolution\fi%
 	\else
 		\def\ProcessCutFile{}%
 	\fi
@@ -177,15 +177,15 @@
 				\stepcounter{partproblemcounter}%
 			\fi%
 		\fi%
-		\gdef\@displayIntro{\@isFalse}
+		\gdef\@displayIntro{\@isFalse}%
 		\showhideproblem{%%
 			\tighten@paragraph%%
 			\Trigger\BeginIntro\exb@pre@intro\exb@post@intro%%
-			\gdef\@displayIntro{\@isTrue}
+			\gdef\@displayIntro{\@isTrue}%
 		}%
-		\exb@ifshowproblem{\intromargin{-1em}}{}
+		\exb@ifshowproblem{\intromargin{-1em}}{}%
 	\else%
-		\intromargin{-1em}
+		\intromargin{-1em}%
 	\fi%
   % Special case: solutions only
   \ifexb@solutionsonly\def\ProcessCutFile{}\fi
