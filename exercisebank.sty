@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-experimental (2019/02/13) - build 125
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/16) - build 127
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,14 +13,14 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2019/02/13 v0.2.3-experimental Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/02/16 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-experimental - Build 125}
-\PackageWarningNoLine{exercisebank-v0.2.3-experimental}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\def\exercisebankversion{v0.2.3-prerelease - Build 127}
+\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \ifcsname pdfstrcmp\endcsname\else
-\PackageError{exercisebank-v0.2.3-experimental}{Exercisebank currently only works with pdfLaTeX}{}\stop
+\PackageError{exercisebank-v0.2.3-prerelease}{Exercisebank currently only works with pdfLaTeX}{}\stop
 \fi
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
 }
@@ -78,6 +78,7 @@
 \g@newif\ifexb@opt@doMargins
 \g@newif\ifexb@CountIntros
 \g@newif\ifexb@noheadArg
+\g@newif\ifexb@showtags
 \exb@b@nextprob@headerfalse
 \exbank@if@needspacetrue
 \usepackage{xstring}
@@ -116,7 +117,7 @@
 			\fi%
 }%
 	\fi}
-\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-experimental}}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}}
 \gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
@@ -203,8 +204,8 @@
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
-\gdef\exb@showtags{\isFalse}
-\gdef\ShowTags{\gdef\exb@showtags{\isTrue}}
+\global\exb@showtagsfalse
+\gdef\ShowTags{\global\exb@showtagstrue}
 \gdef\exb@printCurrentTags{Tags: \exb@currentTags~}
 \gdef\ShowFilenames{\At\InputExerciseFile{\exerciseFile\par}}
 \global\exb@DisplaySolutionsfalse
@@ -214,7 +215,7 @@
 \pgfkeys{/exbanksetup/.is family, /exbanksetup,
 default/.style = {  part problems = true,
   tighten paragraphs = true,
-  problem header={\normalsize\Large\bfseries\@tr{Problem}~\theproblemcounter},
+  problem header={\Large\bfseries\@tr{Problem}~\theproblemcounter},
   part problem header={\large\textbf{(\theproblemcounter\alph{partproblemcounter})}},
   part problem header suffix={},
   solution header={\large{\textbf{\@tr{Solution}:}}},
@@ -410,8 +411,8 @@ switches/.cd,
 	\fi%
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
-	\vskip\pMarginAbove%
-  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
+	\leavevmode\vskip\pMarginAbove%
+  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}%
 	\vskip\pMarginBelow\relax%
 }
 \At\EndProblem{%
@@ -426,8 +427,8 @@ switches/.cd,
 	\if\@displayMetaCounter\@isTrue\relax%
 		\gdef\exb@prePPHead{{\Large\themetacounter}:}%
 	\fi%
-	\if\exb@showtags\isTrue%
-		\gdef\exb@postPPHead{\exb@printCurrentTags}%
+	\ifexb@showtags%
+		\g@addto@macro\exb@postPPHead{\exb@printCurrentTags}%
 	\fi%
 \ifexb@opt@doMargins%
 \newbox\nobox%
@@ -444,10 +445,10 @@ switches/.cd,
 \fi%
 \bgroup%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\par\ignorespaces}%
+\leavevmode\ignorespaces}%
 \At\EndPartproblem{%
-	\vspace*{\ppMarginBelow}%
-	\tighten@paragraph\par%
+	\vskip\ppMarginBelow\relax%
+	\tighten@paragraph%
 }
 \At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
@@ -485,8 +486,6 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\fi
 }
 \newif\ifexb@isdisplaying
-\newif\ifexb@hidenextsol
-\global\exb@hidenextsolfalse
 \gdef\exb@ifshowproblem#1#2{%
 	\exb@isdisplayingfalse%
 	\ifexb@DisplayCurrentProblem%
@@ -494,7 +493,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\ifexb@isdisplaying#1\else#2\fi%
 }
 \gdef\showhideproblem#1{%
-	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@hidenextsolfalse}{\def\ProcessCutFile{}\global\exb@hidenextsoltrue}%
+	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@DisplayCurrentSolutiontrue}{\def\ProcessCutFile{}\global\exb@DisplayCurrentSolutionfalse}%
 }
 \generalcomment{problem}{%
 	\ifexb@DisplaySolutions
@@ -536,11 +535,13 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 		\ifexb@DisplayCurrentProblem\else%
 			\global\exb@DisplayCurrentSolutionfalse
 		\fi
+	\else
+			\global\exb@DisplayCurrentSolutionfalse
 	\fi
 	\ifexb@DisplayCurrentSolution%
     \let\ProcessCutFile\do@ProcessCutFile%
     \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
-		\ifexb@hidenextsol\else\Trigger\BeginSolution\fi%
+		\ifexb@DisplayCurrentSolution\Trigger\BeginSolution\fi%
 	\else
 		\def\ProcessCutFile{}%
 	\fi
@@ -570,7 +571,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 		\if\@displayMetaCounter\isTrue\relax%
 			\gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}%
 		\fi%
-		\if\exb@showtags\isTrue%
+		\ifexb@showtags%
 			\xdef\exb@post@intro{\exb@printCurrentTags}%
 		\fi%
 		\if\@spriteMode\@isTrue%
@@ -578,15 +579,15 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 				\stepcounter{partproblemcounter}%
 			\fi%
 		\fi%
-		\gdef\@displayIntro{\@isFalse}
+		\gdef\@displayIntro{\@isFalse}%
 		\showhideproblem{%
 			\tighten@paragraph%
 			\Trigger\BeginIntro\exb@pre@intro\exb@post@intro%
-			\gdef\@displayIntro{\@isTrue}
+			\gdef\@displayIntro{\@isTrue}%
 }%
-		\exb@ifshowproblem{\intromargin{-1em}}{}
+		\exb@ifshowproblem{\intromargin{-1em}}{}%
 	\else%
-		\intromargin{-1em}
+		\intromargin{-1em}%
 	\fi%
   \ifexb@solutionsonly\def\ProcessCutFile{}\fi
 }{	\ifexb@CountIntros%
@@ -666,7 +667,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 }
 	\ifexb@tagbuildmode
 		\ifexb@DisplayCurrentProblem\relax%
-			\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\exb@DisplayCurrentProblemfalse}%
+			\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\global\exb@DisplayCurrentProblemfalse}%
 		\fi
 	\fi
 }
@@ -694,8 +695,10 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 \gdef\exbank@spriteSets{\emptyList}
 \long\gdef\spritesets#1{	\gdef\exbank@spriteSets{#1}
 }
+\gdef\exb@listofsetnames{}
 \global\let\exlist@protect\unexpanded
 \newcommand\makeset[3][]{	\xdef\thissetid{#2}
+	\xdef\exb@listofsetnames{\unexpanded\expandafter{\exb@listofsetnames}\thissetid,}
 	\ea\xdef\csname setkeys@\thissetid\endcsname{#1}
 	\pgfkeys{/makeset, default, #1}%
 	\if\introarg\isTrue%
@@ -710,6 +713,11 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\g@addto@macro\@listOfSets{,#2}
 }
 \long\gdef\about#1{}
+\newcommand\buildall{%
+\edef\tmpargs{{\exb@listofsetnames}}
+\dlog{\tmpargs}
+\expandafter\buildsets\tmpargs
+}
 \newcommand\sprite[1][4]{\squeeze
 \gdef\@spriteMode{\isTrue}
 \long\def\about##1{{\Large\textbf{About}:\\[1.1em]##1\\[1.5em]}}
@@ -757,8 +765,6 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
 \newcommand{\orderedselect}[2]{%
-\readlist*\thelist\csv@list%
-\foreachitem\items\in\thelist{[{\item}]{#1},}%
 }
 \exb@isFirstProblemtrue
 \exb@def@makeset@cmd{\phead}{%
