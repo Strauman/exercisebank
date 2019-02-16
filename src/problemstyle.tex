@@ -90,9 +90,9 @@
 	\if\@displayMetaCounter\@isTrue\relax%%
 		\gdef\exb@prePPHead{{\Large\themetacounter}:}%
 	\fi%
-	\if\exb@showtags\isTrue%
+	\ifexb@showtags%
 		% \exb@printCurrentTags defined in packageoptions.tex
-		\gdef\exb@postPPHead{\exb@printCurrentTags}%
+		\g@addto@macro\exb@postPPHead{\exb@printCurrentTags}%
 	\fi%
 %:$triggers.=\Trigger\PartProblemHeaderSuffix:\\ Triggers after the part problem header.
 %:$triggers.= anything added to this trigger will happen within the header
@@ -116,7 +116,7 @@
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\par\ignorespaces}%
+\par\ignorespaces\leavevmode}%
 
 \At\EndPartproblem{%
 	% \egroup%
