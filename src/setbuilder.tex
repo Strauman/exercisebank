@@ -52,7 +52,7 @@
 	}
 	\ifexb@tagbuildmode
 		\ifexb@DisplayCurrentProblem\relax%
-			\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\exb@DisplayCurrentProblemfalse}%
+			\exb@intersection@any{\exb@currentTags}{\exb@tagList}{\global\exb@opthidesfalse}{\global\exb@opthidestrue\global\exb@DisplayCurrentProblemfalse}%
 		\fi
 	\fi
 }
@@ -111,9 +111,11 @@
 %: \oarg{nohead} prevents the builder from adding a problem header. This is handy if you want to create an exercise that is composed of multiple parts. You can use the \phead to insert the problem header where you want it
 %:! \makeset[nohead]\{\phead, \select{myexercise}{1,2,3}}
 %:-
+\gdef\exb@listofsetnames{}
 \global\let\exlist@protect\unexpanded
 \newcommand\makeset[3][]{
 	\xdef\thissetid{#2}
+	\xdef\exb@listofsetnames{\unexpanded\expandafter{\exb@listofsetnames}\thissetid,}
 	\ea\xdef\csname setkeys@\thissetid\endcsname{#1}
 	\pgfkeys{/makeset, default, #1}%
 	% Is intro sent?
@@ -135,7 +137,14 @@
 %:-
 %% It gets defined in \sprite when use
 \long\gdef\about#1{}
-
+%:=\buildall
+%: Build all sets defined with \makeset
+%:-
+\newcommand\buildall{%
+\edef\tmpargs{{\exb@listofsetnames}}
+\dlog{\tmpargs}
+\expandafter\buildsets\tmpargs
+}
 %:=\sprite[PiP]
 %: This is a way to visualize all exercises. It takes one optional argument which is how many pages
 %: inside one page. Defaults to 4

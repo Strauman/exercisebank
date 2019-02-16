@@ -168,7 +168,7 @@
 		\if\@displayMetaCounter\isTrue\relax%%
 			\gdef\exb@pre@intro{{\leavevmode{\llap{{\Large\themetacounter}:\hspace*{-\pMarginLeft}}}}\ignorespaces}%
 		\fi%
-		\if\exb@showtags\isTrue%%
+		\ifexb@showtags%%
 			% \exb@printCurrentTags defined in packageoptions.tex%
 			\xdef\exb@post@intro{\exb@printCurrentTags}%
 		\fi%
