@@ -80,3 +80,5 @@
 \ShowAllTags
 \pgref
 \ppgref
+\buildall
+\ShowTags

@@ -69,11 +69,11 @@
 	\fi%
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
-	\vskip\pMarginAbove%
+	\leavevmode\vskip\pMarginAbove%
 		% \@dlog{YO}%
 		% \global\exbset@nextprob@headerfalse%
-  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
-	\vskip \pMarginBelow\relax%
+  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}%
+	\vskip\pMarginBelow\relax%
 }
 \At\EndProblem{%
 \tighten@paragraph%
@@ -116,12 +116,12 @@
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\par\ignorespaces\leavevmode}%
+\leavevmode\ignorespaces}%
 
 \At\EndPartproblem{%
 	% \egroup%
-	\vspace*{\ppMarginBelow}%
-	\tighten@paragraph\par%
+	\vskip\ppMarginBelow\relax%
+	\tighten@paragraph%\par%
 }
 
 \At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
