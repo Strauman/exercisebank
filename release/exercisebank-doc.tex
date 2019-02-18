@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3-prereleaseb128 - 2019/02/18
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) build 128
+%% exercisebank v0.2.3-prereleaseb129 - 2019/02/18
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) build 129
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -120,7 +120,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 128)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 129)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -568,8 +568,11 @@ You would use this option in the setup:\\
 Path to a front page that will be loaded at every \dac{buildset}
 Where to load the front page. The commands \refCom{setName} is available.
 }
-\keyDef{style margins}{yes/no}{yes}{
+\keyDef{style margins}{true|false}{true}{
 Whether or not to put problem headers and part problem headers out in the margins.
+}
+\keyDef{show lonely part problems}{true|false}{false}{
+ Whether or not to show part problems if there is only one part problem within the problem.
 }
 \end{docCommand}
 \keyDef{current points style}{style}{see below}{
@@ -681,8 +684,8 @@ has been printed. It is also triggered after the PP header for SolutionsOnly.
 
 
 \end{docCommand}
-\begin{docCommand}{ClearHook}{}\addcontentsline{toc}{subsubsection}{\refCom{ClearHook}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\begin{docCommand}{exb@ClearHook}{}\addcontentsline{toc}{subsubsection}{\refCom{exb@ClearHook}}
+
  Deletes all information from a hook.
  Note that if preceded by \dac{rigid}, then the
  ENTIRE hook will be cleared.
@@ -776,7 +779,6 @@ Distance above Problem \# header
 
  \addcontentsline{mac}{macro}{\refCom{@rigid}}{}
 \addcontentsline{mac}{macro}{\refCom{At}}{}
-\addcontentsline{mac}{macro}{\refCom{ClearHook}}{}
 \addcontentsline{mac}{macro}{\refCom{DeclareExerciseCommand}}{}
 \addcontentsline{mac}{macro}{\refCom{DisplaySolutions}}{}
 \addcontentsline{mac}{macro}{\refCom{HideTags}}{}
@@ -791,6 +793,7 @@ Distance above Problem \# header
 \addcontentsline{mac}{macro}{\refCom{buildset}}{}
 \addcontentsline{mac}{macro}{\refCom{buildsets}}{}
 \addcontentsline{mac}{macro}{\refCom{buildtags}}{}
+\addcontentsline{mac}{macro}{\refCom{exb@ClearHook}}{}
 \addcontentsline{mac}{macro}{\refCom{exb@isin}}{}
 \addcontentsline{mac}{macro}{\refCom{exclude}}{}
 \addcontentsline{mac}{macro}{\refCom{exec}}{}

@@ -63,14 +63,35 @@
 \bgroup%
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
+\ifexb@showCurrent@PPHeader%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
+\fi
 \ignorespaces}%
 
 \At\EndPartproblem{%
 	% \egroup%
 	\vspace\ppMarginBelow\relax%
 	\tighten@paragraph%\par%
+	\global\exb@showCurrent@PPHeadertrue
 }
 
 \At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
+
+% Don't show part problem header if only one part problem
+\newcounter{numppInFile}
+\ifexb@showLonelyPartProblems
+\At\BeginPartproblem{%
+	\ifcsname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname
+	\edef\numppex{\csname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname}
+	\ifnum\numppex=\@ne
+		\global\exb@showCurrent@PPHeaderfalse
+	\fi
+	\fi
+	\stepcounter{numppInFile}%
+}
+\At\EndProblem{%
+	\immediate\write\@auxout{\string\expandafter\string\gdef\string\csname\space exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname{\the\c@numppInFile}}%
+	\setcounter{numppInFile}{0}%
+}
+\fi

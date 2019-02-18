@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) - build 128
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) - build 129
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -15,7 +15,7 @@
 %% This work consists of all files listed in README
 \ProvidesPackage{exercisebank}[2019/02/18 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 128}
+\def\exercisebankversion{v0.2.3-prerelease - Build 129}
 \PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -79,6 +79,10 @@
 \g@newif\ifexb@CountIntros
 \g@newif\ifexb@noheadArg
 \g@newif\ifexb@showtags
+\g@newif\ifexb@showCurrent@PPHeader
+\g@newif\ifexb@showLonelyPartProblems
+\global\exb@showLonelyPartProblemsfalse
+\global\exb@showCurrent@PPHeadertrue
 \exb@b@nextprob@headerfalse
 \exbank@if@needspacetrue
 \usepackage{xstring}
@@ -201,8 +205,8 @@
 \newtoks\everypar
 \oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
-\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3-prereleaseb128}}
-\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 128}}
+\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3-prereleaseb129}}
+\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 129}}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
@@ -226,7 +230,8 @@ default/.style = {  part problems = true,
   style margins=true,
   problem needs space=0.2\paperheight,
   needspace/.is if={exbank@if@needspace},
-  no needspace/.code = {\global\ifexbank@if@needspacefalse}
+  no needspace/.code = {\global\ifexbank@if@needspacefalse},
+  show lonely part problems/.is if={exb@showLonelyPartProblems}
 },
 exercise directory/.estore in = \@exercisesDir, %
 figure root directory/.estore in = \@figrootDir, %
@@ -353,7 +358,7 @@ switches/.cd,
 		\@triggerLog{\mname}\csname At@\mname\endcsname%
 }%
 }
-\newcommand{\ClearHook}[1]{%
+\newcommand{\exb@ClearHook}[1]{%
 	\edef\mname{\exbank@macroname{#1}}%
 	\expandafter\let\csname At@\mname\endcsname\relax%
   \ifat@isrigid
@@ -439,14 +444,33 @@ switches/.cd,
 \gdef\exb@pp@lefttag{{\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
 \fi%
 \bgroup%
+\ifexb@showCurrent@PPHeader%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
+\fi
 \ignorespaces}%
 \At\EndPartproblem{%
 	\vspace\ppMarginBelow\relax%
 	\tighten@paragraph%
+	\global\exb@showCurrent@PPHeadertrue
 }
 \At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
+\newcounter{numppInFile}
+\ifexb@showLonelyPartProblems
+\At\BeginPartproblem{%
+	\ifcsname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname
+	\edef\numppex{\csname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname}
+	\ifnum\numppex=\@ne
+		\global\exb@showCurrent@PPHeaderfalse
+	\fi
+	\fi
+	\stepcounter{numppInFile}%
+}
+\At\EndProblem{%
+	\immediate\write\@auxout{\string\expandafter\string\gdef\string\csname\space exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname{\the\c@numppInFile}}%
+	\setcounter{numppInFile}{0}%
+}
+\fi
 \providecommand\exb@currentTags{}
 \providecommand\exb@nextprob@header{}
 \pgfkeys{/exbank/problems/.cd,%
