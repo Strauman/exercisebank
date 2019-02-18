@@ -2,59 +2,6 @@
 % This file contains \At-commands that are responsible for formatting
 % exercise headers and exercise-related styles.
 \makeatletter
-%:§margs
-%:Note that these are all \!emph{\!\textbf{lengths}}
-%:and should be used as e.g.
-%:!\setlength{\pMarginBelow}
-%:-
-%:=\pMarginBelow
-%:Distance below Problem \# header
-\newlength{\pMarginBelow}
-%:=\pMarginAbove
-%:Distance above Problem \# header
-\newlength{\pMarginAbove}
-%:=\pMarginLeft
-%: Problem header: distance from the default left margin
-\newlength{\pMarginLeft}
-%:=\ppMarginBelow
-%: Part problem: distance from the end of the part problem to the next item
-\newlength{\ppMarginBelow}
-%:=\ppMarginAbove
-%: Part problem: distance above the start of the part problem to the previous item
-\newlength{\ppMarginAbove}
-%:=\ppMargin
-%: Part problem: how far away from the text the part problem labels are.
-\newlength{\ppMargin}
-%:=\introMargin
-%: The offset of margins for intros
-\newlength{\introMargin}
-\newlength{\solutionMarginLeft}
-\newlength{\solutionMarginAbove}
-%:-
-
-\edef\defaultLeftMargin{\the\dimexpr1in+\hoffset}
-
-
-
-\setlength{\ppMargin}{0.5em}
-\setlength{\pMarginLeft}{-\ppMargin-2.5em}
-\setlength{\solutionMarginLeft}{\ppMargin}
-\setlength{\solutionMarginAbove}{1em}
-\setlength{\pMarginBelow}{1em}
-\setlength{\pMarginAbove}{\baselineskip}
-\setlength{\introMargin}{-1.5em}
-\setlength{\ppMarginBelow}{0em}
-\setlength{\ppMarginAbove}{0em}
-
-
-\setlength\parindent{0pt}
-\newbox\ppmarkbox
-\newlength\markskip
-\setlength\markskip{4\baselineskip}
-
-\def\solMargin{\dimexpr \ppMargin\relax}
-\def\vsSize{1em}
-\def\vs{\vspace{\vsSize}}
 %:§count
 %:\!docCounter{problemcounter}-counter holds the current problem number and
 %:\!docCounter{partproblemcounter}-counter holds the current partproblem \!emph{number}.
@@ -78,7 +25,9 @@
 \At\EndProblem{%
 \tighten@paragraph%
 }%
-% For executing the tag only when entered hmode
+\At\BeginPartproblem{%
+\vskip\ppMarginBelow\relax%
+}
 \At\VeryBeginPartproblem{%
 \@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
 	\stepcounter{partproblemcounter}%%
@@ -116,7 +65,7 @@
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\leavevmode\ignorespaces}%
+\ignorespaces}%
 
 \At\EndPartproblem{%
 	% \egroup%

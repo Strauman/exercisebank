@@ -1,0 +1,44 @@
+%!TEX root = main.tex
+%TODO: Remove unused lengths
+%TODO: Rename lengths to something more sensible
+% This file contains all lengths defined, and modified by, this package.
+%:§margs
+%:Note that these are all \!emph{\!\textbf{lengths}}
+%:and should be used as e.g.
+%:!\setlength{\pMarginBelow}
+%:-
+%:=\pMarginBelow
+%:Distance below Problem \# header
+\newlength{\pMarginBelow}
+%:=\pMarginAbove
+%:Distance above Problem \# header
+\newlength{\pMarginAbove}
+%:=\pMarginLeft
+%: Problem header: distance from the default left margin
+\newlength{\pMarginLeft}
+%:=\ppMarginBelow
+%: Part problem: distance from the end of the part problem to the next item
+\newlength{\ppMarginBelow}
+%:=\ppMarginAbove
+%: Part problem: distance above the start of the part problem to the previous item
+\newlength{\ppMarginAbove}
+%:=\ppMargin
+%: Part problem: how far away from the text the part problem labels are (horisontally).
+\newlength{\ppMargin}
+%:=\introMargin
+%: The offset of margins for intros
+\newlength{\introMargin}
+\newlength{\solutionMarginLeft}
+\newlength{\solutionMarginAbove}
+%:-
+\setlength\parindent{0pt}
+
+\setlength{\ppMargin}{0.5em}
+\setlength{\pMarginLeft}{-\ppMargin-2.5em}
+\setlength{\solutionMarginLeft}{\ppMargin}
+\setlength{\solutionMarginAbove}{1em}
+\setlength{\pMarginBelow}{1em}
+\setlength{\pMarginAbove}{\baselineskip}
+\setlength{\introMargin}{-1.5em}
+\setlength{\ppMarginBelow}{0em}
+\setlength{\ppMarginAbove}{0em}
