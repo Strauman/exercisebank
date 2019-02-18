@@ -44,13 +44,12 @@
 	\fi%
 %:$triggers.=\Trigger\PartProblemHeaderSuffix:\\ Triggers after the part problem header.
 %:$triggers.= anything added to this trigger will happen within the header
-
 \ifexb@opt@doMargins%
 % \if\exbank@opt@doMargins\@isTrue
 %TODO: BADLINE BELOW:
 \newbox\nobox%
-\bgroup
-\let\exb@partProblemHeader\exbank@opt@partProblemHeader
+\bgroup%
+\let\exb@partProblemHeader\exbank@opt@partProblemHeader%
 \ifexb@b@nextprob@header\relax%
 	\global\exb@b@nextprob@headerfalse%
 	\addtocounter{partproblemcounter}{-1}%
@@ -64,9 +63,10 @@
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \ifexb@showCurrent@PPHeader%
-\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\fi
-\ignorespaces}%
+\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}\par%
+\else
+\par%
+\fi\ignorespaces}%
 
 \At\EndPartproblem{%
 	% \egroup%
@@ -80,18 +80,18 @@
 
 % Don't show part problem header if only one part problem
 \newcounter{numppInFile}
-\ifexb@showLonelyPartProblems
 \At\BeginPartproblem{%
-	\ifcsname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname
-	\edef\numppex{\csname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname}
-	\ifnum\numppex=\@ne
-		\global\exb@showCurrent@PPHeaderfalse
-	\fi
-	\fi
+	\ifcsname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname%
+	\edef\numppex{\csname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname}%
+	\ifnum\numppex=\@ne%
+		\ifexb@showLonelyPartProblems\else%
+		\global\exb@showCurrent@PPHeaderfalse%
+		\fi
+	\fi%
+	\fi%
 	\stepcounter{numppInFile}%
 }
 \At\EndProblem{%
 	\immediate\write\@auxout{\string\expandafter\string\gdef\string\csname\space exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname{\the\c@numppInFile}}%
 	\setcounter{numppInFile}{0}%
 }
-\fi
