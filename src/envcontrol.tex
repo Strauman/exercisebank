@@ -151,10 +151,10 @@
 %:-
 \def\exb@intromargin{%
 	\ifexb@opt@doMargins\relax%
-		\gdef\endintromargin{\endlist\endgroup}%
+		\gdef\exb@endintromargin{\endlist\endgroup}%
 		\begingroup\list{}{\leftmargin-\introOutdent}\item[]%
 	\else%
-		\relax\global\let\endintromargin=\relax\fi%
+		\relax\global\let\exb@endintromargin=\relax\fi%
 }
 \generalcomment{intro}{\@dinfo{START intro ENV}%
 	%% Decide wether to treat intro as problem in
@@ -192,9 +192,9 @@
 }{
 	\ifexb@CountIntros%
 		\Trigger\EndIntro%
-		\exb@ifshowproblem{\endintromargin}{}
+		\exb@ifshowproblem{\exb@endintromargin}{}
 	\else
-		\endintromargin
+		\exb@endintromargin
 	\fi%
 	\@dinfo{END intro ENV}\ignorespaces%
 	% \newline

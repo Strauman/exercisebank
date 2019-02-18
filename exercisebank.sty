@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/16) - build 127
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) - build 128
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2019/02/16 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/02/18 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 127}
+\def\exercisebankversion{v0.2.3-prerelease - Build 128}
 \PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -201,6 +201,8 @@
 \newtoks\everypar
 \oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
+\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3-prereleaseb128}}
+\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 128}}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
@@ -223,8 +225,8 @@ default/.style = {  part problems = true,
   figure root directory=\@exercisesDir,
   style margins=true,
   problem needs space=0.2\paperheight,
-  no needspace/.is if={exbank@if@needspace},
-  no needspace/.default = false
+  needspace/.is if={exbank@if@needspace},
+  no needspace/.code = {\global\ifexbank@if@needspacefalse}
 },
 exercise directory/.estore in = \@exercisesDir, %
 figure root directory/.estore in = \@figrootDir, %
@@ -381,43 +383,36 @@ switches/.cd,
 \newlength{\ppMarginBelow}
 \newlength{\ppMarginAbove}
 \newlength{\ppMargin}
-\newlength{\introMargin}
-\newlength{\solutionMarginLeft}
+\newlength{\introOutdent}
 \newlength{\solutionMarginAbove}
-\edef\defaultLeftMargin{\the\dimexpr1in+\hoffset}
-\setlength{\ppMargin}{0.5em}
-\setlength{\pMarginLeft}{-\ppMargin-2.5em}
-\setlength{\solutionMarginLeft}{\ppMargin}
-\setlength{\solutionMarginAbove}{1em}
-\setlength{\pMarginBelow}{1em}
-\setlength{\pMarginAbove}{\baselineskip}
-\setlength{\introMargin}{-1.5em}
-\setlength{\ppMarginBelow}{0em}
-\setlength{\ppMarginAbove}{0em}
 \setlength\parindent{0pt}
-\newbox\ppmarkbox
-\newlength\markskip
-\setlength\markskip{4\baselineskip}
-\def\solMargin{\dimexpr\ppMargin\relax}
-\def\vsSize{1em}
-\def\vs{\vspace{\vsSize}}
+\setlength{\pMarginLeft}{-\ppMargin-2.5em}
+\setlength{\pMarginBelow}{1em}
+\setlength{\pMarginAbove}{0pt}
+\setlength{\ppMargin}{0.5em}
+\setlength{\ppMarginBelow}{0em}
+\setlength{\ppMarginAbove}{0.5\baselineskip}
+\setlength{\introOutdent}{1em}
+\setlength{\solutionMarginAbove}{1em}
 \newcounter{problemcounter}
 \setcounter{problemcounter}{0}
 \newcounter{partproblemcounter}
 \At\VeryBeginProblem{%
 	\ifexb@opt@tightenparagraphs%
 	\ifexbank@if@needspace\needspace{\exbank@opt@problemneedspace}\fi%
-	\vskip-2\baselineskip\relax%
 	\fi%
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
-	\leavevmode\vskip\pMarginAbove%
+	\vspace\pMarginAbove%
   \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}%
-	\vskip\pMarginBelow\relax%
+	\vspace\pMarginBelow\relax%
 }
 \At\EndProblem{%
 \tighten@paragraph%
 }%
+\At\BeginPartproblem{%
+\vspace\ppMarginAbove\relax%
+}
 \At\VeryBeginPartproblem{%
 \@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
 	\stepcounter{partproblemcounter}%
@@ -445,9 +440,9 @@ switches/.cd,
 \fi%
 \bgroup%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\leavevmode\ignorespaces}%
+\ignorespaces}%
 \At\EndPartproblem{%
-	\vskip\ppMarginBelow\relax%
+	\vspace\ppMarginBelow\relax%
 	\tighten@paragraph%
 }
 \At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
@@ -555,12 +550,12 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\Trigger\EndSolutionHard\@dinfo{END solution ENV}%
 }
 \g@addto@macro\AftersolutionComment{\ignorespaces}
-\def\intromargin#1{%
+\def\exb@intromargin{%
 	\ifexb@opt@doMargins\relax%
-		\gdef\endintromargin{\endlist\endgroup}%
-		\begingroup\list{}{\leftmargin#1}\item[]%
+		\gdef\exb@endintromargin{\endlist\endgroup}%
+		\begingroup\list{}{\leftmargin-\introOutdent}\item[]%
 	\else%
-		\relax\global\let\endintromargin=\relax\fi%
+		\relax\global\let\exb@endintromargin=\relax\fi%
 }
 \generalcomment{intro}{\@dinfo{START intro ENV}%
 	\ifexb@CountIntros%
@@ -585,16 +580,16 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 			\Trigger\BeginIntro\exb@pre@intro\exb@post@intro%
 			\gdef\@displayIntro{\@isTrue}%
 }%
-		\exb@ifshowproblem{\intromargin{-1em}}{}%
+		\exb@ifshowproblem{\exb@intromargin}{}%
 	\else%
-		\intromargin{-1em}%
+		\exb@intromargin%
 	\fi%
   \ifexb@solutionsonly\def\ProcessCutFile{}\fi
 }{	\ifexb@CountIntros%
 		\Trigger\EndIntro%
-		\exb@ifshowproblem{\endintromargin}{}
+		\exb@ifshowproblem{\exb@endintromargin}{}
 	\else
-		\endintromargin
+		\exb@endintromargin
 	\fi%
 	\@dinfo{END intro ENV}\ignorespaces%
 }
@@ -760,7 +755,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 \long\gdef\@exb@def@makeset@cmd#1[#2]#3{\def\ncArgs{#1[#2]}%
 \bgroup\globaldefs=1\ea\newcommand\ncArgs{\exec{#3}}\egroup%
 }
-\def\exbank@def@makeset@command{\exb@warn{\string\exbank@def@makeset@command\space is deprecated and will be removed in versions >= 0.3.0. Use \string\exb@def@makeset@cmd}\exb@def@makeset@cmd}
+\def\exbank@def@makeset@command{\exb@warn{\string\exbank@def@makeset@command\space is deprecated and will be removed in versions >= 0.3.0. Use \string\exb@def@makeset@cmd\space(or \string\DeclareExerciseCommand where applicable)}\exb@def@makeset@cmd}
 \let\DeclareExerciseCommand\exb@def@makeset@cmd
 \newcommand{\exclude}[2]{[{#2}]{#1}{exclude}}
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
