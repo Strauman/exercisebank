@@ -25,20 +25,21 @@
 %:=\ppMargin
 %: Part problem: how far away from the text the part problem labels are (horisontally).
 \newlength{\ppMargin}
-%:=\introMargin
+%:=\introOutdent
 %: The offset of margins for intros
-\newlength{\introMargin}
-\newlength{\solutionMarginLeft}
+\newlength{\introOutdent}
 \newlength{\solutionMarginAbove}
 %:-
 \setlength\parindent{0pt}
-
-\setlength{\ppMargin}{0.5em}
+% Problem margins:
 \setlength{\pMarginLeft}{-\ppMargin-2.5em}
-\setlength{\solutionMarginLeft}{\ppMargin}
-\setlength{\solutionMarginAbove}{1em}
 \setlength{\pMarginBelow}{1em}
-\setlength{\pMarginAbove}{\baselineskip}
-\setlength{\introMargin}{-1.5em}
+\setlength{\pMarginAbove}{2\baselineskip}
+% Part problem margin
+\setlength{\ppMargin}{0.5em}
 \setlength{\ppMarginBelow}{0em}
-\setlength{\ppMarginAbove}{0em}
+\setlength{\ppMarginAbove}{0.5\baselineskip}
+% Intro margins
+\setlength{\introOutdent}{1em}
+% Solution margins
+\setlength{\solutionMarginAbove}{1em}

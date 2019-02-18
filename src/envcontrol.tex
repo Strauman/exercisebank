@@ -149,10 +149,10 @@
 %:Sometimes you'd want to introcude your exercises and tell a little bit about it. Maybe have a figure there also. Those things should go inside this environment. This can be treated as a problem in terms of counting. See \refCom{makeset} for more info.
 %\!begin{marker}\end{intro} has to be on it's own line without any leading spaces!\!end{marker}
 %:-
-\def\intromargin#1{%
+\def\exb@intromargin{%
 	\ifexb@opt@doMargins\relax%
 		\gdef\endintromargin{\endlist\endgroup}%
-		\begingroup\list{}{\leftmargin#1}\item[]%
+		\begingroup\list{}{\leftmargin-\introOutdent}\item[]%
 	\else%
 		\relax\global\let\endintromargin=\relax\fi%
 }
@@ -183,9 +183,9 @@
 			\Trigger\BeginIntro\exb@pre@intro\exb@post@intro%%
 			\gdef\@displayIntro{\@isTrue}%
 		}%
-		\exb@ifshowproblem{\intromargin{-1em}}{}%
+		\exb@ifshowproblem{\exb@intromargin}{}%
 	\else%
-		\intromargin{-1em}%
+		\exb@intromargin%
 	\fi%
   % Special case: solutions only
   \ifexb@solutionsonly\def\ProcessCutFile{}\fi
