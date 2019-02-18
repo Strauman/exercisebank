@@ -51,7 +51,8 @@ default/.style = {
   style margins=true,
   problem needs space=0.2\paperheight,
   needspace/.is if={exbank@if@needspace},
-  no needspace/.code = {\global\ifexbank@if@needspacefalse}
+  no needspace/.code = {\global\ifexbank@if@needspacefalse},
+  show lonely part problems/.is if={exb@showLonelyPartProblems}
 },
 % Expanded macros
 exercise directory/.estore in = \@exercisesDir, %<- excepted from opt-syntax
@@ -175,8 +176,11 @@ switches/.cd,
 %:Path to a front page that will be loaded at every \buildset
 %:Where to load the front page. The commands \refCom{setName} is available.
 %:}
-%:\keyDef{style margins}{yes/no}{yes}{
+%:\keyDef{style margins}{true|false}{true}{
 %:Whether or not to put problem headers and part problem headers out in the margins.
+%:}
+%:\keyDef{show lonely part problems}{true|false}{false}{
+%: Whether or not to show part problems if there is only one part problem within the problem.
 %:}
 %:-
 %:$packageOptions=

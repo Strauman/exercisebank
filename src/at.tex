@@ -63,14 +63,14 @@
 		\@triggerLog{\mname}\csname At@\mname\endcsname%
 	}%
 }
-%:=\ClearHook
+%:=\exb@ClearHook
 %: Deletes all information from a hook.
 %: Note that if preceded by \rigid, then the
 %: ENTIRE hook will be cleared.
 %: Note that the necessary hooks might not be
 %: registered as rigid. Thus show caution when deleting hooks
 %:-
-\newcommand{\ClearHook}[1]{%
+\newcommand{\exb@ClearHook}[1]{%
 	\edef\mname{\exbank@macroname{#1}}%
 	\expandafter\let\csname At@\mname\endcsname\relax%
   \ifat@isrigid
