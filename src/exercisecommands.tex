@@ -32,7 +32,7 @@
 \bgroup\globaldefs=1\ea\newcommand\ncArgs{\exec{#3}}\egroup%
 }
 % For backwards compability
-\def\exbank@def@makeset@command{\exb@warn{\string\exbank@def@makeset@command\space is deprecated and will be removed in versions >= 0.3.0. Use \string\exb@def@makeset@cmd}\exb@def@makeset@cmd}
+\def\exbank@def@makeset@command{\exb@warn{\string\exbank@def@makeset@command\space is deprecated and will be removed in versions >= 0.3.0. Use \string\exb@def@makeset@cmd\space(or \string\DeclareExerciseCommand where applicable)}\exb@def@makeset@cmd}
 %:=\DeclareExerciseCommand{command}[numargs]{actions}
 %:Now, use similar to newcommand. Does not support default arguments yet, but plans to.
 %:The old way of defining still works:
@@ -65,11 +65,12 @@
 %:To be used in \refCom{makeset}
 % :-
 \newcommand{\select}[2]{[{#2}]{#1}{select}}
-%:=\orderedselect
-%:-
+%TODO: implement \orderedselect
+%Like select, but cares about the order.
+%
 \newcommand{\orderedselect}[2]{%
-\readlist*\thelist\csv@list%
-\foreachitem\items\in\thelist{[{\item}]{#1},}%
+% \readlist*\thelist\csv@list%
+% \foreachitem\items\in\thelist{[{\item}]{#1},}%
 }
 
 %% Commands that can be sent to makeset

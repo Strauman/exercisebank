@@ -34,6 +34,16 @@
 \input{packages}
 % \ignoreOutlineSpaces
 \input{helpers}
+%:§ref
+%:=\exercisebankversion
+%: Prints the current version and build to the error log
+%:-
+%:=\exercisebankbuild
+%: Prints the current build number to the error log
+%:-
+\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version @@VERSIONB}}
+\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build @@BUILD}}
+%:-
 % \obeyOutlineSpaces%
 \input{packageoptions}
 % \ignoreOutlineSpaces
@@ -41,6 +51,7 @@
 \input{i18n}
 \input{at}
 \input{pathcontrol}
+\input{lengths}
 \input{problemstyle}
 \input{problemoptions}
 \input{envcontrol}

@@ -33,6 +33,7 @@ All of the code are distributed within the `src`-folder. Here is an overview. Th
 - [`hidetags.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/hidetags.tex) contains the code for `\HideTags` and `\ShowAllTags` commands.
 - [`i18n.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/i18n.tex) contains everything to do with translation logic (`\translateExBank`).
 - [`ifs.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/ifs.tex) contains definitions and default value for every `\if`-statement.
+- [`lengths.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/lengths.tex) contains definitions and default values of the `\newlength` defined, and modified, by exercisebank.
 - [`main.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/main.tex) is the main file for building during development.
 - [`packageoptions.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packageoptions.tex) contains all the macros that are intended for user configuration
 - [`packages.tex`](https://github.com/Strauman/exerciseBank/blob/master/src/packages.tex) contains all the external packages used.
