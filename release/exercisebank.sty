@@ -432,8 +432,8 @@ switches/.cd,
 	\fi%
 \ifexb@opt@doMargins%
 \newbox\nobox%
-\bgroup
-\let\exb@partProblemHeader\exbank@opt@partProblemHeader
+\bgroup%
+\let\exb@partProblemHeader\exbank@opt@partProblemHeader%
 \ifexb@b@nextprob@header\relax%
 	\global\exb@b@nextprob@headerfalse%
 	\addtocounter{partproblemcounter}{-1}%
@@ -445,9 +445,10 @@ switches/.cd,
 \fi%
 \bgroup%
 \ifexb@showCurrent@PPHeader%
-\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}%
-\fi
-\ignorespaces}%
+\AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}\par%
+\else
+\par%
+\fi\ignorespaces}%
 \At\EndPartproblem{%
 	\vspace\ppMarginBelow\relax%
 	\tighten@paragraph%
@@ -456,21 +457,21 @@ switches/.cd,
 \At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
 \newcounter{numppInFile}
-\ifexb@showLonelyPartProblems
 \At\BeginPartproblem{%
-	\ifcsname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname
-	\edef\numppex{\csname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname}
-	\ifnum\numppex=\@ne
-		\global\exb@showCurrent@PPHeaderfalse
-	\fi
-	\fi
+	\ifcsname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname%
+	\edef\numppex{\csname exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname}%
+	\ifnum\numppex=\@ne%
+		\ifexb@showLonelyPartProblems\else%
+		\global\exb@showCurrent@PPHeaderfalse%
+		\fi
+	\fi%
+	\fi%
 	\stepcounter{numppInFile}%
 }
 \At\EndProblem{%
 	\immediate\write\@auxout{\string\expandafter\string\gdef\string\csname\space exb@numexercises@\the\numexpr\the\c@problemcounter\endcsname{\the\c@numppInFile}}%
 	\setcounter{numppInFile}{0}%
 }
-\fi
 \providecommand\exb@currentTags{}
 \providecommand\exb@nextprob@header{}
 \pgfkeys{/exbank/problems/.cd,%
