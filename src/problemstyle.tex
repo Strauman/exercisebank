@@ -16,17 +16,17 @@
 	\fi%
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
-	\leavevmode\vskip\pMarginAbove%
+	\vspace\pMarginAbove%
 		% \@dlog{YO}%
 		% \global\exbset@nextprob@headerfalse%
   \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}%
-	\vskip\pMarginBelow\relax%
+	\vspace\pMarginBelow\relax%
 }
 \At\EndProblem{%
 \tighten@paragraph%
 }%
 \At\BeginPartproblem{%
-\vskip\ppMarginBelow\relax%
+\vspace\ppMarginAbove\relax%
 }
 \At\VeryBeginPartproblem{%
 \@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
@@ -69,7 +69,7 @@
 
 \At\EndPartproblem{%
 	% \egroup%
-	\vskip\ppMarginBelow\relax%
+	\vspace\ppMarginBelow\relax%
 	\tighten@paragraph%\par%
 }
 
