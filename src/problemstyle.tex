@@ -30,7 +30,6 @@
 \At\VeryBeginPartproblem{%
 \@dinfo{Triggered Beginning Part Problem (\string\VeryBeginPartproblem)}%
 	\stepcounter{partproblemcounter}%%
-	% \bgroup%
 	% If we should display the meta counter, then%
 	\@dinfo{Generating title for part problem}%
 	\gdef\exb@prePPHead{}%
@@ -47,8 +46,6 @@
 \ifexb@opt@doMargins%
 % \if\exbank@opt@doMargins\@isTrue
 %TODO: BADLINE BELOW:
-\newbox\nobox%
-\bgroup%
 \let\exb@partProblemHeader\exbank@opt@partProblemHeader%
 \ifexb@b@nextprob@header\relax%
 	\global\exb@b@nextprob@headerfalse%
@@ -59,7 +56,6 @@
 \else%
 \gdef\exb@pp@lefttag{{\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
 \fi%
-\bgroup%
 %:$triggers.=\Trigger\PostPPHeader:\\ Triggers right after the part problem header
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \ifexb@showCurrent@PPHeader%
@@ -69,7 +65,6 @@
 \fi\ignorespaces}%
 
 \At\EndPartproblem{%
-	% \egroup%
 	\vspace\ppMarginBelow\relax%
 	\tighten@paragraph%\par%
 	\global\exb@showCurrent@PPHeadertrue

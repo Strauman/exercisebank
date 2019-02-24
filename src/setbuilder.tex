@@ -299,10 +299,10 @@
 		%% Sanitize \exerciseFileInfo (e.g. for underscores)
 		%% because \exerciseFileInfo will be printed (with \nullfont)
 		%% TODO: Remove this when \@delegateFileInfo is tidied up
-		\bgroup%
+		% \bgroup%
 		% \edef\redef{\noexpand\gdef\noexpand\exerciseFileInfo{\exerciseFileInfo}}%
 		% \scantokens\expandafter{\redef}%
-		\egroup%
+		% \egroup%
 		\def\continueLoop{\isTrue}%
 		%% ppList is \emptyList (0) if it's not a list
 		\gdef\ppList{\emptyList}%
