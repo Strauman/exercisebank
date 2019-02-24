@@ -43,7 +43,7 @@
 \newif\ifexb@isdisplaying
 %
 % \exb@ifshowproblem{true}{false}
-\gdef\exb@ifshowproblem#1#2{%
+\long\gdef\exb@ifshowproblem#1#2{%
 	% If exb@DisplayCurrentProblem==true && exb@opthides==false, then show
 	% Set displaying default to false
 	\exb@isdisplayingfalse%
@@ -55,7 +55,7 @@
 % \showhideproblem - should be prefixed
 % If problem is to show, then set ProcessCutFile and execute first arg
 % else remove ProcessCutFile.
-\gdef\showhideproblem#1{%
+\long\gdef\showhideproblem#1{%
 	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@DisplayCurrentSolutiontrue}{\def\ProcessCutFile{}\global\exb@DisplayCurrentSolutionfalse}%
 }
 % Is \ifexb@hidenextsol in use?
@@ -69,7 +69,7 @@
 \generalcomment{problem}{%
 	\makeatletter
 	\ifexb@DisplaySolutions
-	\global\exb@DisplayCurrentSolutiontrue\else\global\exb@DisplayCurrentSolutionfalse
+		\global\exb@DisplayCurrentSolutiontrue\else\global\exb@DisplayCurrentSolutionfalse
 	\fi
 	\stepcounter{metacounter}%
 	%% BeginProblemHard is before regardless whether
@@ -77,30 +77,31 @@
 	\@dinfo{problem: Triggering \string\DecideProblemDisplay}%
 	\Trigger\DecideProblemDisplay%
 	% \begingroup
-	\@dinfo{problem:Executing - \string\showhideproblem}%
+	\@dinfo{problem:Executing - \string\showhideproblem - \the\c@problemcounter}%
 	\showhideproblem{%
 		% If the user haven't turned off part problems
 		\ifexb@opt@partProblems%
-      % Don't trigger part problem header if only solutions to be shown
-      \ifexb@solutionsonly\else
-			 \Trigger\BeginPartproblem%
-			 \Trigger\VeryBeginPartproblem%
-      \fi
+			% Don't trigger part problem header if only solutions to be shown
+			\ifexb@solutionsonly\else
+				\Trigger\BeginPartproblem%
+				\Trigger\VeryBeginPartproblem%
+			\fi
 		\else%
 			\Trigger\BeginProblem%
-			\Trigger\VeryBeginProblem%
+			\Trigger\VeryBeginProblem\par%
 		\fi%
 	}%
-  % Special case: solutions only
-  \ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
+	% Special case: solutions only
+	\ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
 }{%
-\@dinfo{Ending problem env}%
+	\@dinfo{Ending problem env \the\c@problemcounter}%
 	\ifexb@DisplayCurrentProblem\relax%
 		\ifexb@opt@partProblems\relax%\ifexb@opthides\else
 			\Trigger\EndPartproblem%
-			\tighten@paragraph\fi%
-	\else
-		\Trigger\EndProblem%
+			\tighten@paragraph
+		\else
+			\Trigger\EndProblem%
+		\fi%
 	\fi%
 	\@dinfo{Ended problem env}%
 }
@@ -112,7 +113,7 @@
 %:-
 %% Solutions
 \generalcomment{solution}{%
-\@dinfo{START solution ENV}%
+	\@dinfo{START solution ENV}%
 	\Trigger\AtBeginSolutionHard
 	\begingroup
 	\ifexb@DisplaySolutions%
@@ -120,13 +121,13 @@
 			\global\exb@DisplayCurrentSolutionfalse
 		\fi
 	\else
-			\global\exb@DisplayCurrentSolutionfalse
+		\global\exb@DisplayCurrentSolutionfalse
 	\fi
 	\ifexb@DisplayCurrentSolution%
-    \let\ProcessCutFile\do@ProcessCutFile%
-    % If solutions only, then since there is a solution, we
-    % will trigger the part problem header
-    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
+		\let\ProcessCutFile\do@ProcessCutFile%
+		% If solutions only, then since there is a solution, we
+		% will trigger the part problem header
+		\ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
 		\ifexb@DisplayCurrentSolution\Trigger\BeginSolution\fi%
 	\else
 		\def\ProcessCutFile{}%
@@ -187,8 +188,8 @@
 	\else%
 		\exb@intromargin%
 	\fi%
-  % Special case: solutions only
-  \ifexb@solutionsonly\def\ProcessCutFile{}\fi
+	% Special case: solutions only
+	\ifexb@solutionsonly\def\ProcessCutFile{}\fi
 }{
 	\ifexb@CountIntros%
 		\Trigger\EndIntro%
