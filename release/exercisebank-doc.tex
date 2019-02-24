@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3-prereleaseb129 - 2019/02/18
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) build 129
+%% exercisebank v0.2.3-prereleaseb130 - 2019/02/24
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/24) build 130
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -48,6 +48,13 @@
 \newcommand\macrotable{\hypersetup{linkcolor=black}\@starttoc{mac}\hypersetup{linkcolor=Definition}}
 \newcommand\gh[1]{\href{https://github.com/#1}{@#1}}
 \newcommand\ghURL[1]{\href{https://github.com/#1}{https://github.com/#1}}
+
+\providecommand\onethankyou@tmp@content{\relax}
+\providecommand\onethankyou@content{\relax}
+\let\dlog\@latex@warning
+\dlog{OTYC\onethankyou@content:\the\catcode`\@}
+\gdef\onethankyou#1{\dlog{Reg @oty}\gdef\onethankyou@tmp@content{#1}}
+\AtEndDocument{\write\@auxout{\string\gdef\string\onethankyou@content{\onethankyou@tmp@content}}}
 
 \providecommand\thankyous{\relax}
 \def\print@thankyous{\readlist*\lst\thankyous\foreachitem\itm\in\lst{\if\itm\relax\else\item[-] \itm\fi}}
@@ -120,14 +127,18 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 129)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 130)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
  
 If you found any bugs or want new functionality, to contribute, view the commented source, get latest version of this package or get in touch with me, you can do all of that at \url{https://github.com/Strauman/exercisebank/}. If you have questions of functionality, kindly direct them to the community\\ \url{http://tex.stackexchange.com}. The author is active on this site regularly.
 If you feel up for it, you can always find the latest development version online, and I always need people to test -- it saves me a lot of time!
-\if\thankyous\relax\else Special thanks to these contributors: \makeatletter\begin{itemize}\print@thankyous\end{itemize}\makeatother\fi
+\makeatletter
+\if\onethankyou@content\relax\else\par%
+An extra special thanks to \onethankyou@content who really helps out with this package!
+\fi
+\if\thankyous\relax\else\par Special thanks to the people who helps me with this package: \makeatletter\begin{itemize}\print@thankyous\end{itemize}\makeatother\fi
 \if\testers\relax\else\footxt{People who helped test and make this package better (github users): \testers}\fi
 \tableofcontents
 \clearpage
@@ -309,7 +320,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -364,7 +375,7 @@ This contains information about an exercise set. It is intended to be on the top
 exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
 \end{docCommand}
 \begin{docCommand}{buildall}{}\addcontentsline{toc}{subsubsection}{\refCom{buildall}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
  Build all sets defined with \dac{makeset}
 \end{docCommand}
 \begin{docCommand}{sprite}{\oarg{PiP}}\addcontentsline{toc}{subsubsection}{\refCom{sprite}}
@@ -415,7 +426,7 @@ As you can see in the intro section of the documentation, this is for cherry pic
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{buildset}{\oarg{intro|nohead|nointro}\marg{setname}}\addcontentsline{toc}{subsubsection}{\refCom{buildset}}
-\updated{v0.2.3-prerelease\\2019/02/18 }
+\updated{v0.2.3-prerelease\\2019/02/24 }
 This command runs the set given. The set has do be defined by \dac{makeset}. E.eg
 \begin{dispListing}
 \makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -462,7 +473,7 @@ Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{lab
 Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
 \end{docCommand}
 \begin{docCommand}{ppgref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{ppgref}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
 Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This can be used for \emph{global} exercises.
 \end{docCommand}
 \begin{docCommand}{pref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pref}}
@@ -470,15 +481,15 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This can be us
  Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
 \end{docCommand}
 \begin{docCommand}{pgref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pgref}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
  Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1, but have global search.
 \end{docCommand}
 \begin{docCommand}{HideTags}{\marg{list}}\addcontentsline{toc}{subsubsection}{\refCom{HideTags}}
-\updated{v0.2.3-prerelease\\2019/02/18 }
+\updated{v0.2.3-prerelease\\2019/02/24 }
 Hide all exercises containing the list of tags when building a set.
 \end{docCommand}
 \begin{docCommand}{ShowAllTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowAllTags}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
 Reset tags set by \dac{HideTags}
 \end{docCommand}
 \filbreak\subsection{Configuration and options}
@@ -490,11 +501,11 @@ You can do a lot of configurations on this package, and probably
  \dac{exclude} and \dac{select}
 \end{docCommand}
 \begin{docCommand}{ShowTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowTags}}
-\updated{v0.2.3-prerelease\\2019/02/18 }
+\updated{v0.2.3-prerelease\\2019/02/24 }
  Shows the tags in front of the part problems much like \dac{ShowNumbers}
 \end{docCommand}
 \begin{docCommand}{ShowFilenames}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowFilenames}}
-\updated{v0.2.3-prerelease\\2019/02/18 }
+\updated{v0.2.3-prerelease\\2019/02/24 }
  Shows the path+filename to the current exercise file
 \end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{\oarg{key/values}}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
@@ -608,7 +619,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options: points and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3-prerelease\\2019/02/18 }
+\updated{v0.2.3-prerelease\\2019/02/24 }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -662,7 +673,7 @@ Here are the \dac{nextproblem} keys:
 Contains the total number of points for all exercises in the current set
 \end{docCommand}
 \begin{docCommand}{exercisepoints}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisepoints}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
  Contains the total number of points in the current exercise (or "Problem")
 \end{docCommand}
 \filbreak\subsection{Triggers}
@@ -712,11 +723,11 @@ where the package should be looking for exercises. Default is the same directory
  else executes \meta{False}
 \end{docCommand}
 \begin{docCommand}{exercisebankversion}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisebankversion}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
  Prints the current version and build to the error log
 \end{docCommand}
 \begin{docCommand}{exercisebankbuild}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisebankbuild}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
  Prints the current build number to the error log
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
@@ -729,7 +740,7 @@ This package also includes some extra stuff. For example the \dac{At} and \dac{T
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{@rigid}{}\addcontentsline{toc}{subsubsection}{\refCom{@rigid}}
-\defnew{v0.2.3-prerelease\\2019/02/18 }
+\defnew{v0.2.3-prerelease\\2019/02/24 }
 Used to make \dac{At} so that the contents won't be deleted
 with \dac{ClearHook}. Note that the necessary hooks might not be
  registered as rigid. Thus show caution when deleting hooks
@@ -894,7 +905,7 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3-prerelease 2019/02/18}
+\newversion{v0.2.3-prerelease 2019/02/24}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}
@@ -921,10 +932,12 @@ Distance above Problem \# header
     \change{Part problem header now showing if only one part problem is displayed}
     \change{Possibility to toggle whether part problem header showing if only one part problem is displayed \refKey{show lonely part problems}}
     % \change{Removed docs for \orderedselect since it's not implemented yet}
+    \change{Fixed TeX capacity exceeded error for long exercises.}
 \chlogtable
 
 
 % Testers and thanks
-\thankyous{\gh{thorstengrothe}}
-\tester{\gh{tristelune1}}
+\tester{\gh{thorstengrothe}}
+\onethankyou{\gh{tristelune1}}
+% \thankyou{}
  \end{document}

@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/18) - build 129
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/24) - build 130
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2019/02/18 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/02/24 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 129}
+\def\exercisebankversion{v0.2.3-prerelease - Build 130}
 \PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -205,8 +205,8 @@
 \newtoks\everypar
 \oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
-\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3-prereleaseb129}}
-\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 129}}
+\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3-prereleaseb130}}
+\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 130}}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
@@ -431,8 +431,6 @@ switches/.cd,
 		\g@addto@macro\exb@postPPHead{\exb@printCurrentTags}%
 	\fi%
 \ifexb@opt@doMargins%
-\newbox\nobox%
-\bgroup%
 \let\exb@partProblemHeader\exbank@opt@partProblemHeader%
 \ifexb@b@nextprob@header\relax%
 	\global\exb@b@nextprob@headerfalse%
@@ -443,7 +441,6 @@ switches/.cd,
 \else%
 \gdef\exb@pp@lefttag{{\exb@partProblemHeader\Trigger\PartProblemHeaderSuffix}}%
 \fi%
-\bgroup%
 \ifexb@showCurrent@PPHeader%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}\par%
 \else
@@ -506,49 +503,50 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\fi
 }
 \newif\ifexb@isdisplaying
-\gdef\exb@ifshowproblem#1#2{%
+\long\gdef\exb@ifshowproblem#1#2{%
 	\exb@isdisplayingfalse%
 	\ifexb@DisplayCurrentProblem%
 		\ifexb@opthides\else\exb@isdisplayingtrue\fi\fi%
 	\ifexb@isdisplaying#1\else#2\fi%
 }
-\gdef\showhideproblem#1{%
+\long\gdef\showhideproblem#1{%
 	\exb@ifshowproblem{\let\ProcessCutFile\do@ProcessCutFile#1\global\exb@DisplayCurrentSolutiontrue}{\def\ProcessCutFile{}\global\exb@DisplayCurrentSolutionfalse}%
 }
 \generalcomment{problem}{%
 	\ifexb@DisplaySolutions
-	\global\exb@DisplayCurrentSolutiontrue\else\global\exb@DisplayCurrentSolutionfalse
+		\global\exb@DisplayCurrentSolutiontrue\else\global\exb@DisplayCurrentSolutionfalse
 	\fi
 	\stepcounter{metacounter}%
 	\@dinfo{problem: Triggering \string\DecideProblemDisplay}%
 	\Trigger\DecideProblemDisplay%
-	\@dinfo{problem:Executing - \string\showhideproblem}%
+	\@dinfo{problem:Executing - \string\showhideproblem - \the\c@problemcounter}%
 	\showhideproblem{%
 		\ifexb@opt@partProblems%
-      \ifexb@solutionsonly\else
-			 \Trigger\BeginPartproblem%
-			 \Trigger\VeryBeginPartproblem%
-      \fi
+			\ifexb@solutionsonly\else
+				\Trigger\BeginPartproblem%
+				\Trigger\VeryBeginPartproblem%
+			\fi
 		\else%
 			\Trigger\BeginProblem%
-			\Trigger\VeryBeginProblem%
+			\Trigger\VeryBeginProblem\par%
 		\fi%
 }%
-  \ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
+	\ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
 }{%
-\@dinfo{Ending problem env}%
+	\@dinfo{Ending problem env \the\c@problemcounter}%
 	\ifexb@DisplayCurrentProblem\relax%
 		\ifexb@opt@partProblems\relax%
 			\Trigger\EndPartproblem%
-			\tighten@paragraph\fi%
-	\else
-		\Trigger\EndProblem%
+			\tighten@paragraph
+		\else
+			\Trigger\EndProblem%
+		\fi%
 	\fi%
 	\@dinfo{Ended problem env}%
 }
 \g@addto@macro\AfterproblemComment{\nextproblem{default}\ignorespaces}%
 \generalcomment{solution}{%
-\@dinfo{START solution ENV}%
+	\@dinfo{START solution ENV}%
 	\Trigger\AtBeginSolutionHard
 	\begingroup
 	\ifexb@DisplaySolutions%
@@ -556,11 +554,11 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 			\global\exb@DisplayCurrentSolutionfalse
 		\fi
 	\else
-			\global\exb@DisplayCurrentSolutionfalse
+		\global\exb@DisplayCurrentSolutionfalse
 	\fi
 	\ifexb@DisplayCurrentSolution%
-    \let\ProcessCutFile\do@ProcessCutFile%
-    \ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
+		\let\ProcessCutFile\do@ProcessCutFile%
+		\ifexb@solutionsonly\AtNextPar{\leavevmode\smash{\llap{\exbank@opt@partProblemHeader}}\Trigger\AfterPPHeader}\fi%
 		\ifexb@DisplayCurrentSolution\Trigger\BeginSolution\fi%
 	\else
 		\def\ProcessCutFile{}%
@@ -609,7 +607,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\else%
 		\exb@intromargin%
 	\fi%
-  \ifexb@solutionsonly\def\ProcessCutFile{}\fi
+	\ifexb@solutionsonly\def\ProcessCutFile{}\fi
 }{	\ifexb@CountIntros%
 		\Trigger\EndIntro%
 		\exb@ifshowproblem{\exb@endintromargin}{}
@@ -872,8 +870,6 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 	\fi%
 	\readlist*\setlist\exbank@setlist%
 	\foreachitem\exerciseFileInfo\in\setlist{%
-		\bgroup%
-		\egroup%
 		\def\continueLoop{\isTrue}%
 		\gdef\ppList{\emptyList}%
 		\setcounter{metacounter}{0}%
