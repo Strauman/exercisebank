@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/02/24) - build 130
+%% The LaTeX package exercisebank - version v0.2.3 (2019/02/26) - build 131
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,14 +13,14 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2019/02/24 v0.2.3-prerelease Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/02/26 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3-prerelease - Build 130}
-\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
+\def\exercisebankversion{v0.2.3 - Build 131}
+\PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
 \ifcsname pdfstrcmp\endcsname\else
-\PackageError{exercisebank-v0.2.3-prerelease}{Exercisebank currently only works with pdfLaTeX}{}\stop
+\PackageError{exercisebank-v0.2.3}{Exercisebank currently only works with pdfLaTeX}{}\stop
 \fi
 \gdef\setExercisesDir#1{\@latex@error{\string\setExercisesDir is deprecated. Use \string\exercisebanksetup{exercise directory=#1} instead}{}\stop\bye
 }
@@ -121,7 +121,7 @@
 			\fi%
 }%
 	\fi}
-\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3-prerelease}}
+\gdef\exb@warn{\PackageWarningNoLine{exercisebank-v0.2.3}}
 \gdef\exb@err#1{\PackageError{exercisebank}{#1}{}}
 \newif\ifexb@isInList
 \newcounter{exb@isin@dots}
@@ -205,8 +205,8 @@
 \newtoks\everypar
 \oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
-\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3-prereleaseb130}}
-\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 130}}
+\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3b131}}
+\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 131}}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
@@ -409,7 +409,7 @@ switches/.cd,
 	\stepcounter{problemcounter}%
 	\setcounter{partproblemcounter}{0}%
 	\vspace\pMarginAbove%
-  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}%
+  \strut\vadjust{\vbox to 0pt{\ifexb@opt@doMargins\relax\hskip\pMarginLeft\fi{\exbank@opt@problemHeader}\vss}}\par%
 	\vspace\pMarginBelow\relax%
 }
 \At\EndProblem{%
@@ -528,7 +528,7 @@ solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/h
 			\fi
 		\else%
 			\Trigger\BeginProblem%
-			\Trigger\VeryBeginProblem\par%
+			\Trigger\VeryBeginProblem%
 		\fi%
 }%
 	\ifexb@solutionsonly\def\ProcessCutFile{}\ifexb@DisplayCurrentProblem\relax\stepcounter{partproblemcounter}\fi\fi
