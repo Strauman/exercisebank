@@ -1,0 +1,47 @@
+%!TEX root = ../../example.tex
+\begin{intro}
+	% This environment has an outdented left margin.
+	In this exercise we will be looking at the center of mass of a thin rod of length \( \ell \) and total mass \( M \). The mass is distributed according to a mass per length \( \lambda(x) \). See figure \ref{fig:mechanics-rod} below
+	% Note that the file in \input here is located in figures/mechanics/rod.tex and can be included as \input{rod} because _this_ file is in exercises/mechanics.
+	% You can also include figures that are placed in the directory called figures/mechanics/center-of-mass/
+	% This is due to \exercisebanksetup{figure root directory=figures} is set in the example.tex file
+	\begin{figure}[h]
+		\centering
+		\input{rod}
+		\caption{Rod with mass per length \label{fig:mechanics-rod}}
+	\end{figure}
+	This exercise consists of a total of \exercisepoints\ points.
+\end{intro}
+% Now we set points for this exercise
+\nextproblem{points=1}
+\begin{problem}
+	Assume in this part problem that \( \lambda(x) \) is constant with regards to \( x \) (that is uniformly distributed mass).
+	Use the definition of the center of mass to obtain the \( x \) coordinate for the center of mass.
+\end{problem}
+\begin{solution}
+	\begin{align*}
+		r_{\text{cm}} &=\frac1M\int_{0}^{M}x\dd m                               \\
+		\lambda       &= \der mx = \frac M\ell                                  \\
+		\intertext{Substituting $\dd m$ using $m=\frac M\ell x$ and $x(m)=\frac{m\ell}{M}$ gives}
+		% \Rightarrow \der mx &= \frac M\ell x\\
+		r_{\text{cm}} &=\frac{1}{M}\int_{x(0)}^{x(M)}x\frac M\ell\dd x          \\
+		              &=\frac1\ell\int_{0}^{\ell}x\dd x=\frac1\ell\frac12\ell^2 \\
+		              &=\uu{\frac12\ell}
+	\end{align*}
+\end{solution}
+% Now we set points for this second exercise
+\nextproblem{points=3}
+\begin{problem}
+	We now have a (still thin) rod that has linear mass distribution (\( \lambda(x)=x \)).
+	Find the center of mass for this rod.
+\end{problem}
+\begin{solution}
+	\begin{align*}
+		\der mx           &=\lambda(x)=x                   \\
+		\intertext{Using differential notation that mathematicians hate}
+		\Rightarrow \dd m &=x\dd x                         \\
+		\intertext{Again, substitution gives}
+		r_{\text{cm}}     &=\frac1M\int_{0}^{\ell}x^2\dd x \\
+		                  &= \uu{\frac{\ell^3}{3M}}
+	\end{align*}
+\end{solution}

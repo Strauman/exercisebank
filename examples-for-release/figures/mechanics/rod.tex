@@ -1,0 +1,27 @@
+%!TEX root = ../../example.tex
+% Very basic figure just to show principles
+\usetikzlibrary{fit}
+\makeatletter
+\tikzset{%
+  % when using \node[fitted node], one sets the bounding box of the node
+  % and can use e.g. if this is set \node[fitted node](my-rect){}; then
+  % my-rect.north east would be the top right corner of the bounding box
+	fitted node/.style={
+			inner sep=0pt,
+			fit={(\pgf@pathminx,\pgf@pathminy)(\pgf@pathmaxx,\pgf@pathmaxy)},
+		}
+}
+\makeatother
+\newcommand\setnewlength[2]{\newlength#1\setlength#1{#2}}
+\begin{tikzpicture}
+  \newlength\lengthOffset
+  \setlength\lengthOffset{-0.3cm}
+  % Draw the rod
+	\draw(0,0) rectangle (4cm,.5cm) node[fitted node](rod){};
+  % Draw the line below showing the length
+  \draw[|-|]([yshift=\lengthOffset]rod.south west) -- ([yshift=\lengthOffset]rod.south east) node[midway,below,fitted node](length line){};
+  % Show "origo" and x=\ell
+  \node[below] at (length line.south west){$x=0$};
+  \node[below] at (length line.south east){$x=\ell$};
+	\node at (rod.center) {$m$};
+\end{tikzpicture}
