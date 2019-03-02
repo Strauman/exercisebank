@@ -49,7 +49,8 @@
 \providecommand\exb@nextprob@header{}
 \pgfkeys{
 /exbank/problems/.cd,%
-default/.style={hide=false,tag=\relax,reset pp head},%
+initial style/.style={hide=false,tag=\relax,reset pp head},%
+default/.style={initial style},
 % default/.append code={\global\exb@b@nextprob@headerfalse},
 % print/.code={Hello there! #1},
 hide/.is if={exb@opthides},%
@@ -58,8 +59,14 @@ tag/.code={\pgfkeysalso{tags={#1}}},
 head/.code={\global\exb@b@nextprob@headertrue\gdef\exb@nextprob@header{#1}},%
 reset pp head/.code={\global\exb@b@nextprob@headerfalse},
 % TODO: Is this necessary?
-solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/hide=true}\fi}
+solution only/.code={\ifexb@DisplaySolutions\else\pgfkeysalso{/exbank/problems/hide=true}\fi},
+reset to default/.code=\pgfkeysalso{/exbank/problems/default/.style={initial style}}
 % print/.code={\@dlog{#1}}
 }
 \def\nextproblem{\pgfqkeys{/exbank/problems}}
 % \global\let\nextproblem\@gobble
+\def\resetnextproblems{\nextproblem{reset to default}}
+\def\nextproblems#1{%
+\edef\nextprobargs{{default/.style={#1}}}%
+\expandafter\nextproblem\nextprobargs%
+}
