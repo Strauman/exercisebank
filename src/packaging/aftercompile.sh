@@ -3,31 +3,50 @@
 ## Create example zip
 ## Creates src/example/
 function cp_to_dir(){
-dir=$1
+dst=$1
 shift;
 while [[ $# -gt 0 ]]
 do
   # echo "Copying $1 to CTANDir $CTANDir"
-  outHandle "Error in copying $1 to $dir" cp -f "$1" "$dir/"
+  outHandle "Error in copying $1 to $dst" cp -f "$1" "$dst/"
   # echo "$1";
   shift
 done
 }
+example_files="../examples-for-release";
+example_dst=example/
+function clean_files_recursive(){
+  echo "Cleaning files in `pwd -P`"
+  # find -E . -type f -regex '.*\.(bak|log|aux|fdb_latexmk|fls|cut)'
+  # find -E . -type d -regex '.*bin$'
+  find -E . -type f -regex '.*\.(bak|log|aux|fdb_latexmk|fls|cut)' -delete
+  find -E . -type d -regex '.*bin$' -delete
+}
 function make_example(){
-  # Creates src/example/ and src/example.zip
+  ## Prepares a copy of examples-for-release/ and
+  ## creates src/example/ and src/example.zip for releasing
   pushd . >/dev/null
-  cd $sourceDir
+    cd $sourceDir
     echo "Creating example dir: src/example/"
-    exampleDir=example
-    if [ -d "$exampleDir" ]; then
-      rm -rf "$exampleDir"
+    if [ -d "$example_dst" ]; then
+      echo "Deleting src/example"
+      rm -rf "$example_dst"
     fi
+    mkdir "$example_dst"
     echo "Moving files to example dir"
-    mkdir "$exampleDir"
-    cp_to_dir $exampleDir example.tex
-    cp -r ../exercises/ "$exampleDir/exercises"
+    cp -r "$example_files/." "$example_dst"
+    echo "`pwd`"
+    cd "$example_dst";
+    rm "exercisebank.sty"
+    ## Remove the development file and replace with production file
+    # rm "example.tex"
+    # mv "example-production.tex" "example.tex"
+    # rm "example-production.pdf"
+    ## Remove the exercisebank.sty dummy
+    ## Delete the bin directories
+    # cd $example_dst;
 
-  cd $exampleDir
+    clean_files_recursive
     echo "Building example"
     cp $pkgSTY ./
     cp $pkgSTY "$mainDir"
@@ -35,10 +54,14 @@ function make_example(){
       # rm "$mainDir/tests/$packagename.sty"
     # fi
     # cp $pkgSTY "$mainDir/tests/$packagename.sty"
+    # Recursively clean all pdfs
+    find -E . -type f -regex '.*\.pdf' -delete
     outHandle "Error in latexmk - example.tex" latexmk -pdf "example.tex" -outdir="./bin" --shell-escape -interaction=nonstopmode -f
     rm "$outfile"
     cp "bin/example.pdf" ./
     rm -rf ./bin
+    echo "Example folder structure:"
+    tree .
   cd $sourceDir
     outHandle "Error in zipping example" zip example.zip -r example
     add_to_CTANDir example.zip
@@ -46,7 +69,9 @@ function make_example(){
     if [ $clean = true ];then
       echo "Cleaning up example"
       rm example.zip
-      rm -rf "$exampleDir"
+    fi
+    if [ $clean_exampledir = true ]; then
+      rm -rf "$example_dst"
     fi
 
   popd > /dev/null
@@ -81,6 +106,7 @@ function finalize_paths(){
 cd $sourceDir
 rm -rf "$mainDir/$packagename/"
 if [ $build_examples = true ]; then
+clean_exampledir=true;
 make_example
 fi
 readme_tree
