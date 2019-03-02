@@ -1,20 +1,22 @@
 %!TEX root = ../example.tex
-% \nextproblem{hide}
+\nextproblems{tags={ASDF}, points=4}
 \begin{intro}
+	Total points in exercise: \exercisepoints\\
 	2(i) In this exercise, we'll be looking at \( \dots \)
 \end{intro}
-\nextproblem{tag=Y, points=1}
+% \nextproblem{tag=Y, points=1}
 \begin{problem}
-  Second exercise - problem this is not a chosen problem. Tagged Y and is worth 1 point
+  Second exercise - problem this is not a chosen problem. \makeatletter Tagged \exb@currentTags and is worth  \exb@currentPoints\makeatother point
 \end{problem}
-\nextproblem{tag=Y}
-\nextproblem{points=2}
+% \nextproblem{tag=Y}
+% \nextproblem{points=2}
 \begin{problem}
   Second exercise - might not be a chosen problem. \makeatletter Tagged \exb@currentTags and is worth \exb@currentPoints points\makeatother
 \end{problem}
 \begin{solution}
 	SOLUTION2
 \end{solution}
+\resetnextproblems
 \nextproblem{tag=N}
 \begin{problem}
   \lipsum[1] tagged N. No points

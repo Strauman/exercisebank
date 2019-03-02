@@ -60,7 +60,7 @@
 %:$triggers.=has been printed. It is also triggered after the PP header for SolutionsOnly.
 \ifexb@showCurrent@PPHeader%
 \AtNextPar{\exb@pp@lefttag\global\let\exb@pp@lefttag\relax\Trigger\AfterPPHeader}\par%
-\else
+\else%
 \par%
 \fi\ignorespaces}%
 
