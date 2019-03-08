@@ -5,6 +5,12 @@
 \makeatletter
 \xdef\figuresPath{\@figrootDir/}
 \gdef\fileInputPath{}
+%:§ref
+%:=\thisfilepath
+%: Contains the path to the exercisefile relative to the build file.
+%: Useful for inputing files in the same directory as an exercisefile.
+%:-
+\gdef\thisfilepath{} %<- current exercise path
 \gdef\fileInputBase{}
 % \providecommand*{\tstcommand}{HELLO}
 \@ifundefined{input@path}{\gdef\input@path{}}{}
@@ -21,6 +27,7 @@
   % and \@figrootDir/path/to/ to the input stream
   \edef\exfile{\exerciseFile}
   \expandafter\filename@parse{\exfile}
+  \xdef\thisfilepath{\@exercisesDir/\filename@area}
   \xdef\fileInputPath{\figuresPath\filename@area}
   \xdef\fileInputBase{\figuresPath\filename@area\filename@base/}
   \makeatother
