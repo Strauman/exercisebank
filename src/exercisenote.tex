@@ -1,0 +1,26 @@
+%:§makingSets
+%:=\exercisenote
+%: Adds a note below an exercise header. To be used in \makeset
+%:! \makeset{\exercisenote{This is a pretty hard exercise}, my/hard/exercise}
+%: Here the text inside \exercisenote (This is a pretty hard exercise) will show
+%: right below the problem header of my/hard/exercise.tex
+%:-
+\global\let\@exercisenote\@nil%
+\gdef\@addExercisenote#1{%
+	\ifx\@exercisenote\@@nil%
+	\gdef\@exercisenote{#1}%
+	\else
+	\g@addto@macro{\@exercisenote}{\par#1}
+\fi
+}
+% \At\VeryBeginProblem{\ifx\@exercisenote\@@nil\else\par\hskip-\introOutdent\@exercisenote\global\let\@exercisenote\@nil\fi}%
+\At\VeryBeginProblem{%
+\ifx\@exercisenote\@@nil\else%
+% Set to intro margin
+\begingroup\list{}{\leftmargin-\introOutdent}\item[]%
+\@exercisenote%
+\endlist\endgroup%
+\global\let\@exercisenote\nil%
+\fi%
+}
+\DeclareExerciseCommand\exercisenote[1]{\@addExercisenote{#1}}
