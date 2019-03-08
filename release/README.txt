@@ -7,12 +7,13 @@ Files:
 ├── example.zip
 │   ├── example.pdf
 │   ├── example.tex
-│   └── exercises
-│       ├── capacitance.tex
-│       ├── firstexercise.tex
-│       ├── mathcommands.tex
-│       ├── secondexercise.tex
-│       └── thirdexercise.tex
+│   ├── exercises
+│   │   └── mechanics
+│   │       └── center-of-mass.tex
+│   ├── figures
+│   │   └── mechanics
+│   │       └── rod.tex
+│   └── mathcommands.tex
 ├── exercisebank-doc.pdf
 ├── exercisebank-doc.tex
 └── exercisebank.sty
@@ -24,7 +25,7 @@ https://github.com/Strauman/exercisebank/
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.3 (2019/02/26) - build 131
+The LaTeX package exercisebank - version v0.2.3 (2019/03/08) - build 132
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman
