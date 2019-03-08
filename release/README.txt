@@ -3,29 +3,19 @@ A tool for creating and managing exercise sets in maths, physics, statistics and
 
 Files:
 
-├── README.txt
-├── example.zip
-│   ├── example.pdf
-│   ├── example.tex
-│   ├── exercises
-│   │   └── mechanics
-│   │       └── center-of-mass.tex
-│   ├── figures
-│   │   └── mechanics
-│   │       └── rod.tex
-│   └── mathcommands.tex
-├── exercisebank-doc.pdf
-├── exercisebank-doc.tex
-└── exercisebank.sty
+Error when unzipping example.zip (9)
+OUT:
+ERR:
+unzip:  cannot find or open example.zip, example.zip.zip or example.zip.ZIP.
 
 Author: Storvik Strauman, Andreas
 
 For bug report, inquires, contributed or anything else:
-https://github.com/Strauman/exercisebank/
+@@GITHUB
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.3 (2019/03/08) - build 132
+The LaTeX package exercisebank - version v0.2.3 (2019/03/08) - build 133
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman
