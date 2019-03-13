@@ -394,3 +394,12 @@
 	}
 	\global\exb@tagbuildmodefalse
 }
+%:=\buildsprite{setslist}
+%: Builds a sprite from the given comma separated list of sets
+%:-
+\def\buildsprite#1{
+\squeeze%
+\gdef\@spriteMode{\isTrue}
+\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]%
+\buildsets{#1}%
+}

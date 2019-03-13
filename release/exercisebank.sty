@@ -1,5 +1,5 @@
 % Source (with comments) can be found at https://github.com/Strauman/exercisebank/
-%% The LaTeX package exercisebank - version v0.2.3 (2019/03/08) - build 133
+%% The LaTeX package exercisebank - version v0.2.3 (2019/03/13) - build 135
 %% exercisebank.sty: Exercise bank
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman <andreas dot s dot strauman at uit dot no>
@@ -13,9 +13,9 @@
 %% version 2008/05/04 or later.
 %% This work has the LPPL maintenance status `author-maintained'.
 %% This work consists of all files listed in README
-\ProvidesPackage{exercisebank}[2019/03/08 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
+\ProvidesPackage{exercisebank}[2019/03/13 v0.2.3 Creates a setup that gives freedom in making sets and exercises.]
 \xdef\exbank@quiet{1}
-\def\exercisebankversion{v0.2.3 - Build 133}
+\def\exercisebankversion{v0.2.3 - Build 135}
 \PackageWarningNoLine{exercisebank-v0.2.3}{This package is in the beta stage, and if something unexpected happens please, oh pretty please, report it to https://github.com/Strauman/exercisebank. Thank you!}
 \@ifundefined{ownLineNoSpacesGotIt}{\@latex@warning{Compilation wont work unless \string\end{problem} and \string\end{solution} are on their own lines and without any spaces. This warning can be removed by doing \string\def\string\ownLineNoSpacesGotIt{} before \@backslashchar usepackage{exercisebank}}
 }{}
@@ -205,8 +205,8 @@
 \newtoks\everypar
 \oldep{\the\everypar\@AtNextParHook\relax\gdef\@AtNextParHook{}}
 \def\AtNextPar#1{\g@addto@macro\@AtNextParHook{#1}}
-\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3b133}}
-\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 133}}
+\gdef\exercisebankversion{\PackageWarningNoLine{exercisebank}{Version v0.2.3b135}}
+\gdef\exercisebankbuild{\PackageWarningNoLine{exercisebank}{Build 135}}
 \edef\@isTrue{1}
 \edef\@isFalse{0}
 \gdef\ShowNumbers{\gdef\@displayMetaCounter{\isTrue}}
@@ -394,7 +394,7 @@ switches/.cd,
 \newlength{\solutionMarginAbove}
 \setlength\parindent{0pt}
 \setlength{\pMarginLeft}{-\ppMargin-2.5em}
-\setlength{\pMarginBelow}{1em}
+\setlength{\pMarginBelow}{1.5em \@plus .5em \@minus .5em}
 \setlength{\pMarginAbove}{0pt}
 \setlength{\ppMargin}{0.5em}
 \setlength{\ppMarginBelow}{0em}
@@ -453,7 +453,7 @@ switches/.cd,
 	\tighten@paragraph%
 	\global\exb@showCurrent@PPHeadertrue
 }
-\At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace*{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
+\At\BeginSolution{\ifexb@solutionsonly\else\hfill\break\vspace{\solutionMarginAbove}\fi{\exbank@opt@solutionHeader}}
 \At\EndSolution{}
 \newcounter{numppInFile}
 \At\BeginPartproblem{%
@@ -576,7 +576,7 @@ reset to default/.code=\pgfkeysalso{/exbank/problems/default/.style={initial sty
 	\ifexb@DisplayCurrentSolution%
 		\Trigger\EndSolution
 		\tighten@paragraph@solutions
-		\vspace*{0.5em}
+		\vspace{0.5em}
 	\fi
 	\endgroup
 	\Trigger\EndSolutionHard\@dinfo{END solution ENV}%
@@ -936,6 +936,11 @@ reset to default/.code=\pgfkeysalso{/exbank/problems/default/.style={initial sty
 		\buildset{\set}%
 }
 	\global\exb@tagbuildmodefalse
+}
+\def\buildsprite#1{\squeeze%
+\gdef\@spriteMode{\isTrue}
+\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]%
+\buildsets{#1}%
 }
 \providecommand\refcounter[1]{\edef\@currentlabel{#1}%
 }
