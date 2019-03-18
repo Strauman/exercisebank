@@ -1,5 +1,5 @@
-%% exercisebank v0.2.3b135 - 2019/03/13
-%% The LaTeX package exercisebank - version v0.2.3 (2019/03/13) build 135
+%% exercisebank v0.2.3-prereleaseb136 - 2019/03/18
+%% The LaTeX package exercisebank - version v0.2.3-prerelease (2019/03/18) build 136
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -127,7 +127,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.2.3{\\[-0.5em]\footnotesize(build 135)}}}
+\title{{exercisebank - manual\\ v0.2.3-prerelease{\\[-0.5em]\footnotesize(build 136)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -320,7 +320,7 @@ That covers the basics. Enjoy
 Turns on the solutions, so they are shown.
 \end{docCommand}
 \begin{docCommand}{SolutionsOnly}{}\addcontentsline{toc}{subsubsection}{\refCom{SolutionsOnly}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
 Displays only solutions (if there are any) to the part problem
 \end{docCommand}
 \begin{docEnvironment}{problem}{}
@@ -375,7 +375,7 @@ This contains information about an exercise set. It is intended to be on the top
 exercise, explaining short what the exercise is about. It's only visible when using \dac{sprite}
 \end{docCommand}
 \begin{docCommand}{buildall}{}\addcontentsline{toc}{subsubsection}{\refCom{buildall}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Build all sets defined with \dac{makeset}
 \end{docCommand}
 \begin{docCommand}{sprite}{\oarg{PiP}}\addcontentsline{toc}{subsubsection}{\refCom{sprite}}
@@ -426,7 +426,7 @@ As you can see in the intro section of the documentation, this is for cherry pic
 To be used in \refCom{makeset}
 \end{docCommand}
 \begin{docCommand}{buildset}{\oarg{intro|nohead|nointro}\marg{setname}}\addcontentsline{toc}{subsubsection}{\refCom{buildset}}
-\updated{v0.2.3\\@@DATE }
+\updated{v0.2.3-prerelease\\@@DATE }
 This command runs the set given. The set has do be defined by \dac{makeset}. E.eg
 \begin{dispListing}
 \makeset{myExerciseSet}{exercisefile1, \select{exercisefile2}{1,2}}
@@ -465,7 +465,7 @@ This command will generate multiple sets:
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{buildsprite}{\marg{setslist}}\addcontentsline{toc}{subsubsection}{\refCom{buildsprite}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Builds a sprite from the given comma separated list of sets
 \end{docCommand}
 \begin{docCommand}{pplabel}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pplabel}}
@@ -477,7 +477,7 @@ Labels a partproblem. You can reference to it later using \dac{ppref}\{\meta{lab
 Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1c)
 \end{docCommand}
 \begin{docCommand}{ppgref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{ppgref}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
 Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This can be used for \emph{global} exercises.
 \end{docCommand}
 \begin{docCommand}{pref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pref}}
@@ -485,19 +485,19 @@ Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This can be us
  Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1
 \end{docCommand}
 \begin{docCommand}{pgref}{\marg{label}}\addcontentsline{toc}{subsubsection}{\refCom{pgref}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Reference a partproblem created by \dac{pplabel}\{\meta{label\}}. This prints e.g. 1, but have global search.
 \end{docCommand}
 \begin{docCommand}{HideTags}{\marg{list}}\addcontentsline{toc}{subsubsection}{\refCom{HideTags}}
-\updated{v0.2.3\\@@DATE }
+\updated{v0.2.3-prerelease\\@@DATE }
 Hide all exercises containing the list of tags when building a set.
 \end{docCommand}
 \begin{docCommand}{ShowAllTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowAllTags}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
 Reset tags set by \dac{HideTags}
 \end{docCommand}
 \begin{docCommand}{exercisenote}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisenote}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Adds a note below an exercise header. To be used in \dac{makeset}
 \begin{dispListing}
  \makeset{\exercisenote{This is a pretty hard exercise}, my/hard/exercise}
@@ -514,11 +514,11 @@ You can do a lot of configurations on this package, and probably
  \dac{exclude} and \dac{select}
 \end{docCommand}
 \begin{docCommand}{ShowTags}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowTags}}
-\updated{v0.2.3\\@@DATE }
+\updated{v0.2.3-prerelease\\@@DATE }
  Shows the tags in front of the part problems much like \dac{ShowNumbers}
 \end{docCommand}
 \begin{docCommand}{ShowFilenames}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowFilenames}}
-\updated{v0.2.3\\@@DATE }
+\updated{v0.2.3-prerelease\\@@DATE }
  Shows the path+filename to the current exercise file
 \end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{\oarg{key/values}}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
@@ -632,7 +632,7 @@ The Norwegian translation would then be done with
 \end{docCommand}
 \filbreak\subsection{Problem options: points and tagging}
 \begin{docCommand}{nextproblem}{}\addcontentsline{toc}{subsubsection}{\refCom{nextproblem}}
-\updated{v0.2.3\\@@DATE }
+\updated{v0.2.3-prerelease\\@@DATE }
 Prior to a problem environment in an exercise file you can pass options
 using the \dac{nextproblem} command. If you e.g. wanted to hide one regardless
 of what set it is you'd do
@@ -686,7 +686,7 @@ Here are the \dac{nextproblem} keys:
 Contains the total number of points for all exercises in the current set
 \end{docCommand}
 \begin{docCommand}{exercisepoints}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisepoints}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Contains the total number of points in the current exercise (or "Problem")
 \end{docCommand}
 \filbreak\subsection{Triggers}
@@ -736,11 +736,11 @@ where the package should be looking for exercises. Default is the same directory
  else executes \meta{False}
 \end{docCommand}
 \begin{docCommand}{exercisebankversion}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisebankversion}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Prints the current version and build to the error log
 \end{docCommand}
 \begin{docCommand}{exercisebankbuild}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisebankbuild}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
  Prints the current build number to the error log
 \end{docCommand}
 This package also includes some extra stuff. For example the \dac{At} and \dac{Trigger}
@@ -753,7 +753,7 @@ This package also includes some extra stuff. For example the \dac{At} and \dac{T
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{@rigid}{}\addcontentsline{toc}{subsubsection}{\refCom{@rigid}}
-\defnew{v0.2.3\\@@DATE }
+\defnew{v0.2.3-prerelease\\@@DATE }
 Used to make \dac{At} so that the contents won't be deleted
 with \dac{ClearHook}. Note that the necessary hooks might not be
  registered as rigid. Thus show caution when deleting hooks
@@ -926,7 +926,7 @@ Distance above Problem \# header
 \newversion{v0.2.2 2018/10/04}
     \change{Made trailing commas ignored in all lists (\dac\makeset,\dac\buildset,\dac\select,\dac\exclude, etc.)}
     \change{Fixed bug where tags wouldn't hide.}
-\newversion{v0.2.3 2019/03/13}
+\newversion{v0.2.3-prerelease 2019/03/18}
     \change{Added possibility of custom part problem header from \dac\nextproblem}
     \change{Added possibility of showing problem only when \dac\DisplaySolutions active}
     \change{Corrected use of the length \dac\ppMarginBelow}

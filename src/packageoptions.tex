@@ -21,7 +21,7 @@
 %: Shows the path+filename to the current exercise file
 %:-
 % \providecommand\exerciseFile{}
-\gdef\ShowFilenames{\At\InputExerciseFile{\exerciseFile\par}}
+\gdef\ShowFilenames{\At\InputExerciseFile{File: {\ttfamily \@exercisesDir/\exerciseFile}\par}}
 %:§env
 %:=\DisplaySolutions
 %:Turns on the solutions, so they are shown.
