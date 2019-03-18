@@ -21,11 +21,11 @@ Files:
 Author: Storvik Strauman, Andreas
 
 For bug report, inquires, contributed or anything else:
-@@GITHUB
+https://github.com/Strauman/exercisebank/
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.3-prerelease (2019/03/18) - build 136
+The LaTeX package exercisebank - version v0.3.0 (2019/03/18) - build 137
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman

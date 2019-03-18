@@ -68,7 +68,7 @@
 :v0.2.2:2018/10/04
 \nextproblem
 \buildtags
-:@@VERSION:@@DATE
+:v0.3.0:2019/03/18
 \nextproblem
 \@rigid
 \ShowFilenames
