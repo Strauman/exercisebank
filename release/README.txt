@@ -25,7 +25,7 @@ For bug report, inquires, contributed or anything else:
 
 Licence:
 
-The LaTeX package exercisebank - version v0.2.3 (2019/03/13) - build 135
+The LaTeX package exercisebank - version v0.2.3-prerelease (2019/03/18) - build 136
 exercisebank.sty: Exercise bank
 -------------------------------------------------------------------------------------------
 Copyright (c) 2018 by Andreas Storvik Strauman
