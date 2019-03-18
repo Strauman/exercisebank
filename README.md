@@ -5,11 +5,11 @@ Check out the bleeding edge version in the [releases](https://github.com/Strauma
 # Updated documentation
 The latest release is stored in this zip: [exercisebank.zip](https://github.com/Strauman/exerciseBank/raw/master/exercisebank.zip)
 You can download the latest documentation here: [release/exercisebank.pdf](https://github.com/Strauman/exerciseBank/raw/master/release/exercisebank.pdf).
-This is the documentation for version v0.3.0, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
+This is the documentation for version 0.3.0, and might not be the same as for the one on CTAN. If you're using the CTAN version (if you didn't get the package from this repo) then use the [CTAN](https://ctan.org/pkg/exercisebank) [documentation](http://mirrors.ctan.org/macros/latex/contrib/exercisebank/exercisebank-doc.pdf)
 
 # Versions
 Download latest(/github)-version here: [exercisebank.zip](https://github.com/Strauman/exerciseBank/blob/master/exercisebank.zip)
-GitHub at version: v0.3.0 (2019/03/18) build 137
+GitHub at version: 0.3.0 (2019/03/18) build 137
 
 CTAN at version: v0.3.0 (2019/03/18) build 137
 
@@ -18,9 +18,6 @@ CTAN at version: v0.3.0 (2019/03/18) build 137
 A build has no major changes in the core code (could be changes in documentation, or cosmetic changes in the code). Every time a minor version (that is the middle version number) changes, an upload is made to CTAN. If the patch version change (the last version number) is significant, it will also be uploaded to CTAN. The build number (ideally) never resets.
 
 # Contributing
-## TODO list
-- [ ] Prefix internal macros with `exbank@`. E.g. switch all instances of `\isTrue` with `\exbank@isTrue`.
-- [ ] Add an actual translation module, e.g. the [translations pakcage](https://ctan.org/pkg/translations) that translates automatically instead of forcing the user to use `\translateExBank`
 ## Files
 Check out [`documentation-doc.tex`](https://github.com/Strauman/exerciseBank/blob/master/documentation-doc.tex) for instructions on how to document the code. All the documentation is automatically generated from the comments in the code using a custom `perl`-script. This file shows examples on how to document the code so that it shows up in the documentation properly.
 All of the code are distributed within the `src`-folder. Here is an overview. The `src/packaging/` directory only contains info for building the package, but used for "compiling" it down to `exercisebank.sty` and documenting.

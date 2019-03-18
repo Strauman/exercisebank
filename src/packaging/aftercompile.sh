@@ -88,6 +88,7 @@ function readme_tree(){
   file_structure=`zip_tree "example"`
   pattern="s/\#FILES/$file_structure/"
   perl -p -e "$pattern or next;" -i "$CTANDir/README.txt"
+  # add_version_vars_to "$CTANDir/README.txt"
   popd > /dev/null
 }
 function finalize_paths(){
