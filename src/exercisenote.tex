@@ -6,11 +6,11 @@
 %: right below the problem header of my/hard/exercise.tex
 %:-
 \global\let\@exercisenote\@nil%
-\gdef\@addExercisenote#1{%
+\long\gdef\@addExercisenote#1{%
 	\ifx\@exercisenote\@@nil%
 	\gdef\@exercisenote{#1}%
-	\else
-	\g@addto@macro{\@exercisenote}{\par#1}
+	\else%
+	\g@addto@macro{\@exercisenote}{\par#1}%
 \fi
 }
 % \At\VeryBeginProblem{\ifx\@exercisenote\@@nil\else\par\hskip-\introOutdent\@exercisenote\global\let\@exercisenote\@nil\fi}%
