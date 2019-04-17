@@ -87,3 +87,6 @@
 \thisexercisepath
 \exercisenote
 \buildsprite
+:@@VERSION:@@DATE
+\exercisenote
+\ShowFilenames
