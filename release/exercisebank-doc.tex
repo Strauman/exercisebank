@@ -1,5 +1,5 @@
-%% exercisebank v0.3.0b137 - 2019/03/18
-%% The LaTeX package exercisebank - version v0.3.0 (2019/03/18) build 137
+%% exercisebank v0.3.1-experimentalb138 - 2019/04/17
+%% The LaTeX package exercisebank - version v0.3.1-experimental (2019/04/17) build 138
 %% Manual/Documentation for exercisebank.sty
 %% -------------------------------------------------------------------------------------------
 %% Copyright (c) 2018 by Andreas Storvik Strauman
@@ -127,7 +127,7 @@
 
 
 \setlength{\parindent}{0pt}
-\title{{exercisebank - manual\\ v0.3.0{\\[-0.5em]\footnotesize(build 137)}}}
+\title{{exercisebank - manual\\ v0.3.1-experimental{\\[-0.5em]\footnotesize(build 138)}}}
 \author{Andreas Strauman}
 \begin{document}
 \maketitle
@@ -497,7 +497,7 @@ Hide all exercises containing the list of tags when building a set.
 Reset tags set by \dac{HideTags}
 \end{docCommand}
 \begin{docCommand}{exercisenote}{}\addcontentsline{toc}{subsubsection}{\refCom{exercisenote}}
-\defnew{v0.3.0\\2019/03/18 }
+\updated{v0.3.1-experimental\\@@DATE }
  Adds a note below an exercise header. To be used in \dac{makeset}
 \begin{dispListing}
  \makeset{\exercisenote{This is a pretty hard exercise}, my/hard/exercise}
@@ -518,7 +518,7 @@ You can do a lot of configurations on this package, and probably
  Shows the tags in front of the part problems much like \dac{ShowNumbers}
 \end{docCommand}
 \begin{docCommand}{ShowFilenames}{}\addcontentsline{toc}{subsubsection}{\refCom{ShowFilenames}}
-\updated{v0.3.0\\2019/03/18 }
+\updated{v0.3.1-experimental\\@@DATE }
  Shows the path+filename to the current exercise file
 \end{docCommand}
 \begin{docCommand}{exercisebanksetup}{\marg{\oarg{key/values}}}\addcontentsline{toc}{subsubsection}{\refCom{exercisebanksetup}}
@@ -956,6 +956,9 @@ Distance above Problem \# header
     \change{Added \dac\thisfilepath for getting path of current exercisefile}
     \change{Changed default spacing}
     \change{Added \dac\buildsprite}
+\newversion{v0.3.1-experimental 2019/04/17}
+    \change{Made \dac\exercisenote long (can now deal with multiple lines).}
+    \change{Fixed bug where \dac\ShowFilenames would crash when filename has underscore.}
 \chlogtable
 
 
