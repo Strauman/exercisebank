@@ -1,4 +1,4 @@
-[![Gitter](https://badges.gitter.im/exercisebank/community.svg)](https://gitter.im/exercisebank/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+# Exercisebank [![Gitter](https://badges.gitter.im/exercisebank/community.svg)](https://gitter.im/exercisebank/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  [![Build Status](https://travis-ci.org/Strauman/exercisebank.svg?branch=develop)](https://travis-ci.org/Strauman/exercisebank)
 
 Develop build status: [![Build Status](https://travis-ci.org/Strauman/exercisebank.svg?branch=develop)](https://travis-ci.org/Strauman/exercisebank)
 
